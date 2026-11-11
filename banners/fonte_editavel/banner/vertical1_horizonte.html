@@ -1,0 +1,78 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Horizonte (vertical)</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+html,body,.banner{width:900px;height:1200px}
+.top{left:46px;top:44px;right:46px;display:flex;align-items:center;justify-content:space-between}
+.top img{height:108px}
+.event{text-align:right}
+.event .label{font-size:20px;color:var(--orange)}
+.event .big{font-family:Orbitron;font-weight:800;font-size:34px;letter-spacing:.04em;margin-top:6px}
+.event .small{font-size:22px;font-weight:600;color:#ffffffc0;margin-top:2px}
+.title{left:50px;top:190px;width:800px;text-align:center}
+.title .label{font-size:24px;opacity:.85;padding-left:.35em}
+.title h1{margin:12px 0 0}
+.title .tag{font-weight:700;font-size:50px;line-height:1;margin-top:20px}
+.title .tag b{color:var(--orange)}
+.patch{left:275px;top:438px;width:350px;filter:drop-shadow(0 0 34px #ff3b1a90)}
+.desc{left:60px;top:785px;width:780px;text-align:center;font-size:25px;font-weight:500;line-height:1.2;color:#ffffffe0}
+.desc strong{color:#fff;font-weight:700}
+.stats{left:40px;right:40px;top:900px;height:100px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{background:linear-gradient(180deg,#0b1630d8,#050a18ee);border:2px solid #5fd4ff55;border-radius:14px;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 0 24px #5fd4ff22 inset}
+.stat .v{font-family:Orbitron;font-weight:800;font-size:38px;line-height:1;white-space:nowrap}
+.stat .v small{font-size:20px;font-weight:700;margin-left:4px;color:var(--cyan)}
+.stat .k{font-size:19px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#ffffffc8;margin-top:8px;line-height:1.05}
+</style></head><body>
+<div class="banner">
+<svg class="abs" width="900" height="1200" style="left:0;top:0">
+ <defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#05060a"/><stop offset=".3" stop-color="#14040a"/>
+   <stop offset=".5" stop-color="#6a0a0c"/><stop offset=".58" stop-color="#e2281a"/><stop offset=".63" stop-color="#ff8c00"/></linearGradient>
+  <radialGradient id="earth" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#0d2a5c"/><stop offset=".08" stop-color="#071a3d"/><stop offset=".3" stop-color="#030a1c"/></radialGradient>
+  <filter id="blur18"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="blur5"><feGaussianBlur stdDeviation="5"/></filter>
+  <filter id="glow"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <clipPath id="earthClip"><circle cx="450" cy="2440" r="1700"/></clipPath>
+ </defs>
+ <rect width="900" height="1200" fill="url(#sky)"/>
+ <g id="stars"></g>
+ <circle cx="450" cy="2440" r="1725" fill="none" stroke="#ff9a2a" stroke-width="40" filter="url(#blur18)" opacity=".9"/>
+ <circle cx="450" cy="2440" r="1700" fill="url(#earth)"/>
+ <g id="lights" clip-path="url(#earthClip)" filter="url(#glow)"></g>
+ <circle cx="450" cy="2440" r="1702" fill="none" stroke="#5fd4ff" stroke-width="7" filter="url(#blur5)"/>
+ <circle cx="450" cy="2440" r="1701" fill="none" stroke="#bfefff" stroke-width="2"/>
+ <g id="planes"></g>
+</svg>
+<div class="abs top">
+ <img src="polisat_w.png" alt="PoliSat">
+ <div class="event"><div class="label">CubeDesign 2026</div><div class="big nd">TEAM POLISAT</div><div class="small">Escola Politécnica · USP · Brazil</div></div>
+</div>
+<div class="abs title">
+ <div class="label">Mission</div>
+ <h1 class="orb nd grad" data-fit="800">HERMES</h1>
+ <div class="tag">Tracking aircraft <b>from orbit</b></div>
+</div>
+<img class="abs patch" src="patch.png" alt="Hermes mission patch">
+<div class="abs desc">A low-cost CubeSat payload that listens to <strong>1090&nbsp;MHz ADS-B</strong> signals broadcast by aircraft, decodes their <strong>identity, position, altitude and velocity</strong>, and downlinks them to Earth.</div>
+<div class="abs stats">
+ <div class="stat"><div class="v">1090<small>MHz</small></div><div class="k">ADS-B payload</div></div>
+ <div class="stat"><div class="v">433<small>MHz</small></div><div class="k">LoRa TT&amp;C link</div></div>
+ <div class="stat"><div class="v">60→5<small>RPM</small></div><div class="k">Detumble in 10 s</div></div>
+ <div class="stat"><div class="v">27</div><div class="k">Members · since 2021</div></div>
+</div>
+<div class="sponsors"><div class="label">Supported by</div><div class="row"></div></div>
+</div>
+<script>
+window.NOSPARK=(x,y)=>y<400;
+stars(document.getElementById('stars'),460,900,1200,7,740);
+const L=document.getElementById('lights'),r=rng(3);
+for(let i=0;i<800;i++){const x=r()*900,y=740+Math.pow(r(),1.6)*280;const s=r();
+ el('circle',{cx:x,cy:y,r:(0.4+s*1.4).toFixed(2),fill:s>.8?'#fff3c4':'#ffb347',opacity:(0.18+r()*0.45).toFixed(2)},L)}
+const P=document.getElementById('planes'),CX=450,CY=2440,R=1700;
+[[60,22],[160,26],[740,26],[840,22]].forEach(([x,s])=>{
+ const y=CY-Math.sqrt(R*R-(x-CX)**2)-34, ang=Math.atan2(x-CX,CY-y)*180/Math.PI, g=el('g',{},P);
+ for(let k=1;k<=3;k++)el('path',{d:`M${x-14*k-6} ${y-10*k-4} Q${x} ${y-22*k-12} ${x+14*k+6} ${y-10*k-4}`,fill:'none',stroke:'#fff','stroke-width':2.4,'stroke-linecap':'round',opacity:(0.85-k*0.22).toFixed(2),transform:`rotate(${ang} ${x} ${y})`},g);
+ plane(g,x,y,s,ang+90,'#fff')});
+fit();
+</script>
+</body></html>

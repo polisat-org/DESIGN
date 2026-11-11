@@ -1,0 +1,91 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Órbita (vertical)</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+html,body,.banner{width:900px;height:1200px}
+.banner{background:linear-gradient(180deg,#05061a 0%,#0a0f2e 45%,#0b2140 100%)}
+.top{left:46px;top:44px;right:46px;display:flex;align-items:center;justify-content:space-between}
+.top img{height:104px}
+.ev{text-align:right}
+.ev .label{font-size:17px;color:var(--cyan)}
+.ev .big{font-size:34px;margin-top:6px}
+.ev .small{font-size:21px;font-weight:600;color:#a9c4ee;margin-top:6px}
+.title{left:50px;top:180px;width:800px;text-align:center}
+.title .label{font-size:21px;color:var(--cyan);padding-left:.35em}
+.title h1{margin:8px 0 0;background:linear-gradient(100deg,#ffb000,#ff5a10 45%,#ff1e1e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.title .tag{font-weight:700;font-size:38px;line-height:1;margin-top:12px}
+.title .tag b{color:var(--cyan)}
+.patch{left:310px;top:394px;width:280px;filter:drop-shadow(0 0 30px #ff3b1ab0)}
+.lbl{font-family:Orbitron;font-weight:800;font-size:15px;letter-spacing:.08em;padding:6px 10px;border-radius:6px;white-space:nowrap}
+.lbl.up{background:#ff5a10;color:#fff}
+.lbl.dn{background:#5fd4ff;color:#05061a}
+.cards{left:40px;right:40px;top:880px;height:118px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#05061ad0;border:2px solid #5fd4ff55;border-radius:14px;padding:12px 18px;display:flex;flex-direction:column;justify-content:center}
+.card .v{font-family:Orbitron;font-weight:900;font-size:42px;line-height:1}
+.card .v small{font-family:Orbitron;font-weight:800;font-size:18px;color:var(--cyan);margin-left:6px}
+.card .k{font-size:19px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#cfe0ff;margin-top:8px;line-height:1.05}
+</style></head><body>
+<div class="banner">
+<svg class="abs" width="900" height="1200" style="left:0;top:0">
+ <defs>
+  <radialGradient id="glb" cx=".5" cy=".3" r=".7"><stop offset="0" stop-color="#103a6e"/><stop offset="1" stop-color="#061129"/></radialGradient>
+  <clipPath id="gc"><circle cx="450" cy="1230" r="560"/></clipPath>
+  <filter id="bl"><feGaussianBlur stdDeviation="14"/></filter>
+  <linearGradient id="beam" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff8c00" stop-opacity=".0"/><stop offset="1" stop-color="#ff8c00" stop-opacity=".35"/></linearGradient>
+ </defs>
+ <g id="stars"></g>
+ <ellipse cx="450" cy="520" rx="420" ry="78" fill="none" stroke="#5fd4ff" stroke-opacity=".45" stroke-width="2" stroke-dasharray="3 9"/>
+ <circle cx="450" cy="1230" r="575" fill="none" stroke="#5fd4ff" stroke-width="26" opacity=".35" filter="url(#bl)"/>
+ <circle cx="450" cy="1230" r="560" fill="url(#glb)"/>
+ <g id="wire" clip-path="url(#gc)" fill="none" stroke="#5fd4ff"></g>
+ <circle cx="450" cy="1230" r="560" fill="none" stroke="#9fe6ff" stroke-width="2.5"/>
+ <g id="sig"></g>
+</svg>
+<div class="abs top">
+ <img src="polisat_w.png" alt="PoliSat">
+ <div class="ev"><div class="label label">CubeDesign 2026</div><div class="big nd">TEAM POLISAT</div><div class="small">Escola Politécnica · USP · Brazil</div></div>
+</div>
+<div class="abs title">
+ <div class="label">Mission</div>
+ <h1 class="orb nd" data-fit="800">HERMES</h1>
+ <div class="tag">From the sky, <b>to orbit, to Earth</b></div>
+</div>
+<img class="abs patch" src="patch.png" alt="Hermes mission patch">
+<div class="abs lbl up" style="left:70px;top:560px">↑ ADS-B · 1090 MHz</div>
+<div class="abs lbl dn" style="right:60px;top:560px">↓ LoRa · 433 MHz</div>
+<div class="abs cards">
+ <div class="card"><div class="v">1090<small>MHz</small></div><div class="k">Aircraft signals received in orbit</div></div>
+ <div class="card"><div class="v">433<small>MHz</small></div><div class="k">Data downlinked to ground</div></div>
+ <div class="card"><div class="v">27<small>team</small></div><div class="k">Members · 9 courses · since 2021</div></div>
+</div>
+<div class="sponsors"><div class="label">Supported by</div><div class="row"></div></div>
+</div>
+<script>
+window.NOSPARK=(x,y)=>y>170&&y<400;
+stars(document.getElementById('stars'),360,900,1200,5,720);
+const W=document.getElementById('wire'),C=[450,1230],R=560;
+// parallels (seen slightly from above): ellipses
+for(let i=1;i<=6;i++){const yy=C[1]-R*Math.sin(i*Math.PI/14);const rx=R*Math.cos(i*Math.PI/14);
+ el('ellipse',{cx:C[0],cy:yy+40,rx,ry:rx*0.16,'stroke-opacity':.28,'stroke-width':1.4},W)}
+// meridians
+for(let i=-6;i<=6;i++){const rx=Math.abs(Math.sin(i*Math.PI/14))*R;
+ el('ellipse',{cx:C[0],cy:C[1],rx,ry:R,'stroke-opacity':.28,'stroke-width':1.4},W)}
+const S=document.getElementById('sig'),T=[450,560];
+// planes on the globe limb
+[[110,770],[245,700],[655,700]].forEach(([x,y],i)=>{
+ el('polygon',{points:`${x-16},${y-6} ${x+16},${y-6} ${T[0]+(i==2?18:-18)},${T[1]+40}`,fill:'url(#beam)'},S);
+ el('line',{x1:x,y1:y-10,x2:T[0]+(i==2?14:-14),y2:T[1]+40,stroke:'#ff8c00','stroke-width':2.2,'stroke-dasharray':'8 7'},S);
+ for(let k=1;k<=3;k++)el('path',{d:`M${x-12*k-6} ${y-8*k-6} Q${x} ${y-20*k-12} ${x+12*k+6} ${y-8*k-6}`,fill:'none',stroke:'#fff','stroke-width':2.2,'stroke-linecap':'round',opacity:(0.85-k*0.22).toFixed(2)},S);
+ plane(S,x,y,30,[70,60,110][i],'#fff')});
+// ground station dish
+(function(){const x=790,y=770,g=el('g',{},S);
+ el('path',{d:`M${x-30} ${y-20} Q${x} ${y+18} ${x+30} ${y-34}`,fill:'#fff',stroke:'#fff','stroke-width':3},g);
+ el('line',{x1:x-2,y1:y-4,x2:x+6,y2:y+26,stroke:'#fff','stroke-width':5},g);
+ el('line',{x1:x-14,y1:y+28,x2:x+24,y2:y+28,stroke:'#fff','stroke-width':5,'stroke-linecap':'round'},g);
+ el('line',{x1:x+2,y1:y-12,x2:x+16,y2:y-38,stroke:'#fff','stroke-width':3},g);
+ // zigzag downlink
+ let d=`M${T[0]+60} ${T[1]+30}`;const n=14;for(let i=1;i<=n;i++){const t=i/n;const px=T[0]+60+(x+14-T[0]-60)*t,py=T[1]+30+(y-44-T[1]-30)*t;d+=` L${px+(i%2?10:-10)} ${py+(i%2?-8:8)}`}
+ el('path',{d,fill:'none',stroke:'#5fd4ff','stroke-width':2.6,'stroke-linejoin':'round'},S);
+})();
+fit();
+</script>
+</body></html>

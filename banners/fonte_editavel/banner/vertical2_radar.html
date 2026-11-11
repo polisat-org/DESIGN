@@ -1,0 +1,81 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Radar (vertical)</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+html,body,.banner{width:900px;height:1200px}
+.banner{background:radial-gradient(circle at 450px 612px,#14357a 0,#0a1d4a 230px,#051030 460px,#020611 900px)}
+.top{left:46px;top:44px;right:46px;display:flex;align-items:center;justify-content:space-between}
+.top img{height:108px}
+.rx{text-align:right}
+.rx .label{font-size:18px;color:var(--cyan)}
+.rx .big{font-family:Orbitron;font-weight:800;font-size:40px;margin-top:6px}
+.rx .small{font-size:21px;font-weight:600;color:#9fb6e6;margin-top:4px}
+.title{left:50px;top:192px;width:800px;text-align:center}
+.title .label{font-size:22px;color:var(--orange);padding-left:.35em}
+.title h1{margin:10px 0 0}
+.title .tag{font-weight:700;font-size:46px;line-height:1;margin-top:16px}
+.title .tag b{color:var(--cyan)}
+.sweep{left:210px;top:372px;width:480px;height:480px;border-radius:50%;background:conic-gradient(from 20deg,#5fd4ff00 0deg,#5fd4ff00 290deg,#5fd4ff30 350deg,#5fd4ff70 360deg)}
+.patch{left:320px;top:474px;width:260px;filter:drop-shadow(0 0 36px #ff3b1aa0)}
+.tagbox{font-size:15px;font-weight:700;line-height:1.05;padding:4px 8px;border:1.5px solid #5fd4ffaa;background:#031030e0;border-radius:6px;white-space:nowrap;color:#e8f6ff}
+.tagbox b{font-family:Orbitron;font-size:12px;color:var(--cyan);letter-spacing:.05em}
+.subs{left:36px;right:36px;top:866px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px 12px}
+.sub{background:#020611d0;border:1.5px solid #5fd4ff33;border-radius:10px;padding:6px 10px}
+.sub .h{display:flex;align-items:center;gap:8px}
+.sub .t{font-family:Orbitron;font-weight:800;font-size:12px;letter-spacing:.05em;padding:5px 7px;border-radius:5px;background:linear-gradient(90deg,#ff2a1a,#ff8c00);white-space:nowrap}
+.sub .t.b{background:linear-gradient(90deg,#13408f,#2f6fd6)}
+.sub .m{font-size:19px;font-weight:700;color:#fff;white-space:nowrap}
+.sub .d{font-size:16px;font-weight:500;color:#9fb6e6;margin-top:2px;white-space:nowrap}
+</style></head><body>
+<div class="banner">
+<svg class="abs" width="900" height="1200" style="left:0;top:0">
+ <defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#5fd4ff" stroke-opacity=".07"/></pattern></defs>
+ <rect width="900" height="1200" fill="url(#grid)"/>
+ <g id="stars"></g><g id="radar" fill="none" stroke="#5fd4ff"></g>
+</svg>
+<div class="abs sweep"></div>
+<svg class="abs" width="900" height="1200" style="left:0;top:0" id="blips"></svg>
+<img class="abs patch" src="patch.png" alt="Hermes mission patch">
+<div id="labels"></div>
+<div class="abs top">
+ <img src="polisat_w.png" alt="PoliSat">
+ <div class="rx"><div class="label">Receiving</div><div class="big nd">1090 MHz</div><div class="small">CubeDesign 2026 · Poli-USP</div></div>
+</div>
+<div class="abs title">
+ <div class="label">Mission</div>
+ <h1 class="orb nd grad" data-fit="800">HERMES</h1>
+ <div class="tag">Listening to the sky <b>from space</b></div>
+</div>
+<div class="abs subs">
+ <div class="sub"><div class="h"><span class="t">PAYLOAD</span><span class="m">ADS-B 1090 MHz</span></div><div class="d">RTL-SDR V3 · RPi Zero W</div></div>
+ <div class="sub"><div class="h"><span class="t">ADCS</span><span class="m">Reaction wheel</span></div><div class="d">60 → 5 RPM in 10 s</div></div>
+ <div class="sub"><div class="h"><span class="t">OBC</span><span class="m">STM32L476RG</span></div><div class="d">State machine · I²C · UART</div></div>
+ <div class="sub"><div class="h"><span class="t">TT&amp;C</span><span class="m">LoRa 433 MHz</span></div><div class="d">λ/4 monopoles · QFH</div></div>
+ <div class="sub"><div class="h"><span class="t">EPS</span><span class="m">Solar + 18650</span></div><div class="d">5 V and 13.8 V lines</div></div>
+ <div class="sub"><div class="h"><span class="t b">DF17</span><span class="m">ADS-B frame</span></div><div class="d">8D 4840D6 202CC371…</div></div>
+</div>
+<div class="sponsors"><div class="label">Supported by</div><div class="row"></div></div>
+</div>
+<script>
+window.NOSPARK=(x,y)=>y<400||y>850;
+stars(document.getElementById('stars'),300,900,1200,11);
+const C=[450,612],G=document.getElementById('radar');
+[60,120,180,240].forEach((r,i)=>el('circle',{cx:C[0],cy:C[1],r,'stroke-opacity':i==3?.55:.28,'stroke-width':i==3?2.5:1.5},G));
+el('circle',{cx:C[0],cy:C[1],r:290,'stroke-opacity':.18,'stroke-dasharray':'2 8'},G);
+for(let a=0;a<360;a+=10){const t=a*Math.PI/180,l=a%30?8:18;
+ el('line',{x1:C[0]+240*Math.sin(t),y1:C[1]-240*Math.cos(t),x2:C[0]+(240+l)*Math.sin(t),y2:C[1]-(240+l)*Math.cos(t),'stroke-opacity':.6,'stroke-width':2},G)}
+el('line',{x1:C[0]-240,y1:C[1],x2:C[0]+240,y2:C[1],'stroke-opacity':.18},G);
+el('line',{x1:C[0],y1:C[1]-240,x2:C[0],y2:C[1]+240,'stroke-opacity':.18},G);
+const B=document.getElementById('blips'),LB=document.getElementById('labels');
+const planes=[[285,524,'E48A1F','FL350 · 452 kt','L'],[630,507,'E49C07','FL310 · 438 kt','R'],[240,717,'E4811B','FL380 · 470 kt','L'],[637,687],[360,814],[682,597]];
+planes.forEach(([x,y,id,info,side],i)=>{
+ el('line',{x1:x,y1:y,x2:C[0],y2:C[1]+20,stroke:'#ff8c00','stroke-width':1.6,'stroke-dasharray':'6 6',opacity:.55},B);
+ el('circle',{cx:x,cy:y,r:18,fill:'none',stroke:'#5fd4ff','stroke-opacity':.5,'stroke-width':1.5},B);
+ el('circle',{cx:x,cy:y,r:28,fill:'none',stroke:'#5fd4ff','stroke-opacity':.22,'stroke-width':1.5},B);
+ plane(B,x,y,24,[60,115,200,250,30,300][i],'#fff');
+ if(!id)return;
+ const d=document.createElement('div');d.className='abs tagbox';d.innerHTML=`<b>${id}</b><br>${info}`;d.style.top=(y-22)+'px';
+ if(side=='R')d.style.left=(x+40)+'px';else d.style.right=(900-x+40)+'px';
+ LB.appendChild(d)});
+fit();
+</script>
+</body></html>

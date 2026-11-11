@@ -1,0 +1,54 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Poster (vertical)</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+html,body,.banner{width:900px;height:1200px}
+.banner{background:#f3efe6;color:#0b0d14}
+.banner::after{content:"";position:absolute;inset:0;background:radial-gradient(#0b0d1412 1px,transparent 1.2px) 0 0/14px 14px;pointer-events:none}
+.top{left:44px;top:40px;right:44px;display:flex;align-items:center;justify-content:space-between;z-index:2}
+.top img{height:92px}
+.ev{text-align:right}
+.ev .label{font-size:16px;color:#e3001b}
+.ev .big{font-size:34px;margin-top:6px}
+.ev .small{font-size:20px;font-weight:600;margin-top:6px;color:#333}
+.title{left:40px;top:160px;width:820px;z-index:2}
+.title h1{margin:0;color:#e3001b}
+.rule{left:44px;right:44px;height:4px;background:#0b0d14;z-index:2}
+.patch{left:30px;top:372px;width:420px;z-index:2;filter:drop-shadow(0 14px 22px #0004)}
+.sec{left:478px;width:380px;z-index:2}
+.sec .n{font-family:Orbitron;font-weight:900;font-size:15px;letter-spacing:.2em;color:#e3001b}
+.sec h3{margin:4px 0 0;font-family:NDLogos;font-weight:400;font-size:28px;letter-spacing:.02em}
+.sec p{margin:6px 0 0;font-size:21px;font-weight:600;line-height:1.12;color:#222}
+.nums{left:44px;right:44px;top:772px;height:110px;display:grid;grid-template-columns:repeat(3,1fr);z-index:2}
+.num{padding:0 18px;border-left:3px solid #0b0d14}
+.num:first-child{border-left:none;padding-left:0}
+.num .v{font-family:Orbitron;font-weight:900;font-size:56px;line-height:1}
+.num .v small{font-family:Orbitron;font-weight:800;font-size:20px;color:#e3001b;margin-left:6px}
+.num .k{font-size:19px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:10px;color:#333}
+.strip{left:0;right:0;top:905px;height:100px;background:#e3001b;display:flex;align-items:center;justify-content:center;z-index:2}
+.strip span{font-family:NDLogos;color:#fff;font-size:44px;letter-spacing:.03em;white-space:nowrap}
+.strip::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-58deg,#ffffff00 0 40px,#ffffff14 40px 46px)}
+.sponsors{z-index:3}
+</style></head><body>
+<div class="banner">
+<div class="abs top">
+ <img src="polisat_k.png" alt="PoliSat">
+ <div class="ev"><div class="label label">Competing at</div><div class="big nd">CUBEDESIGN 2026</div><div class="small">Team PoliSat · Poli-USP · Brazil</div></div>
+</div>
+<div class="abs title"><h1 class="orb nd" data-fit="820">HERMES</h1></div>
+<div class="abs sub" style="left:44px;top:300px;font-family:Orbitron;font-weight:700;font-size:20px;letter-spacing:.3em;z-index:2">MISSION · ADS-B CUBESAT</div>
+<div class="abs rule" style="top:346px"></div>
+<img class="abs patch" src="patch.png" alt="Hermes mission patch">
+<div class="abs sec" style="top:384px"><div class="n">01 —</div><h3>THE MISSION</h3><p>Receive ADS-B signals broadcast by aircraft and decode identity, position, altitude and velocity from orbit.</p></div>
+<div class="abs sec" style="top:520px"><div class="n">02 —</div><h3>THE PAYLOAD</h3><p>Custom 1090 MHz patch antenna, RTL-SDR V3 and Raspberry Pi Zero W.</p></div>
+<div class="abs sec" style="top:632px"><div class="n">03 —</div><h3>THE LINK</h3><p>Decoded data downlinked by LoRa at 433 MHz to our ground station.</p></div>
+<div class="abs rule" style="top:752px"></div>
+<div class="abs nums">
+ <div class="num"><div class="v">1090<small>MHz</small></div><div class="k">ADS-B receiver</div></div>
+ <div class="num"><div class="v">433<small>MHz</small></div><div class="k">LoRa downlink</div></div>
+ <div class="num"><div class="v">27<small>team</small></div><div class="k">Members</div></div>
+</div>
+<div class="abs strip"><span data-fit="800">TRACKING AIRCRAFT FROM ORBIT</span></div>
+<div class="sponsors"><div class="label">Supported by</div><div class="row"></div></div>
+</div>
+<script>fit();</script>
+</body></html>

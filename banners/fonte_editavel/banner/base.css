@@ -1,0 +1,22 @@
+@font-face{font-family:Orbitron;src:url(../fonts/Orbitron_wght.ttf);font-weight:400 900}
+@font-face{font-family:Rajdhani;src:url(../fonts/Rajdhani-Medium.ttf);font-weight:500}
+@font-face{font-family:Rajdhani;src:url(../fonts/Rajdhani-SemiBold.ttf);font-weight:600}
+@font-face{font-family:Rajdhani;src:url(../fonts/Rajdhani-Bold.ttf);font-weight:700}
+@font-face{font-family:Exo2;src:url(../fonts/Exo2_wght.ttf);font-weight:100 900}
+:root{--red:#ff1e1e;--red2:#e0101a;--orange:#ff8c00;--blue:#13408f;--cyan:#5fd4ff;--ink:#05060a}
+*{box-sizing:border-box}
+html,body{margin:0;width:1200px;height:900px;overflow:hidden;background:#000;color:#fff}
+.banner{position:relative;width:1200px;height:900px;overflow:hidden;font-family:Rajdhani,sans-serif}
+.abs{position:absolute}
+.orb{font-family:Orbitron;font-weight:900;letter-spacing:.02em;line-height:.9;white-space:nowrap}
+.grad{background:linear-gradient(100deg,#ffb000 0%,#ff5a10 45%,#ff1e1e 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.label{font-family:Orbitron;font-weight:700;letter-spacing:.35em;text-transform:uppercase}
+@font-face{font-family:NDLogos;src:url(../fonts/NDLogos-Regular.ttf)}
+.nd{font-family:NDLogos,Orbitron;font-weight:400;letter-spacing:.02em;line-height:1}
+/* ---- Sponsors band ---- */
+.sponsors{position:absolute;left:0;bottom:0;width:900px;height:180px;background:#fff;color:#0b0d14;display:flex;flex-direction:column;align-items:center}
+.sponsors::before{content:"";position:absolute;left:0;top:0;right:0;height:7px;background:linear-gradient(90deg,#ffb000,#ff5a10 45%,#ff1e1e)}
+.sponsors .label{font-size:15px;letter-spacing:.4em;padding-left:.4em;margin-top:20px;color:#0b0d14}
+.sponsors .row{flex:1;width:840px;display:flex;align-items:center;justify-content:space-evenly;gap:16px;padding:10px 0 16px}
+.sponsors .row img{max-height:100px;max-width:200px;object-fit:contain}
+.sponsors .slot{width:124px;height:96px;border:2px dashed #b9bfcc;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:Orbitron;font-weight:700;font-size:11px;letter-spacing:.15em;color:#9aa1b1}

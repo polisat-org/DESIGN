@@ -1,0 +1,111 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Blueprint (vertical)</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+html,body,.banner{width:900px;height:1200px}
+.banner{background:radial-gradient(ellipse at 50% 45%,#1a5bbf 0,#0f4196 45%,#0a2c6b 100%)}
+.top{left:46px;top:44px;right:46px;display:flex;align-items:center;justify-content:space-between}
+.top .lg{background:#fff;border-radius:12px;padding:12px 18px;box-shadow:0 0 0 3px #ffffff40}
+.top img{height:84px;display:block}
+.ev{text-align:right}
+.ev .label{font-size:17px;color:#cfe2ff}
+.ev .big{font-size:34px;margin-top:6px}
+.ev .small{font-size:21px;font-weight:600;color:#cfe2ff;margin-top:6px}
+.title{left:50px;top:182px;width:800px;text-align:center}
+.title .label{font-size:21px;color:#ffd27a;padding-left:.35em}
+.title h1{margin:8px 0 0;color:#fff}
+.title .tag{font-weight:700;font-size:38px;line-height:1;margin-top:12px;color:#e6f0ff}
+.title .tag b{color:#ffd27a}
+.co{position:absolute;width:215px}
+.co h4{margin:0;font-family:Orbitron;font-weight:800;font-size:16px;letter-spacing:.08em;color:#ffd27a}
+.co p{margin:4px 0 0;font-size:18px;font-weight:600;line-height:1.1;color:#fff}
+.co.r{text-align:left}.co.l{text-align:right}
+.tb{left:40px;right:40px;top:870px;height:136px;border:2.5px solid #ffffffd0;display:grid;grid-template-columns:140px 1fr 1fr 1fr;grid-template-rows:1fr 1fr;background:#0a2c6b80}
+.tb>div{border-left:1.5px solid #ffffff80;border-top:1.5px solid #ffffff80;padding:8px 12px;display:flex;flex-direction:column;justify-content:center}
+.tb .ph{grid-row:1/3;border-left:none;border-top:none;align-items:center;padding:6px}
+.tb .ph img{width:118px}
+.tb div:nth-child(2),.tb div:nth-child(3),.tb div:nth-child(4){border-top:none}
+.tb .k{font-family:Orbitron;font-size:11px;letter-spacing:.2em;color:#cfe2ff}
+.tb .v{font-size:21px;font-weight:700;margin-top:3px;white-space:nowrap}
+.tb .v.nd{font-size:24px}
+</style></head><body>
+<div class="banner">
+<svg class="abs" width="900" height="1200" style="left:0;top:0">
+ <defs>
+  <pattern id="g1" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#fff" stroke-opacity=".06"/></pattern>
+  <pattern id="g2" width="100" height="100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="url(#g1)"/><path d="M100 0H0V100" fill="none" stroke="#fff" stroke-opacity=".14"/></pattern>
+ </defs>
+ <rect width="900" height="1200" fill="url(#g2)"/>
+ <rect x="18" y="18" width="864" height="1164" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/>
+ <g id="sat" fill="none" stroke="#fff" stroke-linejoin="round"></g>
+ <g id="leaders" fill="none" stroke="#ffd27a" stroke-width="1.6"></g>
+</svg>
+<div class="abs top">
+ <div class="lg"><img src="polisat_k.png" alt="PoliSat"></div>
+ <div class="ev"><div class="label label">CubeDesign 2026</div><div class="big nd">TEAM POLISAT</div><div class="small">Escola Politécnica · USP · Brazil</div></div>
+</div>
+<div class="abs title">
+ <div class="label">Mission</div>
+ <h1 class="orb nd" data-fit="800">HERMES</h1>
+ <div class="tag">An ADS-B receiver <b>in a CubeSat</b></div>
+</div>
+<div id="callouts"></div>
+<div class="abs tb">
+ <div class="ph"><img src="patch.png" alt="Hermes mission patch"></div>
+ <div><div class="k">PROJECT</div><div class="v nd">HERMES</div></div>
+ <div><div class="k">TEAM</div><div class="v">PoliSat · Poli-USP</div></div>
+ <div><div class="k">EVENT</div><div class="v">CubeDesign 2026</div></div>
+ <div><div class="k">PAYLOAD BAND</div><div class="v">1090 MHz ADS-B</div></div>
+ <div><div class="k">DOWNLINK</div><div class="v">LoRa · 433 MHz</div></div>
+ <div><div class="k">MEMBERS</div><div class="v">27 · since 2021</div></div>
+</div>
+<div class="sponsors"><div class="label">Supported by</div><div class="row"></div></div>
+</div>
+<script>
+// isometric CubeSat
+const G=document.getElementById('sat'),LD=document.getElementById('leaders');
+const k=1.3,kz=0.85,c=Math.cos(Math.PI/6),s=0.5,O=[450,695];
+const X=100,Y=100,Z=300;
+const P=(x,y,z)=>[O[0]+(x-y)*c*k,O[1]+(x+y)*s*k-z*kz];
+const poly=(pts,a)=>el('polygon',Object.assign({points:pts.map(p=>P(...p).join(',')).join(' ')},a),G);
+const line=(a,b,at)=>{const p=P(...a),q=P(...b);return el('line',Object.assign({x1:p[0],y1:p[1],x2:q[0],y2:q[1]},at),G)};
+// faces
+poly([[X,0,0],[X,Y,0],[X,Y,Z],[X,0,Z]],{fill:'#ffffff10','stroke-width':3});
+poly([[0,Y,0],[X,Y,0],[X,Y,Z],[0,Y,Z]],{fill:'#ffffff08','stroke-width':3});
+poly([[0,0,Z],[X,0,Z],[X,Y,Z],[0,Y,Z]],{fill:'#ffffff18','stroke-width':3});
+// hidden edges
+[[[0,0,0],[X,0,0]],[[0,0,0],[0,Y,0]],[[0,0,0],[0,0,Z]]].forEach(([a,b])=>line(a,b,{'stroke-dasharray':'6 6','stroke-opacity':.45,'stroke-width':1.5}));
+// solar cells on both visible side faces (3 units x 2 cols x 2 rows)
+for(let u=0;u<3;u++)for(let i=0;i<2;i++)for(let j=0;j<2;j++){
+ const z0=u*100+8+j*44, z1=z0+38, a0=10+i*42, a1=a0+38;
+ poly([[X,a0,z0],[X,a1,z0],[X,a1,z1],[X,a0,z1]],{fill:'#ffd27a22','stroke-width':1.4,'stroke-opacity':.9});
+ poly([[a0,Y,z0],[a1,Y,z0],[a1,Y,z1],[a0,Y,z1]],{fill:'#ffd27a18','stroke-width':1.4,'stroke-opacity':.9});
+}
+// unit separators
+[100,200].forEach(z=>{line([X,0,z],[X,Y,z],{'stroke-width':2});line([0,Y,z],[X,Y,z],{'stroke-width':2})});
+// internal PCB stack (dashed)
+[40,75,135,170,235].forEach(z=>poly([[8,8,z],[X-8,8,z],[X-8,Y-8,z],[8,Y-8,z]],{'stroke-dasharray':'5 5','stroke-opacity':.5,'stroke-width':1.3}));
+// reaction wheel (ellipse on a level) — draw as polygon circle
+(function(){const pts=[];for(let a=0;a<360;a+=10){const t=a*Math.PI/180;pts.push([50+28*Math.cos(t),50+28*Math.sin(t),55])}poly(pts,{'stroke-width':2,'stroke-opacity':.85,'stroke-dasharray':'4 3'})})();
+// patch antenna on top face (corner-truncated square)
+poly([[30,22,Z],[78,22,Z],[78,70,Z],[70,78,Z],[22,78,Z],[22,30,Z]],{fill:'#ffd27a40','stroke-width':2});
+// LoRa monopoles from top edges
+[[[X,50,Z],[X+70,50,Z+40]],[[0,50,Z],[-70,50,Z+40]]].forEach(([a,b])=>line(a,b,{'stroke-width':3,'stroke-linecap':'round'}));
+// rails
+[[X,0],[X,Y],[0,Y]].forEach(([x,y])=>line([x,y,-6],[x,y,Z+6],{'stroke-width':5,'stroke-opacity':.9,'stroke-linecap':'round'}));
+// callouts
+const CO=document.getElementById('callouts');
+function callout(pt,side,y,h,txt){const p=P(...pt);const xe=side=='r'?655:245;
+ el('circle',{cx:p[0],cy:p[1],r:5,fill:'#ffd27a',stroke:'none'},LD);
+ el('polyline',{points:`${p[0]},${p[1]} ${side=='r'?xe-30:xe+30},${y} ${xe},${y}`},LD);
+ const d=document.createElement('div');d.className='co '+side;d.style.top=(y-14)+'px';
+ if(side=='r')d.style.left=(xe+10)+'px';else d.style.right=(900-xe+10)+'px';
+ d.innerHTML=`<h4>${h}</h4><p>${txt}</p>`;CO.appendChild(d)}
+callout([54,50,Z],'l',470,'PATCH ANTENNA','1090 MHz · corner-truncated');
+callout([-60,50,Z+35],'l',590,'TT&amp;C','LoRa 433 MHz · λ/4 monopoles');
+callout([50,50,55],'l',730,'ADCS','Reaction wheel · 60→5 RPM in 10 s');
+callout([X,30,235],'r',470,'PAYLOAD','RTL-SDR V3 · RPi Zero W');
+callout([X,60,150],'r',600,'OBC','STM32L476RG · state machine');
+callout([X,70,40],'r',740,'EPS','Solar panels · 2× 18650');
+fit();
+</script>
+</body></html>
