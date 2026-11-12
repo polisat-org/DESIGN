@@ -7,13 +7,12 @@ estão em escala 1:1.
 
 ## Visualizador 3D
 
-Abra `visualizador_3d/index.html` no navegador (Chrome, Edge ou Firefox). Funciona offline. Na página dá para:
-- girar a camiseta com o mouse, dar zoom ou usar os botões Frente / Lado / Costas;
-- trocar de modelo pela lista lateral;
-- digitar o nome nos dry-fit, que aparece nas costas na hora.
+O site publicado fica em **<https://polisat-org.github.io/camisetas-3d/>**, no repositório público
+[`polisat-org/camisetas-3d`](https://github.com/polisat-org/camisetas-3d). O README de lá explica como acessar,
+usar, modificar uma camisa e republicar.
 
-Para publicar o visualizador na internet (GitHub Pages, gratuito e permanente) e ver o guia completo de uso,
-leia **[visualizador_3d/PUBLICAR_E_USAR.md](visualizador_3d/PUBLICAR_E_USAR.md)**.
+Para conferir localmente, abra `visualizador_3d/index.html` no navegador. Essa pasta é gerada pelo `build.py`.
+Depois de mudar um design, copie `index.html` e `dados.js` para o repositório `camisetas-3d` e faça push.
 
 ## Modelos
 
