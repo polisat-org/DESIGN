@@ -12,7 +12,11 @@ O site publicado fica em **<https://polisat-org.github.io/camisetas-3d/>**, no r
 usar, modificar uma camisa e republicar.
 
 Para conferir localmente, abra `visualizador_3d/index.html` no navegador. Essa pasta é gerada pelo `build.py`.
-Depois de mudar um design, copie `index.html` e `dados.js` para o repositório `camisetas-3d` e faça push.
+Depois de mudar um design, copie `index.html`, `dados.js` e a pasta `downloads/` para o repositório `camisetas-3d` e faça push.
+
+No site, cada modelo tem o botão **Baixar XX (ZIP)**, com o pacote completo para a gráfica: `LEIA-ME.txt`, a ficha
+técnica, a pasta `impressao/` e os mockups. Os ZIPs são gerados por `_fonte/pacotes.py` em
+`visualizador_3d/downloads/`. Essa pasta não entra no git deste repositório, só no `camisetas-3d`.
 
 ## Modelos
 
@@ -71,7 +75,8 @@ Os logos normalizados (versões para fundo claro e escuro, e patrocinadores em b
 Os designs são código e ficam em `_fonte/`:
 - `modelos.py`: os 16 designs;
 - `lib.py`: geometria das peças, texto em curvas e logos;
-- `viewer_template.html`: o visualizador 3D.
+- `viewer_template.html`: o visualizador 3D;
+- `pacotes.py`: os ZIPs para a gráfica.
 
 ```bash
 cd camisetas/_fonte
@@ -79,6 +84,7 @@ python3 build.py          # SVGs de impressão, painéis, visualizador 3D, logos
 npm install               # 1ª vez (playwright)
 npx playwright install chromium
 node render.js            # mockups 3D, fichas técnicas, PDFs, comparativo
+python3 pacotes.py        # ZIPs para download no site
 ```
 
 Requisitos: Python 3 com `fonttools` e `pillow`, e Node 18+.
