@@ -12,6 +12,9 @@ Abra `visualizador_3d/index.html` no navegador (Chrome, Edge ou Firefox). Funcio
 - trocar de modelo pela lista lateral;
 - digitar o nome nos dry-fit, que aparece nas costas na hora.
 
+Para publicar o visualizador na internet (GitHub Pages, gratuito e permanente) e ver o guia completo de uso,
+leia **[visualizador_3d/PUBLICAR_E_USAR.md](visualizador_3d/PUBLICAR_E_USAR.md)**.
+
 ## Modelos
 
 | ID | Modelo | Tecido / cor | Técnica | Patrocinadores | Missão |
