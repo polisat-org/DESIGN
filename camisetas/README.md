@@ -1,6 +1,6 @@
 # PoliSat — Camisetas 2026
 
-Doze modelos prontos para a gráfica: **4 polos**, **4 de algodão** e **4 dry-fit**. Todos foram feitos no tamanho M e
+Dezesseis modelos prontos para a gráfica: **5 polos**, **5 de algodão** e **6 dry-fit**. Todos foram feitos no tamanho M e
 estão em escala 1:1.
 
 ![Comparativo](comparativo_modelos.png)
@@ -22,18 +22,22 @@ Depois de mudar um design, copie `index.html` e `dados.js` para o repositório `
 | P2 | Yoke | Piquet grafite com pala azul PoliSat nos ombros e vivo branco | Bordado + recorte | — | — |
 | P3 | Contrast | Piquet branco, gola/carcela/punhos marinho, CubeSat bordado na barra | Bordado | — | — |
 | P4 | Raglan | Piquet vinho com mangas raglan areia | Bordado + recorte | — | — |
+| P5 | Flight Crew | Piquet azul royal com recortes laterais marinho e CubeSat bordado nas costas | Bordado + recorte | — | — |
 | A1 | Constellation | Algodão 30.1 preto: globo com 3 órbitas e CubeSats nas costas | Silk / DTF | Costas (branco) | — |
 | A2 | Ground Track | Algodão 30.1 branco (mantida) | Silk + DTF | Costas (cor) | — |
 | A3 | Exploded | Algodão 30.1 azul petróleo: vista explodida de um CubeSat 1U | Silk / DTF | Costas (creme) | — |
 | A4 | Badge | Algodão 30.1 areia: emblema vintage de agência espacial | Silk / DTF | Costas (marinho) | — |
-| D1 | Ignition | Preto com pluma de foguete e faixas laterais de corrida | Sublimação | Costas | Hermes |
+| A5 | Varsity | Algodão 30.1 roxo: POLISAT em arco, CUBESAT TEAM, CubeSat 1U com subsistemas nas costas | Silk / DTF | Costas (branco) | — |
+| D1 | Telemetry | Azul elétrico com o trem de pulsos de uma mensagem ADS-B real (1090 MHz) e painéis laterais | Sublimação | Costas | Hermes |
 | D2 | Roll Pattern | Padrão de rolagem preto/branco de foguete + interestágio laranja | Sublimação | Costas (cor) | Hermes |
 | D3 | Pit Wall | Petróleo com curva laranja estilo livery de Fórmula 1 | Sublimação | Costas | Hermes |
 | D4 | Solar Array | Azul-noite: corpo em manta térmica dourada e painéis solares | Sublimação | Costas | Hermes |
+| D5 | Deploy | Roxo: CubeSat sendo ejetado do deployer, com trilhos e linhas de velocidade | Sublimação | Costas | Hermes |
+| D6 | Livery | Branco com blocos angulados vermelho, laranja e preto (estilo equipe de corrida / baja) | Sublimação | Costas (cor) | Hermes |
 
 **Paleta 2026:** além de preto, branco e azul PoliSat, os modelos usam grafite `#2D3035`, vinho `#5B1E2B`,
-areia `#D8CCB1` e azul petróleo `#123C45` nos tecidos. Nas tintas entram azul-céu `#6FB7FF`, creme `#EFE6D2`,
-laranja `#E8611A`, marinho `#16213A` e dourado `#D9A520`.
+areia `#D8CCB1`, azul petróleo `#123C45`, azul royal `#1F4AA8` e roxo `#3A2463` nos tecidos. Nas tintas entram azul-céu `#6FB7FF`, creme `#EFE6D2`,
+laranja `#E8611A`, marinho `#16213A`, dourado `#D9A520`, lilás `#C7B4FF` e ciano `#38D6FF`.
 
 - **Polos e algodão** são atemporais. Levam só os logos da PoliSat, da USP e da Poli e a bandeira do Brasil,
   sem nada da missão. As polos não têm patrocinadores.
@@ -65,7 +69,7 @@ Os logos normalizados (versões para fundo claro e escuro, e patrocinadores em b
 ## Regenerar / editar
 
 Os designs são código e ficam em `_fonte/`:
-- `modelos.py`: os 12 designs;
+- `modelos.py`: os 16 designs;
 - `lib.py`: geometria das peças, texto em curvas e logos;
 - `viewer_template.html`: o visualizador 3D.
 

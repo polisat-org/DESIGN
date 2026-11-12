@@ -199,12 +199,15 @@ def ficha_svg(f, logo_w):
 
 
 def comparativo_svg(models):
-    W, cw, chh, pad = 1600, 375, 290, 20
+    W, cw, chh, pad = 2396, 376, 290, 20
     o = [f'<rect width="{W}" height="{3 * chh + 4 * pad + 70}" fill="#e9ebef"/>']
     o.append(L.A.place(L.logo('polisat', 'dark'), pad, 14, None, 34))
-    o.append(T(W - pad, 40, 'CAMISETAS 2026   12 MODELOS', 16, 'OR', DARK, 'end', 0.04))
-    for i, m in enumerate(models):
-        r, c = divmod(i, 4)
+    o.append(T(W - pad, 40, 'CAMISETAS 2026   16 MODELOS', 16, 'OR', DARK, 'end', 0.04))
+    order = {'Algodão': 0, 'Polo': 1, 'Dry-fit': 2}
+    seen = {}
+    for m in models:
+        r = order.get(m['tipo'], 2)
+        c = seen.get(r, 0); seen[r] = c + 1
         x, y = pad + c * (cw + pad), 70 + r * (chh + pad)
         o.append(f'<rect x="{x}" y="{y}" width="{cw}" height="{chh}" rx="14" fill="#f7f8fa"/>')
         for j, vn in enumerate(('frente', 'costas')):

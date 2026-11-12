@@ -1,4 +1,4 @@
-"""Definicao dos 12 modelos de camiseta PoliSat (4 polo, 4 algodao, 4 dry-fit).
+"""Definicao dos 16 modelos de camiseta PoliSat (5 polo, 5 algodao, 6 dry-fit).
 
 Cada modelo gera:
   - paineis completos (frente, costas, manga_esq, manga_dir, gola) usados no mockup/3D e na ficha
@@ -20,6 +20,8 @@ NAME_SPEC = {
     'D2': dict(cx=0, y=568, w=360, h=80, size=48, color='#141416'),
     'D3': dict(cx=0, y=470, w=360, h=80, size=48, color='#ffffff'),
     'D4': dict(cx=0, y=568, w=340, h=84, size=46, color='#ffffff'),
+    'D5': dict(cx=0, y=568, w=340, h=84, size=46, color='#ffffff'),
+    'D6': dict(cx=0, y=568, w=360, h=80, size=48, color='#ffffff'),
 }
 
 
@@ -195,6 +197,10 @@ EMBER = '#e8611a'        # tinta laranja
 INK_NAVY = '#16213a'     # tinta marinho
 SILVER = '#b9bec7'       # linha prata (bordado)
 GOLD = '#d9a520'
+ROYAL = '#1f4aa8'        # azul royal (tecido)
+ROXO = '#3a2463'         # roxo (tecido)
+LILAC = '#c7b4ff'        # tinta lilás
+CYAN = '#38d6ff'         # ciano telemetria
 
 
 def polo_finish2(panel, fab, rib, stripes, btn, placket=None):
@@ -414,6 +420,64 @@ def orbit_ring(w, h, ink, sat):
             f'<circle cx="{cx + (w / 2 - 2) * math.cos(math.radians(-38)):.1f}" cy="{cy + (h / 2 - 2) * math.sin(math.radians(-38)) - 6:.1f}" r="3.2" fill="{sat}"/>')
 
 
+
+def subsystems_art(ink, accent, fab):
+    """CubeSat 1U de frente com as etiquetas dos subsistemas (A5). Caixa local 360 x 250."""
+    cx, top, w, h = 180, 20, 118, 132
+    o = [f'<rect x="{cx - w / 2}" y="{top}" width="{w}" height="{h}" fill="{fab}" stroke="{ink}" stroke-width="2"/>']
+    for (x, y) in ((cx - w / 2, top), (cx + w / 2 - 10, top), (cx - w / 2, top + h - 10), (cx + w / 2 - 10, top + h - 10)):
+        o.append(f'<rect x="{x}" y="{y}" width="10" height="10" fill="{ink}"/>')
+    cw, ch = (w - 32) / 2, (h - 38) / 3
+    for i in range(2):
+        for j in range(3):
+            x, y = cx - w / 2 + 12 + i * (cw + 8), top + 13 + j * (ch + 6)
+            o.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cw:.1f}" height="{ch:.1f}" fill="{accent}" fill-opacity="0.35" stroke="{accent}" stroke-width="1"/>')
+            o.append(f'<path d="M{x:.1f} {y + ch / 2:.1f} h{cw:.1f}" stroke="{accent}" stroke-width="0.5"/>')
+    o.append(f'<path d="M{cx} {top} V{top - 16} M{cx - 50} {top + h} l-22 22 M{cx + 50} {top + h} l22 22" stroke="{ink}" stroke-width="1.4"/>')
+    tags = [('ADCS', -1, top + 18), ('EPS', -1, top + 66), ('OBC', -1, top + 114),
+            ('TT&C', 1, top + 18), ('PAYLOAD', 1, top + 66), ('STRUCTURE', 1, top + 114)]
+    for t, sg, y in tags:
+        x0 = cx + sg * (w / 2 + 4)
+        x1 = cx + sg * (w / 2 + 34)
+        o.append(f'<circle cx="{x0:.1f}" cy="{y}" r="2" fill="{ink}"/><path d="M{x0:.1f} {y} H{x1:.1f}" stroke="{ink}" stroke-width="0.9"/>')
+        o.append(text(t, x1 + sg * 5, y + 4, 11, ink, 'start' if sg > 0 else 'end', ls=0.08))
+    o.append(f'<path d="M{cx - 110} {top + h + 52} H{cx + 110}" stroke="{accent}" stroke-width="1.4"/>')
+    o.append(text('1U  CUBESAT', cx, top + h + 76, 16, ink, 'middle', ls=0.3))
+    return ''.join(o)
+
+
+def varsity_art(ink, accent, fab):
+    """Letreiro universitario em arco (A5). Caixa local 300 x 175."""
+    cx = 150
+    o = []
+    for dx, dy, c in ((2.4, 2.4, accent), (0, 0, ink)):
+        o.append(f'<g transform="translate({dx} {dy})">' + text_arc('POLISAT', cx, 480, 430, 0, 50, c, 'R', 0.08) + '</g>')
+    o.append(cubesat(cx, 112, 15, ink, panel=accent, sw=1.4))
+    o.append(text('EST', cx - 70, 118, 14, accent, 'middle', ls=0.2) + text('2021', cx + 70, 118, 14, accent, 'middle', ls=0.2))
+    o.append(f'<path d="M{cx - 120} 140 H{cx + 120}" stroke="{accent}" stroke-width="1.6"/>')
+    o.append(text('CUBESAT TEAM', cx, 166, 17, ink, 'middle', ls=0.32))
+    return ''.join(o)
+
+
+ADSB_HEX = '8D4840D6202CC371C32CE0576098'
+
+
+def adsb_wave(x0, x1, y, h, color, sw=2.0, glow=None, nhex=10):
+    """Trem de pulsos PPM de uma mensagem ADS-B real (1090 MHz)."""
+    bits = [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0]  # preambulo (aproximado)
+    for ch in ADSB_HEX[:nhex]:
+        bits += [int(b) for b in f'{int(ch, 16):04b}']
+    n = len(bits)
+    bw = (x1 - x0) / n
+    d = f'M{x0:.1f} {y:.1f}'
+    for i, b in enumerate(bits):
+        xs = x0 + i * bw + (0 if b else bw / 2)
+        d += f' H{xs:.1f} V{y - h:.1f} H{xs + bw / 2:.1f} V{y:.1f}'
+    d += f' H{x1:.1f}'
+    g = f'<path d="{d}" fill="none" stroke="{glow}" stroke-width="{sw * 4}" opacity="0.25" stroke-linejoin="round"/>' if glow else ''
+    return g + f'<path d="{d}" fill="none" stroke="{color}" stroke-width="{sw}" stroke-linejoin="round"/>'
+
+
 # ------------------------------------------------------------------ MODELOS
 
 def build_models():
@@ -514,10 +578,30 @@ def build_models():
                   tecnica=SILK, placements=pl, gola=gola_panel(fab), sublimacao=False,
                   conceito='Emblema vintage estilo agência espacial: satélite em órbita sobre a Terra, POLISAT e SÃO PAULO BRAZIL no anel.'))
 
+    # ================= ALGODAO 05 — VARSITY (roxo)  [novo]
+    fab = ROXO
+    C_LILAC = ('Lilás', LILAC, 'Pantone 2635 C (aprox.)')
+    pl = [
+        Placement('frente_varsity', 'Letreiro POLISAT CUBESAT TEAM (peito)', 'frente', -150, 120, 300, 175,
+                  lambda web: varsity_art('#ffffff', LILAC, ROXO), SILK, [C_WHITE, C_LILAC]),
+        flag_placement('manga_dir', 0, 48, 78, SILK),
+        sleeve_stack('manga_esq', poli_usp('white', 'white'), 40, 12, SILK, [C_WHITE], 'manga_esq_poli_usp'),
+        place_logo('costas_polisat', 'Logo PoliSat (costas)', 'costas', 'polisat', 'blue:' + LILAC, 0, 60, w=130,
+                   tecnica=SILK, cores=[C_WHITE, C_LILAC]),
+        Placement('costas_subsistemas', 'CubeSat 1U + subsistemas', 'costas', -180, 160, 360, 250,
+                  lambda web: subsystems_art('#ffffff', LILAC, ROXO), SILK, [C_WHITE, C_LILAC]),
+        Placement('costas_patrocinadores', 'Patrocinadores', 'costas', -155, 440, 310, 170,
+                  lambda web: sponsor_grid(0, 0, 310, 170, 'white'), SILK, [C_WHITE]),
+    ]
+    M.append(dict(id='A5', slug='algodao_05_varsity', nome='Varsity', garment='algodao', fabric=fab,
+                  tecido='Malha 100% algodão penteado fio 30.1 — cor ROXO', cor_tecido='Roxo',
+                  tecnica=SILK, placements=pl, gola=gola_panel(fab), sublimacao=False,
+                  conceito='Estilo equipe universitária: POLISAT em arco com CUBESAT TEAM e EST 2021 na frente; nas costas, o CubeSat 1U com seus subsistemas.'))
+
     # ================= POLOS (bordado + recortes)
     BORD = 'Bordado (matriz a partir do vetor)'
     CN = {BLACK_FAB: 'preta', NAVY_FAB: 'azul-marinho', WHITE_FAB: 'branca', L.POLISAT_BLUE: 'azul PoliSat', '#ffffff': 'branco',
-          SKY: 'azul-céu', GRAFITE: 'grafite', VINHO: 'vinho', AREIA: 'areia', SILVER: 'prata'}
+          SKY: 'azul-céu', GRAFITE: 'grafite', VINHO: 'vinho', AREIA: 'areia', SILVER: 'prata', ROYAL: 'azul royal'}
     def polo(id_, slug, nome, fab, cor, pol_var, logos_var, rib, stripes, conceito, cores_logo, btn, extra_pl=(),
              construcao='', under=None, base=None, placket=None, cor_label=None):
         pl = list(extra_pl) + [
@@ -578,14 +662,31 @@ def build_models():
                   under={'frente': raglan('frente'), 'costas': raglan('costas')},
                   base={'manga_esq': AREIA, 'manga_dir': AREIA}, cor_label='Vinho + areia'))
 
+    # P5 FLIGHT CREW — azul royal com recortes laterais marinho  [novo]
+    def side_panels(panel):
+        out = ''
+        for sg in (-1, 1):
+            out += (f'<path d="M{sg * 320} {G["UAY"] - 10} L{sg * (G["UAX"] - 52)} {G["UAY"] - 10} L{sg * (G["HEMX"] - 70)} 760 L{sg * 320} 760 Z" fill="{NAVY_FAB}"/>'
+                    f'<path d="M{sg * (G["UAX"] - 52)} {G["UAY"] - 10} L{sg * (G["HEMX"] - 70)} 760" stroke="#ffffff" stroke-width="2.2"/>')
+        return out
+    crew = Placement('costas_cubesat', 'CubeSat + órbita bordados (costas)', 'costas', -32, 96, 64, 44,
+                     lambda web: (f'<ellipse cx="32" cy="24" rx="30" ry="11" fill="none" stroke="{SKY}" stroke-width="1.2" transform="rotate(-12 32 24)"/>'
+                                  + cubesat(32, 28, 11, '#ffffff', panel=L.POLISAT_BLUE, sw=1.2)), BORD,
+                     [C_WHITE, C_SKY])
+    M.append(polo('P5', 'polo_05_flightcrew', 'Flight Crew', ROYAL, 'AZUL ROYAL', 'blue:' + SKY, 'white', NAVY_FAB, ('#ffffff', SKY),
+                  'Polo azul royal com recortes laterais marinho e vivo branco, como o uniforme da equipe de lançamento; CubeSat bordado nas costas.',
+                  [C_WHITE, C_SKY], '#f2f2f2', extra_pl=[crew],
+                  construcao='Recortes laterais em piquet marinho (da cava à barra) com vivo branco de 2 mm',
+                  under={'frente': side_panels('frente'), 'costas': side_panels('costas')}, cor_label='Azul royal + marinho'))
+
     # ================= DRY-FIT (sublimacao total — missao Hermes)
     SUB = 'Sublimação total (full print) em tecido dry-fit poliéster'
     TEC = 'Dry-fit 100% poliéster branco (sublimação total)'
-    M.append(dict(id='D1', slug='dryfit_01_ignition', nome='Ignition', garment='dryfit', fabric=BLACK_FAB, tecido=TEC,
-                  cor_tecido='Preto + chamas', tecnica=SUB, sublimacao=True, panels=dry_ignition,
-                  gola=gola_panel('#141416', [(0.55, 0.12, L.H_ORANGE)]),
-                  gola_desc='Gola em ribana preta com friso laranja; punhos sublimados em degradê de chama',
-                  conceito='Pluma de exaustão de foguete subindo da barra, com diamantes de choque e faixas laterais de corrida.'))
+    M.append(dict(id='D1', slug='dryfit_01_telemetry', nome='Telemetry', garment='dryfit', fabric='#0d2f7a', tecido=TEC,
+                  cor_tecido='Azul elétrico + ciano', tecnica=SUB, sublimacao=True, panels=dry_telemetry,
+                  gola=gola_panel('#071a45', [(0.55, 0.12, CYAN)]),
+                  gola_desc='Gola em ribana azul-noite com friso ciano; punhos sublimados com faixas ciano',
+                  conceito='Jersey de equipe de competição: o trem de pulsos de uma mensagem ADS-B real (1090 MHz) cruza o peito, com painéis laterais de corrida.'))
     M.append(dict(id='D2', slug='dryfit_02_rollpattern', nome='Roll Pattern', garment='dryfit', fabric='#f4f4f2', tecido=TEC,
                   cor_tecido='Branco + preto', tecnica=SUB, sublimacao=True, panels=dry_roll,
                   gola=gola_panel('#141416', [(0.55, 0.12, L.H_ORANGE)]),
@@ -601,6 +702,16 @@ def build_models():
                   gola=gola_panel('#0a1834', [(0.55, 0.12, GOLD)]),
                   gola_desc='Gola em ribana azul-noite com friso dourado; mangas com padrão de células solares',
                   conceito='A camiseta vira o satélite: corpo em manta térmica dourada (MLI) e painéis solares abertos nas laterais.'))
+    M.append(dict(id='D5', slug='dryfit_05_deploy', nome='Deploy', garment='dryfit', fabric='#2a1650', tecido=TEC,
+                  cor_tecido='Roxo + lilás', tecnica=SUB, sublimacao=True, panels=dry_deploy,
+                  gola=gola_panel('#1d0f3d', [(0.55, 0.12, L.H_ORANGE)]),
+                  gola_desc='Gola em ribana roxo-escuro com friso laranja; mangas com faixas lilás',
+                  conceito='O momento da ejeção: o CubeSat sai do deployer em diagonal, com trilhos e linhas de velocidade em lilás.'))
+    M.append(dict(id='D6', slug='dryfit_06_livery', nome='Livery', garment='dryfit', fabric='#f4f4f2', tecido=TEC,
+                  cor_tecido='Branco + vermelho/laranja', tecnica=SUB, sublimacao=True, panels=dry_livery,
+                  gola=gola_panel('#141416', [(0.55, 0.12, L.H_RED)]),
+                  gola_desc='Gola em ribana preta com friso vermelho; mangas sublimadas em degradê com punho preto',
+                  conceito='Pintura estilo equipe de corrida / baja: blocos angulados vermelho, laranja e preto; patrocinadores em cor.'))
     return M
 
 
@@ -628,74 +739,6 @@ def _sleeve_common(panel, base, cuff_grad, logos_var, web, extra=''):
         out += put_center('usp', 'white' if logos_var == 'white' else 'original', 0, 128, w=48)
     return out
 
-
-
-def flame(cx, base, w, h, seed, fill, op=1.0, n=22):
-    import random
-    r = random.Random(seed)
-    pts = []
-    for i in range(n + 1):
-        t = i / n
-        x = cx - w / 2 + w * t
-        env = max(0, 1 - (2 * t - 1) ** 2) ** 0.75
-        tongue = 1.0 if i % 2 == 0 else 0.55 + r.random() * 0.25
-        pts.append((x, base - h * env * tongue * (0.85 + r.random() * 0.15)))
-    d = f'M{cx - w / 2:.1f} {base + 40}'
-    d += f' L{pts[0][0]:.1f} {pts[0][1]:.1f}'
-    for i in range(1, len(pts)):
-        (x0, y0), (x1, y1) = pts[i - 1], pts[i]
-        d += f' Q{x0:.1f} {y0:.1f} {(x0 + x1) / 2:.1f} {(y0 + y1) / 2:.1f}'
-    d += f' L{pts[-1][0]:.1f} {pts[-1][1]:.1f} L{cx + w / 2:.1f} {base + 40} Z'
-    return f'<path d="{d}" fill="{fill}" opacity="{op}"/>'
-
-
-def plume(cx, base, scale, seed=1, diamonds=True):
-    o = ''
-    for i, (c, w, h, op) in enumerate(((L.H_RED, 700, 470, 0.9), (L.H_ORANGE, 500, 390, 0.95), (L.H_AMBER, 320, 290, 1),
-                                        ('#ffe08a', 170, 190, 1), ('#fff6dc', 70, 100, 1))):
-        o += flame(cx, base, w * scale, h * scale, seed + i, c, op)
-    if diamonds:
-        for k, (dy, dw, dh) in enumerate(((-60, 46, 70), (-140, 36, 56), (-205, 26, 42))):
-            y = base + dy * scale
-            o += (f'<path d="M{cx} {y - dh * scale / 2:.1f} L{cx + dw * scale / 2:.1f} {y:.1f} L{cx} {y + dh * scale / 2:.1f} '
-                  f'L{cx - dw * scale / 2:.1f} {y:.1f} Z" fill="#ffffff" opacity="{0.75 - k * 0.15:.2f}"/>')
-    return o
-
-
-def dry_ignition(web=False, name='NAME'):
-    G = L.GARMENTS['dryfit']
-    defs = _defs_grad('icuff', [(0, L.H_AMBER, None), (0.5, L.H_ORANGE, None), (1, L.H_RED, None)], 0, 0, 0, 1)
-    P = {}
-    f = _frame_rect('frente', BLACK_FAB)
-    f += halftone_band(-330, 430, 330, 430, 150, L.H_RED, side=-1, cell=8, rmax=3.2)
-    f += plume(0, 790, 1.0, 3)
-    for sg in (1, -1):
-        f += f'<path d="M{sg * 226} 250 L{sg * 246} 250 L{sg * 258} 780 L{sg * 238} 780 Z" fill="{L.H_ORANGE}"/>'
-        f += f'<path d="M{sg * 214} 250 L{sg * 219} 250 L{sg * 231} 780 L{sg * 226} 780 Z" fill="{L.H_AMBER}"/>'
-    f += put('polisat', 'white', 112 - 52, 150, w=104)
-    f += hermes_patch(-112 - 46, 130, 92, web)
-    P['frente'] = f
-    c = _frame_rect('costas', BLACK_FAB)
-    c += plume(0, 800, 0.62, 9, diamonds=False)
-    for sg in (1, -1):
-        c += f'<path d="M{sg * 226} 250 L{sg * 246} 250 L{sg * 258} 780 L{sg * 238} 780 Z" fill="{L.H_ORANGE}"/>'
-    c += put_center('polisat', 'white', 0, 100, w=130)
-    c += text('MISSION', 0, 178, 15, '#ffffff', 'middle', ls=0.5)
-    hd, hw, _ = L.text_d('HERMES', 56, 'R', 0.04)
-    c += f'<g transform="translate({-hw / 2:.1f} 236)"><path d="{hd}" fill="{L.H_ORANGE}"/></g>'
-    c += sponsor_grid(-165, 268, 330, 200, 'white')
-    c += name_plate(0, 568, 340, 84, BLACK_FAB, L.H_AMBER, '#ffffff', name, 46, plate='#141416')
-    P['costas'] = c
-    for k in ('manga_dir', 'manga_esq'):
-        s = _frame_rect(k, BLACK_FAB)
-        s += f'<rect x="-230" y="{G["SL"] - 60}" width="460" height="90" fill="url(#icuff)"/>'
-        s += flame(0, G['SL'] - 40, 520, 70, 4, L.H_ORANGE, 0.9)
-        if k == 'manga_dir':
-            s += put_center('bandeira', 'original', 0, 82, w=74)
-        else:
-            s += put_center('poli', 'white', 0, 70, w=50) + put_center('usp', 'white', 0, 128, w=48)
-        P[k] = s
-    return P, defs
 
 
 def rivets(y, x0, x1, fill, step=12, r=1.6):
@@ -851,6 +894,156 @@ def dry_solar(web=False, name='NAME'):
         else:
             s += put_center('poli', 'white', 0, 82, w=46) + put_center('usp', 'white', 0, 136, w=44)
         P[k] = s
+    return P, defs
+
+
+def dry_telemetry(web=False, name='NAME'):
+    G = L.GARMENTS['dryfit']
+    defs = (_defs_grad('tbase', [(0, '#1347c4', None), (0.55, '#0d2f7a', None), (1, '#071a45', None)], 0, 0, 0, 1) +
+            _defs_grad('tcuff', [(0, '#071a45', None), (1, '#0d2f7a', None)]))
+    P = {}
+    def sides(c):
+        out = ''
+        for sg in (1, -1):
+            out += f'<path d="M{sg * 320} 230 L{sg * 212} 250 L{sg * 236} 780 L{sg * 320} 780 Z" fill="#06122e"/>'
+            out += f'<path d="M{sg * 212} 250 L{sg * 236} 780" stroke="{CYAN}" stroke-width="2.4"/>'
+            out += f'<path d="M{sg * 200} 252 L{sg * 224} 780" stroke="#ffffff" stroke-width="0.9" opacity="0.8"/>'
+        return out
+    def grid(y0, y1):
+        g = ''.join(f'<path d="M{x} {y0} V{y1}"/>' for x in range(-300, 301, 24))
+        g += ''.join(f'<path d="M-300 {y} H300"/>' for y in range(int(y0), int(y1) + 1, 24))
+        return f'<g stroke="{CYAN}" stroke-width="0.4" opacity="0.18">{g}</g>'
+    f = _frame_rect('frente', 'url(#tbase)')
+    f += grid(260, 470)
+    f += adsb_wave(-300, 300, 400, 46, CYAN, 2.2, glow=CYAN)
+    hexs = ' '.join([ADSB_HEX[:2], ADSB_HEX[2:8], ADSB_HEX[8:10]])
+    f += text(hexs, 0, 432, 10, '#ffffff', 'middle', ls=0.25).replace('/>', ' opacity="0.75"/>')
+    f += text('1090 MHz', -190, 330, 12, CYAN, 'start', ls=0.2)
+    f += sides(f)
+    f += put('polisat', 'blue:' + CYAN, 112 - 52, 150, w=104)
+    f += hermes_patch(-112 - 46, 130, 92, web)
+    P['frente'] = f
+    c = _frame_rect('costas', 'url(#tbase)')
+    c += sides(c)
+    c += put_center('polisat', 'blue:' + CYAN, 0, 92, w=140)
+    c += text('CUBESAT TEAM', 0, 162, 13, CYAN, 'middle', ls=0.4)
+    c += sponsor_grid(-165, 182, 330, 210, 'white')
+    c += grid(420, 540) + adsb_wave(-300, 300, 520, 30, CYAN, 1.6)
+    c += name_plate(0, 568, 340, 84, '#071a45', CYAN, '#ffffff', name, 46, plate='#071a45')
+    P['costas'] = c
+    for k in ('manga_dir', 'manga_esq'):
+        s_ = _frame_rect(k, '#0f3a96')
+        s_ += f'<rect x="-230" y="{G["SL"] - 34}" width="460" height="64" fill="url(#tcuff)"/>'
+        s_ += f'<path d="M-230 {G["SL"] - 44} H230" stroke="{CYAN}" stroke-width="3"/><path d="M-230 {G["SL"] - 38} H230" stroke="#ffffff" stroke-width="1"/>'
+        if k == 'manga_dir':
+            s_ += put_center('bandeira', 'original', 0, 82, w=74)
+        else:
+            s_ += put_center('poli', 'white', 0, 70, w=50) + put_center('usp', 'white', 0, 128, w=48)
+        P[k] = s_
+    return P, defs
+
+
+def dry_deploy(web=False, name='NAME'):
+    G = L.GARMENTS['dryfit']
+    defs = (_defs_grad('dbase', [(0, '#1d0f3d', None), (1, '#5a2aa6', None)], 0, 0, 1, 1) +
+            _defs_grad('dcuff', [(0, L.H_RED, None), (1, L.H_ORANGE, None)]))
+    P = {}
+    ang = math.radians(-38)
+    ux, uy = math.cos(ang), math.sin(ang)
+    def deploy(cx, cy, s, n_lines=9, length=420):
+        o = ''
+        nx, ny = -uy, ux
+        # trilhos do deployer (P-POD)
+        for off in (-s * 1.15, s * 1.15):
+            x0, y0 = cx - ux * (s * 1.6) + nx * off, cy - uy * (s * 1.6) + ny * off
+            o += f'<path d="M{x0:.1f} {y0:.1f} L{x0 - ux * length:.1f} {y0 - uy * length:.1f}" stroke="{LILAC}" stroke-width="3"/>'
+        # linhas de velocidade
+        import random
+        r = random.Random(5)
+        for i in range(n_lines):
+            off = (i - (n_lines - 1) / 2) * s * 0.22
+            l0 = s * (1.3 + r.random() * 0.6)
+            ln = length * (0.35 + r.random() * 0.6)
+            x0, y0 = cx - ux * l0 + nx * off, cy - uy * l0 + ny * off
+            o += f'<path d="M{x0:.1f} {y0:.1f} L{x0 - ux * ln:.1f} {y0 - uy * ln:.1f}" stroke="#ffffff" stroke-width="{1 + r.random() * 1.6:.1f}" opacity="{0.25 + r.random() * 0.5:.2f}" stroke-linecap="round"/>'
+        # mola de ejecao
+        sx, sy = cx - ux * s * 1.5, cy - uy * s * 1.5
+        pts = ' '.join(f'{sx - ux * k * 9 + nx * (10 if k % 2 else -10):.1f},{sy - uy * k * 9 + ny * (10 if k % 2 else -10):.1f}' for k in range(8))
+        o += f'<polyline points="{pts}" fill="none" stroke="{L.H_ORANGE}" stroke-width="2"/>'
+        o += f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{s * 1.6:.1f}" fill="{LILAC}" opacity="0.12"/>'
+        o += cubesat(cx, cy + s * 0.4, s, '#ffffff', panel='#7b4fd6', sw=s * 0.06, rot=-38 + 90 - 60)
+        return o
+    f = _frame_rect('frente', 'url(#dbase)')
+    f += stars(-300, -20, 600, 780, 120, 61, avoid=lambda x, y: y < 230 and abs(x) > 40)
+    f += deploy(120, 460, 54)
+    for k in range(3):
+        y = 700 + k * 22
+        f += f'<path d="M-300 {y} L-200 {y - 30} L-100 {y}" fill="none" stroke="{L.H_ORANGE}" stroke-width="3" opacity="{1 - k * 0.3:.1f}"/>'
+    f += put('polisat', 'blue:' + LILAC, 112 - 52, 150, w=104)
+    f += hermes_patch(-112 - 46, 130, 92, web)
+    P['frente'] = f
+    c = _frame_rect('costas', 'url(#dbase)')
+    c += stars(-300, -20, 600, 780, 110, 62, avoid=lambda x, y: (abs(x) < 180 and 160 < y < 420) or (abs(x) < 185 and 560 < y < 660))
+    c += put_center('polisat', 'blue:' + LILAC, 0, 92, w=140)
+    c += text('CUBESAT TEAM', 0, 160, 13, LILAC, 'middle', ls=0.4)
+    c += sponsor_grid(-165, 180, 330, 210, 'white')
+    c += deploy(150, 500, 26, n_lines=6, length=260)
+    c += name_plate(0, 568, 340, 84, '#1d0f3d', L.H_ORANGE, '#ffffff', name, 46, plate='#1d0f3d')
+    P['costas'] = c
+    for k in ('manga_dir', 'manga_esq'):
+        s_ = _frame_rect(k, '#3a1d75')
+        s_ += f'<rect x="-230" y="{G["SL"] - 34}" width="460" height="64" fill="url(#dcuff)"/>'
+        s_ += f'<path d="M-230 {G["SL"] - 46} H230" stroke="{LILAC}" stroke-width="3"/><path d="M-230 {G["SL"] - 40} H230" stroke="{LILAC}" stroke-width="1"/>'
+        if k == 'manga_dir':
+            s_ += put_center('bandeira', 'original', 0, 82, w=74)
+        else:
+            s_ += put_center('poli', 'white', 0, 70, w=50) + put_center('usp', 'white', 0, 128, w=48)
+        P[k] = s_
+    return P, defs
+
+
+def dry_livery(web=False, name='NAME'):
+    G = L.GARMENTS['dryfit']
+    base = '#f4f4f2'
+    defs = (_defs_grad('lred', [(0, L.H_RED, None), (1, L.H_ORANGE, None)], 0, 1, 1, 0) +
+            _defs_grad('lred2', [(0, L.H_ORANGE, None), (1, L.H_RED, None)], 0, 0, 1, 1) +
+            _defs_grad('lsl', [(0, L.H_RED, None), (1, L.H_ORANGE, None)], 0, 0, 0, 1))
+    P = {}
+    f = _frame_rect('frente', base)
+    # blocos angulados laterais (simetricos) — como carenagem
+    for sg in (1, -1):
+        f += f'<path d="M{sg * 320} 300 L{sg * 320} 780 L{sg * 60} 780 L{sg * 200} 560 Z" fill="url(#lred)"/>'
+        f += f'<path d="M{sg * 320} 470 L{sg * 320} 780 L{sg * 150} 780 L{sg * 250} 600 Z" fill="#141416"/>'
+        f += f'<path d="M{sg * 200} 545 L{sg * 320} 330 L{sg * 320} 300 L{sg * 186} 540 Z" fill="#141416"/>'
+    # chevron central
+    f += f'<path d="M-60 780 L0 700 L60 780 L40 780 L0 726 L-40 780 Z" fill="#141416"/>'
+    f += f'<path d="M-300 -20 H300 V8 H-300 Z" fill="#141416"/>'
+    f += put('polisat', 'dark', 112 - 52, 150, w=104)
+    f += hermes_patch(-112 - 46, 130, 92, web)
+    P['frente'] = f
+    c = _frame_rect('costas', base)
+    for sg in (1, -1):
+        c += f'<path d="M{sg * 320} 260 L{sg * 320} 780 L{sg * 230} 780 L{sg * 230} 420 Z" fill="url(#lred2)"/>'
+        c += f'<path d="M{sg * 320} 540 L{sg * 320} 780 L{sg * 262} 780 L{sg * 262} 600 Z" fill="#141416"/>'
+    c += f'<path d="M-300 -20 H300 V30 H-300 Z" fill="#141416"/>'
+    c += put_center('polisat', 'dark', 0, 104, w=160)
+    c += sponsor_grid(-170, 200, 340, 250, 'light_bg', scale=1.15)
+    c += f'<rect x="-300" y="560" width="600" height="96" fill="#141416"/>'
+    c += f'<rect x="-300" y="656" width="600" height="10" fill="url(#lred)"/>'
+    c += name_plate(0, 568, 360, 80, '#141416', 'none', '#ffffff', name, 48, plate='#141416')
+    c += put_center('usp', 'original', -150, 712, w=50) + put_center('poli', 'dark', 150, 712, w=44)
+    P['costas'] = c
+    def sl(panel):
+        out = _frame_rect(panel, 'url(#lsl)')
+        out += f'<path d="M-230 {G["SL"] - 34} H230 V240 H-230 Z" fill="#141416"/>'
+        out += f'<path d="M-230 {G["SL"] - 44} H230" stroke="#ffffff" stroke-width="3"/>'
+        if panel == 'manga_dir':
+            out += f'<rect x="-41" y="{82 - 28}" width="82" height="56" fill="#ffffff"/>' + put_center('bandeira', 'original', 0, 82, w=74)
+        else:
+            out += put_center('poli', 'white', 0, 70, w=50) + put_center('usp', 'white', 0, 128, w=48)
+        return out
+    P['manga_dir'] = sl('manga_dir')
+    P['manga_esq'] = sl('manga_esq')
     return P, defs
 
 
