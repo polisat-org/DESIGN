@@ -1,0 +1,7 @@
+{
+  "name": "polisat-camisetas-render",
+  "private": true,
+  "description": "Renderiza mockups 3D, fichas tecnicas e PDFs das camisetas PoliSat",
+  "scripts": { "render": "node render.js" },
+  "dependencies": { "playwright": "1.49.1" }
+}

@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PoliSat Shirts 3D</title>
+<style>
+:root{--bg:#0d0f14;--panel:#151922;--line:#262c39;--text:#e9ecf2;--muted:#8a93a6;--accent:#ff6a00;--blue:#4a7fe0}
+:root[data-theme="light"]{--bg:#eceef2;--panel:#ffffff;--line:#d8dce4;--text:#161a22;--muted:#5d6678}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#eceef2;--panel:#ffffff;--line:#d8dce4;--text:#161a22;--muted:#5d6678}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.app{display:grid;grid-template-columns:300px 1fr;height:100vh}
+aside{background:var(--panel);border-right:1px solid var(--line);overflow:auto;padding:18px 16px}
+.brand{margin:0 0 4px;color:var(--text)}
+.sub{color:var(--muted);font-size:12px;margin-bottom:16px}
+h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+.models{display:grid;gap:6px}
+.m{display:flex;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:transparent;color:inherit;cursor:pointer;text-align:left;font:inherit}
+.m:hover{border-color:var(--muted)}
+.m.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.sw{width:22px;height:22px;border-radius:50%;border:1px solid rgba(128,128,128,.5);flex:none}
+.m b{display:block;font-weight:600}
+.m small{color:var(--muted)}
+main{position:relative;min-width:0}
+canvas{display:block;width:100%;height:100%;outline:none}
+.hud{position:absolute;left:16px;right:16px;top:14px;display:flex;justify-content:space-between;gap:12px;pointer-events:none}
+.title{pointer-events:none}
+.title .id{font-weight:800;font-size:26px;letter-spacing:.08em}
+.title .desc{color:var(--muted);max-width:520px;font-size:13px}
+.ctrl{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px}
+.ctrl button{background:transparent;border:0;color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer;font:inherit}
+.ctrl button:hover{background:var(--line)}
+.ctrl button.on{background:var(--accent);color:#fff}
+.name{display:none;margin-top:8px}
+.name.show{display:block}
+.name input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:600 16px system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.info{font-size:12px;color:var(--muted);margin-top:6px}
+.files a{display:block;color:var(--blue);font-size:12px;margin:3px 0;word-break:break-all}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);pointer-events:none}
+@media (max-width:760px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr;height:auto;min-height:100vh}
+ aside{border-right:0;border-bottom:1px solid var(--line);max-height:none}.models{grid-template-columns:1fr 1fr}
+ main{height:78vh}.title .desc{display:none}}
+body.shot aside,body.shot .ctrl,body.shot .hud{display:none}
+body.shot .app{grid-template-columns:1fr}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand">__BRAND__</div>
+  <div class="sub">Camisetas 2026 · visualizador 3D</div>
+  <div id="list"></div>
+  <div class="name" id="namebox">
+    <h3>Nome (costas)</h3>
+    <input id="nameinput" maxlength="14" value="NAME" aria-label="Nome nas costas">
+    <div class="info">Area reservada no fim das costas para personalizacao.</div>
+  </div>
+  <div class="files" id="files"></div>
+</aside>
+<main>
+  <canvas id="c"></canvas>
+  <div class="loading" id="loading">carregando…</div>
+  <div class="hud"><div class="title"><div class="id" id="tid"></div><div class="desc" id="tdesc"></div></div></div>
+  <div class="ctrl" id="ctrl">
+    <button data-v="front">Frente</button><button data-v="side">Lado</button><button data-v="back">Costas</button>
+    <button data-v="spin" class="on" id="spin">Girar</button><button data-v="theme" id="themeb">Tema</button>
+  </div>
+</main>
+</div>
+<script src="dados.js"></script>
+<script type="importmap">{"imports":{"three":"data:text/javascript;base64,__THREE__","three/addons/controls/OrbitControls.js":"data:text/javascript;base64,__ORBIT__"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+
+const DATA = window.SHIRTS, GEOM = window.GEOM, FRAME = window.FRAME;
+const qs = new URLSearchParams(location.search);
+const SHOT = qs.has('shot');
+if (SHOT) document.body.classList.add('shot');
+
+// ---------------------------------------------------------------- renderer / cena
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:SHOT, alpha:true});
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, 1, 10, 20000);
+camera.position.set(0, -330, 2050);
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(0, -360, 0);
+controls.enableDamping = true;
+controls.minDistance = 700; controls.maxDistance = 4000;
+controls.autoRotate = !SHOT; controls.autoRotateSpeed = 1.6;
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x3a4050, 0.85));
+const key = new THREE.DirectionalLight(0xffffff, 2.7);
+key.position.set(600, 1900, 1300); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, {left:-700, right:700, top:700, bottom:-900, near:100, far:5000});
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xffffff, 2.2); rim.position.set(-600, 1200, -1500); scene.add(rim);
+const side = new THREE.DirectionalLight(0xdfe8ff, 0.6); side.position.set(1500, 200, 0); scene.add(side);
+const fill = new THREE.DirectionalLight(0xffffff, 0.55); fill.position.set(-1000, -200, 900); scene.add(fill);
+const ground = new THREE.Mesh(new THREE.CircleGeometry(900, 64), new THREE.ShadowMaterial({opacity:0.16}));
+ground.rotation.x = -Math.PI / 2; ground.position.y = -900; ground.receiveShadow = true; if (!SHOT) scene.add(ground);
+
+// ---------------------------------------------------------------- textura de malha (bump)
+function knitTexture(kind){
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const g = c.getContext('2d'); g.fillStyle = '#808080'; g.fillRect(0,0,128,128);
+  if (kind === 'polo'){ // piquet
+    for (let y=0;y<128;y+=8) for (let x=0;x<128;x+=8){const o=(y/8)%2?4:0; g.fillStyle='#c8c8c8'; g.beginPath(); g.arc(x+o+4,y+4,2.6,0,7); g.fill();}
+  } else if (kind === 'dryfit'){ // micro furos
+    for (let y=0;y<128;y+=6) for (let x=0;x<128;x+=6){const o=(y/6)%2?3:0; g.fillStyle='#505050'; g.beginPath(); g.arc(x+o+3,y+3,1.2,0,7); g.fill();}
+  } else { // jersey
+    for (let x=0;x<128;x+=4){g.fillStyle='#9a9a9a'; g.fillRect(x,0,2,128);}
+    for (let y=0;y<128;y+=4){g.fillStyle='rgba(60,60,60,.35)'; g.fillRect(0,y,128,1);}
+  }
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(70, 90); return t;
+}
+const BUMPS = {algodao: knitTexture('algodao'), dryfit: knitTexture('dryfit'), polo: knitTexture('polo')};
+
+// ---------------------------------------------------------------- geometria da camiseta
+const smooth = t => t*t*(3-2*t);
+function mk(G){
+  const W = y => { if (y <= G.SPY) return G.SPX;
+    if (y <= G.UAY) return G.SPX + (G.UAX-G.SPX)*smooth((y-G.SPY)/(G.UAY-G.SPY));
+    return G.UAX + (G.HEMX-G.UAX)*(y-G.UAY)/(G.L-G.UAY); };
+  const shoulderY = x => { const a = Math.abs(x); return a <= G.NW ? 0 : G.SPY*Math.min(1,(a-G.NW)/(G.SPX-G.NW)); };
+  const neckY = (x, front) => { const d = front ? G.FND : G.BND; const t = Math.min(1, Math.abs(x)/G.NW); return d*Math.sqrt(Math.max(0,1-t*t)); };
+  const Dmax = G.Dmax, T = 150;
+  const Dfun = t => { const k = Math.min(1, Math.max(0,t)/T); return Dmax*(1-(1-k)*(1-k)); };
+  const prof = xi => Math.pow(Math.max(0, 1-Math.pow(Math.abs(xi), 2.7)), 1/2.7);
+  // pequenas dobras do tecido
+  const wrinkle = (x, y) => 2.2*Math.sin(x*0.021+y*0.006)*Math.sin(y*0.017+1.3) + 1.4*Math.sin(x*0.05-y*0.031);
+  const bellyZ = y => 10*Math.exp(-Math.pow((y-330)/220,2));
+  function surf(xi, y, front){
+    const x = xi*W(y);
+    let d = Dfun(y - shoulderY(x)) * prof(xi);
+    d += (front ? bellyZ(y) : 0) * prof(xi);
+    const hemFlare = Math.max(0, (y - G.L + 120)/120);
+    d *= 1 + 0.03*hemFlare;
+    const z = (front ? 1 : -1) * (d + (d > 10 ? wrinkle(x, y) * prof(xi) : 0));
+    return [x, z];
+  }
+  return {W, shoulderY, neckY, Dfun, prof, surf};
+}
+
+function bodyHalf(G, F, front){
+  const NX = 90, NY = 120, pos = [], uv = [], idx = [];
+  for (let i=0;i<=NX;i++){
+    const xi = -1 + 2*i/NX;
+    const xTop = xi*G.SPX;
+    const yS = Math.abs(xTop) < G.NW ? Math.max(F.neckY(xTop, front), F.shoulderY(xTop)) : F.shoulderY(xTop);
+    for (let j=0;j<=NY;j++){
+      const t = j/NY, tt = t*t*0.35 + t*0.65;
+      const y = yS + (G.L - yS)*tt;
+      const [x, z] = F.surf(xi, y, front);
+      pos.push(x, -y, z);
+      const u = front ? (x - FRAME.frente[0]) / FRAME.frente[2] : (-x - FRAME.costas[0]) / FRAME.costas[2];
+      uv.push(u, (y - FRAME.frente[1]) / FRAME.frente[3]);
+    }
+  }
+  for (let i=0;i<NX;i++) for (let j=0;j<NY;j++){
+    const a = i*(NY+1)+j, b = (i+1)*(NY+1)+j;
+    if (front) idx.push(a, a+1, b, b, a+1, b+1); else idx.push(a, b, a+1, b, b+1, a+1);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals(); return g;
+}
+
+function sleeve(G, side){ // side: +1 = esquerda de quem veste (+X)
+  const beta = G.beta * Math.PI/180;
+  const d = new THREE.Vector3(side*Math.sin(beta), -Math.cos(beta), 0);
+  const n1 = new THREE.Vector3(side*Math.cos(beta), Math.sin(beta), 0);
+  const n2 = new THREE.Vector3(0, 0, side > 0 ? -1 : 1);
+  const SP = new THREE.Vector3(side*G.SPX, -G.SPY, 0);
+  const A = SP.clone().addScaledVector(n1, -G.SR0*0.98);
+  const fr = FRAME.manga_esq;
+  const NA = 72, NS = 40, pos = [], uv = [], idx = [];
+  const s0 = 4;
+  for (let j=0;j<=NS;j++){
+    const s = s0 + (G.SL - s0)*j/NS;
+    const k = s/G.SL;
+    const r = G.SR0 + (G.SR1-G.SR0)*k;
+    for (let i=0;i<=NA;i++){
+      const phi = -Math.PI + 2*Math.PI*i/NA;
+      const p = A.clone().addScaledVector(d, s)
+        .addScaledVector(n1, r*Math.cos(phi)*(1 + 0.02*Math.sin(3*phi+s*0.03)))
+        .addScaledVector(n2, r*0.9*Math.sin(phi));
+      // abertura da manga levemente em sino
+      pos.push(p.x, p.y, p.z);
+      const arc = phi * r;  // mm a partir da linha externa
+      uv.push((arc - fr[0]) / fr[2], (s - fr[1]) / fr[3]);
+    }
+  }
+  for (let j=0;j<NS;j++) for (let i=0;i<NA;i++){
+    const a = j*(NA+1)+i, b = (j+1)*(NA+1)+i;
+    idx.push(a, b, a+1, a+1, b, b+1);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals(); return g;
+}
+
+function neckLoop(G, F, gap){
+  // pontos do decote: frente (x: -NW..NW) e costas (NW..-NW)
+  const pts = [], N = 60;
+  const P = (x, front) => { const y = Math.max(F.neckY(x, front), F.shoulderY(x));
+    const xi = x / F.W(y); const [xx, z] = F.surf(xi, y, front); return new THREE.Vector3(xx, -y, z); };
+  for (let i=0;i<=N;i++){ const x = -G.NW + 2*G.NW*i/N; if (gap && Math.abs(x) < gap) continue; pts.push({p:P(x*0.999, true), front:true, x}); }
+  for (let i=0;i<=N;i++){ const x = G.NW - 2*G.NW*i/N; pts.push({p:P(x*0.999, false), front:false, x}); }
+  return pts;
+}
+
+function ribCollar(G, F){
+  const loop = neckLoop(G, F, 0);
+  const pos = [], uv = [], idx = [];
+  const H = G.collarH, n = loop.length;
+  const c = new THREE.Vector3(); loop.forEach(o => c.add(o.p)); c.multiplyScalar(1/n);
+  loop.forEach((o, i) => {
+    const out = new THREE.Vector3(o.p.x - c.x, 0, o.p.z - c.z).normalize();
+    const base = o.p.clone().addScaledVector(out, 1.5);
+    const top = base.clone().add(new THREE.Vector3(0, H, 0)).addScaledVector(out, -3);
+    const u = i/(n-1)*1.0;
+    pos.push(base.x, base.y, base.z, top.x, top.y, top.z);
+    uv.push(u, 0.02, u, 0.98);
+  });
+  for (let i=0;i<n-1;i++){ const a=i*2; idx.push(a, a+2, a+1, a+1, a+2, a+3); }
+  const a = (n-1)*2; idx.push(a, 0, a+1, a+1, 0, 1);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals(); return g;
+}
+
+function pushOut(F, G, p, gap){
+  // empurra um ponto para fora do corpo (a gola deita sobre o tecido)
+  const yd = -p.y;
+  if (yd < F.shoulderY(p.x) - 2 || yd > G.L) return;
+  const W = F.W(yd); if (Math.abs(p.x) >= W) return;
+  const xi = p.x / W;
+  const zf = F.surf(xi, yd, true)[1], zb = F.surf(xi, yd, false)[1];
+  if (p.z < zf + gap && p.z > zb - gap){
+    if (zf - zb < 2*gap + 4){ p.y = -(F.shoulderY(p.x) - gap); }
+    else if (p.z >= (zf + zb)/2) p.z = zf + gap; else p.z = zb - gap;
+  }
+}
+function poloCollar(G, F){
+  const gap = G.placketW/2;
+  const loop = neckLoop(G, F, gap);
+  const n = loop.length;
+  const c = new THREE.Vector3(); loop.forEach(o => c.add(o.p)); c.multiplyScalar(1/n);
+  const pos = [], uv = [], idx = [];
+  const ROWS = 8;
+  loop.forEach((o, i) => {
+    const out = new THREE.Vector3(o.p.x - c.x, 0, o.p.z - c.z).normalize();
+    const endK = o.front ? Math.pow(1 - Math.min(1, Math.abs(o.x)/G.NW), 2.2) : 0; // 1 perto das pontas
+    const stand = G.collarH * (1 - 0.35*endK);
+    const fallW = 52 + 34*endK;
+    const ang = (62 + 14*endK) * Math.PI/180;
+    const base = o.p.clone().addScaledVector(out, 1);
+    const top = base.clone().add(new THREE.Vector3(0, stand, 0)).addScaledVector(out, -2);
+    const tip = top.clone().addScaledVector(out, fallW*Math.cos(ang)).add(new THREE.Vector3(0, -fallW*Math.sin(ang), 0));
+    if (o.front) tip.x += Math.sign(o.x) * 14*endK;
+    for (let r=0;r<=ROWS;r++){
+      const t = r/ROWS; let p;
+      if (t <= 0.3){ p = base.clone().lerp(top, t/0.3); }
+      else { const k = (t-0.3)/0.7; p = top.clone().lerp(tip, k); p.addScaledVector(out, 6*Math.sin(Math.PI*k)); p.y += 4*Math.sin(Math.PI*k); pushOut(F, G, p, 3 + 2*k); }
+      pos.push(p.x, p.y, p.z); uv.push(i/(n-1), t);
+    }
+  });
+  for (let i=0;i<n-1;i++) for (let r=0;r<ROWS;r++){ const a=i*(ROWS+1)+r, b=(i+1)*(ROWS+1)+r; idx.push(a, b, a+1, a+1, b, b+1); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals(); return g;
+}
+
+// ---------------------------------------------------------------- texturas a partir dos SVGs
+const texCache = new Map();
+function svgToCanvas(svg, pxW){
+  return new Promise((res, rej) => {
+    const blob = new Blob([svg], {type:'image/svg+xml'});
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      const r = img.naturalHeight / img.naturalWidth || 1;
+      const c = document.createElement('canvas'); c.width = pxW; c.height = Math.round(pxW * r);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); res(c);
+    };
+    img.onerror = e => { URL.revokeObjectURL(url); rej(e); };
+    img.src = url;
+  });
+}
+function toTex(c){
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace; t.flipY = false;
+  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+async function drawName(canvas, base, spec, name){
+  const g = canvas.getContext('2d');
+  g.drawImage(base, 0, 0);
+  if (!spec || !name) return;
+  // mesmo calculo do gerador (lib.text_d): ND Logos, espacamento 0.06 em
+  const GL = window.GLYPHS, ls = 0.06 * 1000;
+  const chars = [...name].filter(ch => GL[ch] || ch === ' ');
+  let wU = 0; chars.forEach((ch, i) => { wU += (ch === ' ' ? 320 : GL[ch][1]) + (i < chars.length-1 ? ls : 0); });
+  if (!wU) return;
+  const fr = FRAME.costas, k = canvas.width / fr[2];
+  let s = spec.size / 1000; const maxW = spec.w - 40;
+  if (wU * s > maxW) s = maxW / wU;
+  const capH = 700 * s;  // altura de maiuscula ND Logos ~0.70 em
+  g.save(); g.fillStyle = spec.color;
+  g.setTransform(k*s, 0, 0, k*s, (spec.cx - wU*s/2 - fr[0])*k, (spec.y + spec.h/2 + capH/2 - fr[1])*k);
+  let x = 0;
+  chars.forEach(ch => { if (ch !== ' '){ g.save(); g.translate(x, 0); g.fill(new Path2D(GL[ch][0])); g.restore(); }
+    x += (ch === ' ' ? 320 : GL[ch][1]) + ls; });
+  g.restore();
+}
+
+// ---------------------------------------------------------------- montagem
+let current = null, group = null, nameState = {};
+async function load(id){
+  const m = DATA.find(d => d.id === id) || DATA[0];
+  document.getElementById('loading').style.display = 'grid';
+  const G = GEOM[m.garment], F = mk(G);
+  const P = m.panels;
+  const [cf, cb, cl, cr, cg] = await Promise.all([
+    svgToCanvas(P.frente, 1800), svgToCanvas(P.costas, 1800), svgToCanvas(P.manga_esq, 1100), svgToCanvas(P.manga_dir, 1100), svgToCanvas(P.gola, 1000)]);
+  let backCanvas = cb;
+  if (m.name){
+    backCanvas = document.createElement('canvas'); backCanvas.width = cb.width; backCanvas.height = cb.height;
+    const nm = (document.getElementById('nameinput').value || '').toUpperCase();
+    await drawName(backCanvas, cb, m.name, nm);
+  }
+  if (group){ scene.remove(group); group.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material){ [].concat(o.material).forEach(mm => { if (mm.map) mm.map.dispose(); mm.dispose(); }); } }); }
+  group = new THREE.Group();
+  const bump = BUMPS[m.garment];
+  const rough = m.garment === 'dryfit' ? 0.62 : 0.88;
+  const sheen = m.garment === 'dryfit' ? 0.35 : 0.15;
+  const mat = (canvas) => new THREE.MeshPhysicalMaterial({map: toTex(canvas), roughness: rough, bumpMap: bump, bumpScale: m.garment==='polo'?1.4:0.8,
+    sheen, sheenRoughness: 0.8, sheenColor: new THREE.Color(0xffffff), side: THREE.FrontSide});
+  const inner = new THREE.MeshStandardMaterial({color: new THREE.Color(m.inner), roughness: 0.95, side: THREE.BackSide});
+  const add = (geo, material) => { const a = new THREE.Mesh(geo, material); a.castShadow = true; a.receiveShadow = true; group.add(a);
+    const b = new THREE.Mesh(geo, inner); group.add(b); return a; };
+  const frontMesh = add(bodyHalf(G, F, true), mat(cf));
+  const backMat = mat(backCanvas);
+  add(bodyHalf(G, F, false), backMat);
+  add(sleeve(G, +1), mat(cl));
+  add(sleeve(G, -1), mat(cr));
+  const gm = new THREE.MeshPhysicalMaterial({map: toTex(cg), roughness: 0.9, bumpMap: BUMPS.algodao, bumpScale: 1.2, side: THREE.DoubleSide});
+  const col = new THREE.Mesh(G.collar === 'polo' ? poloCollar(G, F) : ribCollar(G, F), gm); col.castShadow = true; group.add(col);
+  scene.add(group);
+  current = {m, backMat, cb};
+  document.getElementById('tid').textContent = m.nome.toUpperCase();
+  document.getElementById('tdesc').textContent = `${m.tipo} · ${m.conceito}`;
+  document.getElementById('namebox').classList.toggle('show', !!m.name);
+  document.querySelectorAll('.m').forEach(b => b.classList.toggle('on', b.dataset.id === m.id));
+  const files = document.getElementById('files');
+  files.innerHTML = location.protocol === 'file:' ? `<h3>Arquivos</h3><a href="../modelos/${m.slug}/">pasta do modelo</a><a href="../modelos/${m.slug}/ficha_tecnica_${m.id}.pdf">ficha tecnica (PDF)</a>` : '';
+  document.getElementById('loading').style.display = 'none';
+  try { localStorage.setItem('polisat-shirt', m.id); } catch(e) {}
+  window.__ready = true;
+}
+
+let nameTimer = 0;
+document.getElementById('nameinput').addEventListener('input', () => {
+  clearTimeout(nameTimer);
+  nameTimer = setTimeout(async () => {
+    if (!current || !current.m.name) return;
+    const c = document.createElement('canvas'); c.width = current.cb.width; c.height = current.cb.height;
+    await drawName(c, current.cb, current.m.name, document.getElementById('nameinput').value.toUpperCase());
+    current.backMat.map.dispose(); current.backMat.map = toTex(c); current.backMat.needsUpdate = true;
+  }, 150);
+});
+
+// ---------------------------------------------------------------- UI
+const list = document.getElementById('list');
+const groups = [['polo','Polo'],['algodao','Algodao'],['dryfit','Dry-fit · missao Hermes']];
+for (const [g, label] of groups){
+  const h = document.createElement('h3'); h.textContent = label; list.appendChild(h);
+  const box = document.createElement('div'); box.className = 'models'; list.appendChild(box);
+  DATA.filter(d => d.garment === g).forEach(d => {
+    const b = document.createElement('button'); b.className = 'm'; b.dataset.id = d.id;
+    b.innerHTML = `<span class="sw" style="background:${d.swatch}"></span><span><b>${d.id} · ${d.nome}</b><small>${d.cor}</small></span>`;
+    b.onclick = () => load(d.id); box.appendChild(b);
+  });
+}
+function view(v){
+  const r = 2050, ty = -360;
+  const P = {front:[0, ty+30, r], back:[0, ty+30, -r], side:[r*0.92, ty+30, r*0.38]}[v];
+  camera.position.set(...P); controls.target.set(0, ty, 0); controls.update();
+}
+document.getElementById('ctrl').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const v = b.dataset.v;
+  if (v === 'spin'){ controls.autoRotate = !controls.autoRotate; b.classList.toggle('on', controls.autoRotate); return; }
+  if (v === 'theme'){ const r = document.documentElement; const cur = r.dataset.theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    r.dataset.theme = cur === 'light' ? 'dark' : 'light'; return; }
+  controls.autoRotate = false; document.getElementById('spin').classList.remove('on'); view(v);
+});
+
+function resize(){
+  const r = canvas.parentElement.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false); camera.aspect = r.width / r.height; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(canvas.parentElement);
+resize();
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+
+let start = qs.get('model');
+if (!start){ try { start = localStorage.getItem('polisat-shirt'); } catch(e) {} }
+if (qs.get('view')) view(qs.get('view'));
+load(start || DATA[0].id);
+window.__view = view; window.__load = load;
+</script>
+</body>
+</html>

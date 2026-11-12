@@ -11,6 +11,7 @@ Design files for Team PoliSat's **Hermes Mission** at CubeDesign 2026.
 | `banners/vertical_90x120cm/` | Print-ready banners, 90 × 120 cm (PDF + JPG, ~200 dpi) — 6 models |
 | `banners/vertical_90x120cm/previews/` | Small previews and a side-by-side comparison sheet |
 | `banners/fonte_editavel/` | Editable HTML sources, fonts and assets for the banners |
+| `camisetas/` | Team shirts: 3 polo, 3 cotton, 3 dry-fit — print files, tech sheets, 3D viewer (see `camisetas/README.md`) |
 
 ## Banner models
 
