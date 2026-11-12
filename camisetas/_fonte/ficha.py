@@ -199,18 +199,18 @@ def ficha_svg(f, logo_w):
 
 
 def comparativo_svg(models):
-    W, cw, chh, pad = 1200, 380, 290, 20
-    o = [f'<rect width="{W}" height="{3 * chh + 4 * pad + 60}" fill="#e9ebef"/>']
+    W, cw, chh, pad = 1600, 375, 290, 20
+    o = [f'<rect width="{W}" height="{3 * chh + 4 * pad + 70}" fill="#e9ebef"/>']
     o.append(L.A.place(L.logo('polisat', 'dark'), pad, 14, None, 34))
-    o.append(T(W - pad, 40, 'CAMISETAS 2026   9 MODELOS', 16, 'OR', DARK, 'end', 0.04))
+    o.append(T(W - pad, 40, 'CAMISETAS 2026   12 MODELOS', 16, 'OR', DARK, 'end', 0.04))
     for i, m in enumerate(models):
-        r, c = divmod(i, 3)
+        r, c = divmod(i, 4)
         x, y = pad + c * (cw + pad), 70 + r * (chh + pad)
         o.append(f'<rect x="{x}" y="{y}" width="{cw}" height="{chh}" rx="14" fill="#f7f8fa"/>')
         for j, vn in enumerate(('frente', 'costas')):
             fp = os.path.join(m['dir'], f'mockup_{m["id"]}_{vn}.png')
             if os.path.exists(fp):
-                o.append(f'<image x="{x + 6 + j * 184}" y="{y + 6}" width="184" height="236.6" xlink:href="{uri(fp, "image/png")}"/>')
+                o.append(f'<image x="{x + 4 + j * 183}" y="{y + 6}" width="183" height="235.3" xlink:href="{uri(fp, "image/png")}"/>')
         o.append(T(x + 16, y + chh - 18, m['id'], 17, 'RB', ORANGE) + T(x + 52, y + chh - 18, m['nome'].upper(), 17, 'RB', DARK)
                  + T(x + cw - 16, y + chh - 18, m['tipo'].upper(), 13, 'RS', MUTED, 'end', 0.1))
     H = 70 + 3 * chh + 3 * pad

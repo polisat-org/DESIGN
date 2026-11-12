@@ -1,9 +1,9 @@
 # PoliSat — Camisetas 2026
 
-Nove modelos prontos para a gráfica: **3 polos**, **3 de algodão** e **3 dry-fit**. Todos foram feitos no tamanho M e
+Doze modelos prontos para a gráfica: **4 polos**, **4 de algodão** e **4 dry-fit**. Todos foram feitos no tamanho M e
 estão em escala 1:1.
 
-![Comparativo](comparativo_9_modelos.png)
+![Comparativo](comparativo_modelos.png)
 
 ## Visualizador 3D
 
@@ -18,15 +18,22 @@ Depois de mudar um design, copie `index.html` e `dados.js` para o repositório `
 
 | ID | Modelo | Tecido / cor | Técnica | Patrocinadores | Missão |
 |---|---|---|---|---|---|
-| P1 | Classic Black | Piquet preto, frisos azul PoliSat | Bordado | — | — |
-| P2 | Navy | Piquet azul-marinho, frisos branco + azul claro | Bordado | — | — |
-| P3 | White | Piquet branco, frisos azul + preto | Bordado | — | — |
-| A1 | Orbit | Algodão 30.1 preto | Silk / DTF | Costas (branco) | — |
-| A2 | Ground Track | Algodão 30.1 branco | Silk + DTF | Costas (cor) | — |
-| A3 | Blueprint | Algodão 30.1 azul-marinho | Silk / DTF | Costas (branco) | — |
-| D1 | Messenger | Dry-fit, sublimação total | Sublimação | Costas | Hermes |
-| D2 | Horizon | Dry-fit, sublimação total | Sublimação | Costas | Hermes |
-| D3 | Livery | Dry-fit, sublimação total | Sublimação | Costas (cor) | Hermes |
+| P1 | Orbit | Piquet preto, anel orbital bordado em prata em volta do logo | Bordado | — | — |
+| P2 | Yoke | Piquet grafite com pala azul PoliSat nos ombros e vivo branco | Bordado + recorte | — | — |
+| P3 | Contrast | Piquet branco, gola/carcela/punhos marinho, CubeSat bordado na barra | Bordado | — | — |
+| P4 | Raglan | Piquet vinho com mangas raglan areia | Bordado + recorte | — | — |
+| A1 | Constellation | Algodão 30.1 preto: globo com 3 órbitas e CubeSats nas costas | Silk / DTF | Costas (branco) | — |
+| A2 | Ground Track | Algodão 30.1 branco (mantida) | Silk + DTF | Costas (cor) | — |
+| A3 | Exploded | Algodão 30.1 azul petróleo: vista explodida de um CubeSat 1U | Silk / DTF | Costas (creme) | — |
+| A4 | Badge | Algodão 30.1 areia: emblema vintage de agência espacial | Silk / DTF | Costas (marinho) | — |
+| D1 | Ignition | Preto com pluma de foguete e faixas laterais de corrida | Sublimação | Costas | Hermes |
+| D2 | Roll Pattern | Padrão de rolagem preto/branco de foguete + interestágio laranja | Sublimação | Costas (cor) | Hermes |
+| D3 | Pit Wall | Petróleo com curva laranja estilo livery de Fórmula 1 | Sublimação | Costas | Hermes |
+| D4 | Solar Array | Azul-noite: corpo em manta térmica dourada e painéis solares | Sublimação | Costas | Hermes |
+
+**Paleta 2026:** além de preto, branco e azul PoliSat, os modelos usam grafite `#2D3035`, vinho `#5B1E2B`,
+areia `#D8CCB1` e azul petróleo `#123C45` nos tecidos. Nas tintas entram azul-céu `#6FB7FF`, creme `#EFE6D2`,
+laranja `#E8611A`, marinho `#16213A` e dourado `#D9A520`.
 
 - **Polos e algodão** são atemporais. Levam só os logos da PoliSat, da USP e da Poli e a bandeira do Brasil,
   sem nada da missão. As polos não têm patrocinadores.
@@ -58,7 +65,7 @@ Os logos normalizados (versões para fundo claro e escuro, e patrocinadores em b
 ## Regenerar / editar
 
 Os designs são código e ficam em `_fonte/`:
-- `modelos.py`: os 9 designs;
+- `modelos.py`: os 12 designs;
 - `lib.py`: geometria das peças, texto em curvas e logos;
 - `viewer_template.html`: o visualizador 3D.
 

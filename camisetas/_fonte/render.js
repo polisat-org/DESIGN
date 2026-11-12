@@ -52,7 +52,7 @@ const only = process.argv[2]; // opcional: mockups | fichas | pdf | comparativo
     const dim = JSON.parse(fs.readFileSync(path.join(__dirname, '_build', 'comparativo.json'), 'utf8'));
     const p = await b.newPage({viewport: {width: dim.w, height: dim.h}, deviceScaleFactor: 2});
     await p.goto('file://' + wrap(path.join(__dirname, '_build', 'comparativo.svg'), dim.w, dim.h, 'px')); await p.waitForLoadState('load');
-    await p.screenshot({path: path.join(J.out, 'comparativo_9_modelos.png')});
+    await p.screenshot({path: path.join(J.out, 'comparativo_modelos.png')});
     console.log('comparativo ok');
     await p.close();
   }

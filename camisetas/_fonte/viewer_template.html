@@ -54,7 +54,7 @@ body.shot .app{grid-template-columns:1fr}
   <div class="name" id="namebox">
     <h3>Nome (costas)</h3>
     <input id="nameinput" maxlength="14" value="NAME" aria-label="Nome nas costas">
-    <div class="info">Area reservada no fim das costas para personalizacao.</div>
+    <div class="info">Área reservada no fim das costas para personalização.</div>
   </div>
   <div class="files" id="files"></div>
 </aside>
@@ -387,7 +387,7 @@ document.getElementById('nameinput').addEventListener('input', () => {
 
 // ---------------------------------------------------------------- UI
 const list = document.getElementById('list');
-const groups = [['polo','Polo'],['algodao','Algodao'],['dryfit','Dry-fit · missao Hermes']];
+const groups = [['polo','Polo'],['algodao','Algodão'],['dryfit','Dry-fit · missão Hermes']];
 for (const [g, label] of groups){
   const h = document.createElement('h3'); h.textContent = label; list.appendChild(h);
   const box = document.createElement('div'); box.className = 'models'; list.appendChild(box);
