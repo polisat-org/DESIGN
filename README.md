@@ -15,15 +15,16 @@ Design files for Team PoliSat's **Hermes Mission** at CubeDesign 2026.
 
 ## Banner models
 
-All six share one system: flat colour, Archivo + IBM Plex Mono, the mission patch, and the same footer with
-**Escola Politécnica + USP** and all **9 sponsors**. Every number on the banners comes from the design package.
+All six share one system: light flat colours, Archivo + IBM Plex Mono, the mission patch, and the same footer
+with **Escola Politécnica + USP** and all **9 sponsors**. The copy is plain and descriptive, and every number
+comes from the design package.
 
-1. **Céu** — sky blue, "Built to listen. Built to last.", Earth limb with three proof stats
-2. **Margens** — paper, "Small satellite. Serious engineering.", list of link, structural and radiation margins
-3. **Impulso** — flame orange, "Aim high. Then engineer it.", how it works in four steps
-4. **Projeto** — PoliSat blue, "Designed by students. Engineered to fly.", 2U CubeSat line drawing with subsystems
-5. **Destino** — cream, "Next stop: low Earth orbit.", oversized patch and team milestones
-6. **Equipe** — navy, "27 students. 9 courses. 1 satellite.", competition results
+1. **Céu** — sky blue: what Hermes does, Earth limb with 1090 MHz / 433 MHz / 2U
+2. **Margens** — paper: the numbers behind the design (link, structural and radiation margins)
+3. **Etapas** (`vertical3_impulso`) — peach: how it works in four steps
+4. **Projeto** — light blue: 2U CubeSat line drawing with the six subsystems
+5. **Missão** (`vertical5_destino`) — cream: why track flights from orbit, oversized patch
+6. **Equipe** — mint: the team, its courses and competition results
 
 ## Sponsors
 

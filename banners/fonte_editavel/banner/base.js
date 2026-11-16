@@ -44,5 +44,5 @@ window.fontsReady=Promise.all(FONTS.map(async([fam,url,d])=>{const buf=await (aw
  .then(()=>{window.fit&&fit()});
 // ND Logos has unusual vertical metrics (calibrated by rendering): these margins make the line box
 // hug the capitals, so the space around big titles is set by the letters themselves.
-function trim(){document.querySelectorAll('.nd').forEach(e=>{e.style.lineHeight='1em';e.style.marginTop='0';e.style.marginBottom='-.08em'})}
+function trim(){document.querySelectorAll('.nd').forEach(e=>{e.style.lineHeight='1em';e.style.marginBottom='-.08em'})}
 const _fit=fit;fit=function(){_fit();trim()};

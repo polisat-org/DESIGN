@@ -2,33 +2,32 @@
 <link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
 <style>
 .banner{background:var(--paper)}
-.main{left:48px;right:48px;top:168px}
-.kick{display:flex;justify-content:space-between;align-items:flex-end}
-.kick h1{color:var(--flame)}
-.kick img{width:150px}
-.main .head{font-size:72px;margin-top:26px}
-.main .body{margin-top:18px;width:690px;font-size:22px;color:var(--ink2)}
-.list{margin-top:20px;border-top:3px solid var(--ink)}
-.row{display:grid;grid-template-columns:210px 1fr;align-items:center;padding:10px 0 9px;border-bottom:1.5px solid var(--line)}
-.row .n{font-family:Archivo;font-weight:800;font-stretch:75%;font-size:46px;line-height:1}
+.main{left:48px;right:48px;top:186px}
+.kick{display:flex;justify-content:space-between;align-items:flex-start}
+.kick h1{color:var(--ink);margin-top:16px}
+.kick img{width:150px;margin-top:-20px}
+.main .head{margin-top:44px}
+.main .body{margin-top:14px;width:720px}
+.list{margin-top:30px;border-top:2px solid var(--ink)}
+.row{display:grid;grid-template-columns:200px 1fr;align-items:center;padding:13px 0 12px;border-bottom:1.5px solid var(--line)}
+.row .n{font-family:Archivo;font-weight:650;font-stretch:88%;font-size:44px;line-height:1;color:var(--blue)}
 .row .n small{font-size:.5em;margin-left:4px}
-.row .t{font-size:20px;line-height:1.22;font-weight:500}
-.row .t b{font-weight:700}
+.row .t{font-size:20px;line-height:1.3;font-weight:420;color:var(--ink2)}
 </style></head><body>
 <div class="banner">
 <div class="abs top">
   <img class="ps" src="logos/polisat_fundo_claro.svg" alt="PoliSat">
-  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Mission Hermes</span></div>
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Escola Politécnica · USP</span></div>
 </div>
 <div class="abs main">
-  <div class="kick"><h1 class="nd" data-fit="560">HERMES</h1><img src="patch.png" alt="Hermes mission patch"></div>
-  <h2 class="head">Small satellite.<br><span class="hl">Serious engineering.</span></h2>
-  <p class="body">We don’t guess. Every number below comes from our own analysis, and each one has room to spare.</p>
+  <div class="kick"><div><div class="mono">Mission</div><h1 class="nd" data-fit="480">HERMES</h1></div><img src="patch.png" alt="Hermes mission patch"></div>
+  <h2 class="head">The numbers behind the design</h2>
+  <p class="body">Before building anything, we checked how the satellite would hold up. These values come from our own analyses.</p>
   <div class="list">
-    <div class="row"><div class="n">27.5<small>dB</small></div><div class="t"><b>Link margin to aircraft.</b> Our corner-truncated patch antenna, designed in Ansys HFSS, hears 1090 MHz with plenty to spare.</div></div>
-    <div class="row"><div class="n">24.9<small>dB</small></div><div class="t"><b>Downlink margin.</b> LoRa at 433 MHz brings every decoded aircraft home to our ground station.</div></div>
-    <div class="row"><div class="n">2.44</div><div class="t"><b>Minimum safety factor</b> under 14.1 g RMS random vibration, on all three axes.</div></div>
-    <div class="row"><div class="n">&lt;100<small>rad</small></div><div class="t"><b>Dose on the avionics</b> over the mission, with a 2× radiation design margin.</div></div>
+    <div class="row"><div class="n">27.5<small>dB</small></div><div class="t">Link margin between aircraft and satellite at 1090 MHz, with our patch antenna designed in Ansys HFSS</div></div>
+    <div class="row"><div class="n">24.9<small>dB</small></div><div class="t">Link margin on the LoRa 433 MHz downlink to the ground station</div></div>
+    <div class="row"><div class="n">2.44</div><div class="t">Lowest structural safety factor under the 14.1 g RMS random vibration profile</div></div>
+    <div class="row"><div class="n">&lt;100<small>rad</small></div><div class="t">Radiation dose on the electronics over the mission, with a 2× design margin</div></div>
   </div>
 </div>
 <div class="foot"></div>
