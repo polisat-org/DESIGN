@@ -1,0 +1,48 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Projeto</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--blue);color:var(--cream)}
+.main{left:48px;right:48px;top:168px}
+.main .head{font-size:80px;line-height:.92}
+.main .head span{color:var(--sun)}
+.art{left:0;top:0}
+.call{width:250px}
+.call .mono{font-size:15px;color:var(--sun);font-weight:600}
+.call p{margin:4px 0 0;font-size:19px;line-height:1.22;font-weight:500}
+.tag{left:48px;top:806px;right:48px;display:flex;justify-content:space-between;align-items:flex-end;border-top:2px solid #FBF7EF66;padding-top:16px}
+.tag h1{color:var(--cream)}
+.tag .mono{text-align:right;line-height:1.4}
+</style></head><body>
+<div class="banner">
+<svg class="abs art" width="900" height="1200" id="art"></svg>
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Poli-USP · Brazil</span></div>
+</div>
+<div class="abs main">
+  <h2 class="head">Designed by students.<br><span>Engineered to fly.</span></h2>
+</div>
+<div class="abs call" style="left:48px;top:418px"><div class="mono">Payload</div><p>Custom 1090 MHz patch antenna, RTL-SDR V3 and Raspberry Pi Zero W</p></div>
+<div class="abs call" style="left:48px;top:574px"><div class="mono">Structure</div><p>Aluminium 7075 frame, safety factor ≥ 2.44 under random vibration</p></div>
+<div class="abs call" style="left:48px;top:716px"><div class="mono">Power</div><p>Solar panels, 2 × 18650 cells and a heated battery pack</p></div>
+<div class="abs call" style="left:618px;top:446px;width:240px"><div class="mono">Comms</div><p>LoRa 433 MHz with λ/4 monopoles, 24.9 dB margin</p></div>
+<div class="abs call" style="left:618px;top:592px;width:240px"><div class="mono">Brain</div><p>STM32L476RG running a fault-aware state machine</p></div>
+<div class="abs call" style="left:618px;top:716px;width:240px"><div class="mono">Attitude</div><p>Reaction wheel that detumbles from 60 RPM</p></div>
+<div class="abs tag">
+  <div><div class="mono" style="text-align:left;margin-bottom:12px">Mission</div><h1 class="nd" data-fit="330">HERMES</h1></div>
+  <div class="mono">2U CubeSat<br>ADS-B receiver<br>since 2021</div>
+</div>
+<div class="foot"></div>
+</div>
+<script>
+const s=document.getElementById('art');
+const g=el('g',{},s);
+const A=cubesat(g,[450,668],1.0,'#FBF7EF','#2350C8');
+// callout leaders
+const ld={stroke:'#F4B740','stroke-width':2,fill:'none'};
+const dot=p=>el('circle',{cx:p[0],cy:p[1],r:5,fill:'#F4B740'},s);
+[[A.antenna,[300,430]],[A.panel,[300,728]],[A.seam,[300,588]]].forEach(([a,b])=>{el('polyline',Object.assign({points:`${a[0]},${a[1]} ${b[0]+30},${b[1]} ${b[0]},${b[1]}`},ld),s);dot(a)});
+[[A.lora,[610,458]],[A.obc,[610,604]],[A.base,[610,728]]].forEach(([a,b])=>{el('polyline',Object.assign({points:`${a[0]},${a[1]} ${b[0]-30},${b[1]} ${b[0]},${b[1]}`},ld),s);dot(a)});
+fit();
+</script>
+</body></html>

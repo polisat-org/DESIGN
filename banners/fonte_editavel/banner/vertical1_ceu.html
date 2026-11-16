@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Céu</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--sky)}
+.title{left:48px;right:48px;top:172px}
+.title .mono{margin-bottom:20px}
+.title h1{color:var(--ink);font-size:150px}
+.lead{left:48px;top:388px;width:480px}
+.lead .head{font-size:84px}
+.lead .body{margin-top:22px;width:450px;font-size:22px}
+.patch{right:40px;top:404px;width:300px}
+.earth{left:0;top:0}
+.stats{left:48px;right:48px;top:822px;display:grid;grid-template-columns:repeat(3,1fr);column-gap:28px;color:var(--cream)}
+
+</style></head><body>
+<div class="banner">
+<svg class="abs earth" width="900" height="1200" id="art"></svg>
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_claro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">INPE · Brazil</span></div>
+</div>
+<div class="abs title"><div class="mono">Mission</div><h1 class="nd" data-fit="804">HERMES</h1></div>
+<div class="abs lead">
+  <h2 class="head">Built to listen.<br>Built to last.</h2>
+  <p class="body">A 2U CubeSat that hears aircraft at <b>1090 MHz</b> and sends what it learns home over <b>LoRa</b>. Designed, simulated and assembled by students at Poli-USP.</p>
+</div>
+<img class="abs patch" src="patch.png" alt="Hermes mission patch">
+<div class="abs stats">
+  <div class="stat"><div class="n">27.5<small>dB</small></div><div class="k">Link margin, satellite to aircraft</div></div>
+  <div class="stat"><div class="n">14.1<small>g RMS</small></div><div class="k">Random vibration, INPE qualification level</div></div>
+  <div class="stat"><div class="n">2×</div><div class="k">Radiation design margin for low Earth orbit</div></div>
+</div>
+<div class="foot"></div>
+</div>
+<script>
+const s=document.getElementById('art');
+// flat Earth limb
+el('circle',{cx:450,cy:3772,r:3000,fill:'#13203B'},s);
+// orbit + signal
+el('path',{d:'M-20 790 Q450 664 920 790',fill:'none',stroke:'#13203B',"stroke-width":2,"stroke-dasharray":"2 9","stroke-linecap":"round"},s);
+plane(s,120,748,30,62,'#13203B');plane(s,790,750,26,114,'#13203B');
+fit();
+</script>
+</body></html>

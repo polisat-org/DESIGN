@@ -1,13 +1,34 @@
-// ===== SPONSORS =====
-// Put the logo files in this folder (banner/) and list them here, e.g.:
-// const SPONSORS = ['logo_empresa1.png', 'logo_empresa2.svg'];
-// While the list is empty, dashed placeholders are shown.
-const SPONSORS = [];
-const SPONSOR_PLACEHOLDERS = 6;
-function renderSponsors(){
-  const row=document.querySelector('.sponsors .row'); if(!row) return;
-  row.innerHTML='';
-  if(SPONSORS.length){SPONSORS.forEach(src=>{const i=document.createElement('img');i.src=src;row.appendChild(i)})}
-  else for(let k=0;k<SPONSOR_PLACEHOLDERS;k++){const d=document.createElement('div');d.className='slot';d.textContent='SPONSOR';row.appendChild(d)}
+// ===== FOOTER: institutions + sponsors =====
+// Every banner ends with <div class="foot"></div>; this script fills it.
+// To add or remove a sponsor, edit SPONSORS. Files live in logos/patrocinadores/.
+// Logos are sized by area (not by height) so wide and compact marks look equally strong.
+const SPONSORS = [
+  'ansys', 'st', 'solidworks',
+  'fdte', 'citi', 'amigosdapoli',
+  'griffus', 'indusmart', 'pme',
+];
+const LOGO_AREA = 7600;   // px² per sponsor logo (≈ 76 cm² printed)
+const LOGO_MAX_W = 186, LOGO_MAX_H = 64;
+
+function renderFooter(){
+  const f = document.querySelector('.foot'); if(!f) return;
+  f.innerHTML = `
+    <div class="inst"><div class="mono">A student team of</div>
+      <div class="logos"><img class="poli" src="logos/poli_selo_preto.svg" alt="Escola Politécnica"><img class="usp" src="logos/usp_preto.svg" alt="USP"></div></div>
+    <div class="sp"><div class="mono">Made possible by</div><div class="grid"></div></div>`;
+  const g = f.querySelector('.grid');
+  SPONSORS.forEach(name => {
+    const i = new Image();
+    i.alt = name;
+    i.onload = () => {
+      const a = i.naturalWidth / i.naturalHeight;
+      let h = Math.sqrt(LOGO_AREA / a), w = h * a;
+      if (w > LOGO_MAX_W) { w = LOGO_MAX_W; h = w / a; }
+      if (h > LOGO_MAX_H) { h = LOGO_MAX_H; w = h * a; }
+      i.style.width = w + 'px'; i.style.height = h + 'px';
+    };
+    i.src = `logos/patrocinadores/${name}_cor_fundo_claro.svg`;
+    g.appendChild(i);
+  });
 }
-document.addEventListener('DOMContentLoaded',renderSponsors);
+document.addEventListener('DOMContentLoaded', renderFooter);

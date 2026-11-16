@@ -1,0 +1,48 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Impulso</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--flame);color:var(--cream)}
+.main{left:48px;right:48px;top:170px}
+.main .mono{opacity:.85}
+.main .head{font-size:108px;margin-top:16px;line-height:.88}
+.main .head span{color:var(--ink)}
+.sun{right:-90px;top:400px;width:440px;height:440px;border-radius:50%;background:var(--sun)}
+.patch{right:36px;top:470px;width:300px}
+.mission{left:48px;top:470px;width:420px}
+.mission h1{color:var(--cream)}
+.mission .body{margin-top:22px;font-size:22px}
+.steps{left:48px;right:48px;top:782px}
+.steps .track{position:relative;display:grid;grid-template-columns:repeat(4,1fr);column-gap:18px}
+.steps .track::before{content:"";position:absolute;left:9px;right:9px;top:9px;height:3px;background:var(--cream)}
+.step .dot{position:relative;width:21px;height:21px;border-radius:50%;background:var(--ink);border:3px solid var(--cream)}
+.step h3{margin:16px 0 0;font-family:Archivo;font-weight:800;font-stretch:75%;font-size:34px;line-height:1}
+.step p{margin:6px 0 0;font-size:19px;font-weight:500;line-height:1.2}
+</style></head><body>
+<div class="banner">
+<div class="abs sun"></div>
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Poli-USP · Brazil</span></div>
+</div>
+<div class="abs main">
+  <div class="mono">Our motto for 2026</div>
+  <h2 class="head">Aim high.<br><span>Then engineer it.</span></h2>
+</div>
+<div class="abs mission">
+  <div class="mono">Mission</div>
+  <h1 class="nd" data-fit="400" style="margin-top:14px">HERMES</h1>
+  <p class="body">A 2U CubeSat that tracks aircraft from space, with every subsystem designed and integrated by our students.</p>
+</div>
+<img class="abs patch" src="patch.png" alt="Hermes mission patch">
+<div class="abs steps">
+  <div class="track">
+    <div class="step"><div class="dot"></div><h3>Listen</h3><p>ADS-B at 1090 MHz on a custom patch antenna</p></div>
+    <div class="step"><div class="dot"></div><h3>Check</h3><p>Every frame CRC-verified on board</p></div>
+    <div class="step"><div class="dot"></div><h3>Decode</h3><p>Identity, position, altitude, velocity</p></div>
+    <div class="step"><div class="dot"></div><h3>Send</h3><p>LoRa 433 MHz down to our ground station</p></div>
+  </div>
+</div>
+<div class="foot"></div>
+</div>
+<script>fit();</script>
+</body></html>
