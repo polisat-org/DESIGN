@@ -1,0 +1,75 @@
+<!doctype html><html><head><meta charset="utf-8"><title>PoliSat — Modelo geral</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<script>
+/* =====================================================================
+   MODELO GERAL — banner 90 x 120 cm para qualquer ocasião
+   Edite só este bloco. Depois rode  node exportar.js  (veja o README).
+   ---------------------------------------------------------------------
+   tema:     royal | fire | teal | violet | magenta | green
+   imagem:   arquivo em imagens/ (fotos largas funcionam melhor)
+   itens:    0 a 4 números; deixe [] para esconder a linha
+   ===================================================================== */
+const CONTEUDO = {
+  tema: 'royal',
+  evento:  ['PoliSat', 'Escola Politécnica · USP'],      // duas linhas no canto superior direito
+  imagem:  'imagens/orbita_voando2.jpg',
+  posicaoImagem: '50% 30%',                              // qual parte da foto aparece
+  rotulo:  'Nanosatellite engineering',
+  titulo:  'CubeSats designed and built at Poli-USP',
+  texto:   'PoliSat develops small satellites from the first sketch to the integrated spacecraft: structure, power, on-board computing, communication and attitude control.',
+  itens: [
+    { numero: '2U',   unidade: '',    legenda: 'Current CubeSat format' },
+    { numero: '1090', unidade: 'MHz', legenda: 'ADS-B payload of mission Hermes' },
+    { numero: 'CITI', unidade: '',    legenda: 'Our lab at USP' },
+  ],
+  mostrarPatchHermes: true,                            // patch da missão no cabeçalho
+};
+</script>
+<style>
+body[data-tema=royal]{--bg:var(--royal);--acc:var(--a-royal)}
+body[data-tema=fire]{--bg:var(--fire);--acc:var(--a-fire)}
+body[data-tema=teal]{--bg:var(--teal);--acc:var(--a-teal)}
+body[data-tema=violet]{--bg:var(--violet);--acc:var(--a-violet)}
+body[data-tema=magenta]{--bg:var(--magenta);--acc:var(--a-magenta)}
+body[data-tema=green]{--bg:var(--green);--acc:var(--a-green)}
+.banner{background:var(--bg);color:var(--cream)}
+.hero{left:0;top:0;width:900px;height:460px}
+.main{left:48px;right:48px;top:500px;bottom:250px;display:flex;flex-direction:column;padding-bottom:30px}
+.main .head{margin-top:14px;font-size:60px;max-width:800px}
+.main .body{margin-top:14px;font-size:22px;max-width:790px}
+.items{margin-top:auto;display:grid;column-gap:24px;padding-top:16px}
+.items .big{font-size:52px}
+.items .txt{font-size:17px}
+</style></head><body>
+<div class="banner">
+<img class="abs photo hero" id="img" alt="">
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono" id="ev1"></span><span class="mono" id="ev2"></span></div>
+</div>
+<div class="abs main">
+  <div class="mono kicker" id="rot"></div>
+  <h2 class="head" id="tit"></h2>
+  <p class="body" id="txt"></p>
+  <div class="items rule" id="items"></div>
+</div>
+<div class="foot"></div>
+</div>
+<script>
+const C=CONTEUDO,$=id=>document.getElementById(id);
+document.body.dataset.tema=C.tema;
+document.addEventListener('DOMContentLoaded',()=>{if(!C.mostrarPatchHermes)document.querySelectorAll('.top .mp').forEach(e=>e.remove())});
+$('img').src=C.imagem;$('img').style.objectPosition=C.posicaoImagem;
+$('ev1').textContent=C.evento[0]||'';$('ev2').textContent=C.evento[1]||'';
+$('rot').textContent=C.rotulo;$('tit').textContent=C.titulo;$('txt').textContent=C.texto;
+const it=$('items');
+if(!C.itens.length)it.style.display='none';
+it.style.gridTemplateColumns=`repeat(${Math.max(C.itens.length,1)},1fr)`;
+C.itens.forEach(i=>{const d=document.createElement('div');
+  d.innerHTML=`<div class="big"></div><p class="txt"></p>`;
+  d.querySelector('.big').textContent=i.numero;
+  if(i.unidade){const s=document.createElement('small');s.textContent=i.unidade;d.querySelector('.big').appendChild(s)}
+  d.querySelector('.txt').textContent=i.legenda;it.appendChild(d)});
+fit();
+</script>
+</body></html>

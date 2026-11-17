@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Comunicação</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--magenta);color:var(--cream);--acc:var(--a-magenta)}
+.main{left:48px;right:48px;top:176px}
+.main .head{margin-top:12px;font-size:64px}
+.main .body{margin-top:12px;font-size:21px;width:780px}
+.mech{right:18px;top:362px;width:400px;filter:drop-shadow(0 16px 20px #0007)}
+.col{left:48px;top:380px;width:420px;display:flex;flex-direction:column;gap:20px}
+.col .txt{font-size:18px}
+.obc{left:48px;right:48px;top:760px;padding-top:14px}
+.obc .row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.obc .txt{font-size:17px;margin-top:12px}
+</style></head><body>
+<div class="banner">
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Escola Politécnica · USP</span></div>
+</div>
+<div class="abs main">
+  <div class="mono kicker">Hermes · TT&amp;C and OBC</div>
+  <h2 class="head">Communication and on-board computer</h2>
+</div>
+<img class="abs mech" src="imagens/mecanismo_antena.png" alt="Antenna deployment mechanism (render)">
+<div class="abs col">
+  <div><div class="lbl">Radio link</div><p class="txt">LoRa module at 433 MHz, half-duplex, for both uplink and downlink. 24.9 dB margin to a QFH ground-station antenna.</p></div>
+  <div><div class="lbl">Antenna</div><p class="txt">Two λ/4 monopoles phased as a 17.3 cm dipole, so precise pointing is not needed.</p></div>
+  <div><div class="lbl">Deployment mechanism</div><p class="txt">A steel tape-spring antenna stays coiled in a 100 × 100 × 16 mm box. A resistive wire melts the Dyneema restraint to release it.</p></div>
+</div>
+<div class="abs obc rule">
+  <div class="lbl">On-board computer · STM32L476RG · mission states</div>
+  <div class="row"><span class="chip">IDLE</span><span class="chip">TRANSMIT</span><span class="chip">DEPLOY</span><span class="chip">DETUMBLING</span><span class="chip">MISSION</span></div>
+  <p class="txt">Housekeeping reads BME280 temperature, MAX17048 battery charge, INA3221 currents and DS3231 time, and sends them down as telemetry.</p>
+</div>
+<div class="foot"></div>
+</div>
+<script>fit();</script>
+</body></html>

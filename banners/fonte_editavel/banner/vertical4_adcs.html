@@ -1,0 +1,37 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — ADCS</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--violet);color:var(--cream);--acc:var(--a-violet)}
+.main{left:48px;right:48px;top:176px}
+.main .head{margin-top:12px;font-size:72px}
+.main .body{margin-top:12px;font-size:21px;width:780px}
+.sun{left:400px;top:380px;width:470px;height:470px;border-radius:50%;background:#FF6A1A}
+.wheel{left:330px;top:530px;width:560px;filter:drop-shadow(0 18px 18px #0006)}
+.facts{left:48px;top:390px;width:310px;display:flex;flex-direction:column;gap:20px}
+.facts .big{font-size:56px}
+.facts .txt{font-size:17px}
+.note{left:48px;right:48px;top:860px;padding-top:14px}
+.note .txt{font-size:18px}
+</style></head><body>
+<div class="banner">
+<div class="abs sun"></div>
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Escola Politécnica · USP</span></div>
+</div>
+<div class="abs main">
+  <div class="mono kicker">Hermes · ADCS</div>
+  <h2 class="head">Attitude control</h2>
+  <p class="body">After release, the satellite first has to stop tumbling. A reaction wheel slows the spin, then the ADCS points the satellite using light sensors.</p>
+</div>
+<img class="abs wheel" src="imagens/roda_de_reacao.png" alt="Reaction wheel (render)">
+<div class="abs facts">
+  <div><div class="big">60<small>RPM</small></div><p class="txt">Initial spin the rate-damping mode is designed to remove</p></div>
+  <div><div class="big">&lt;5°</div><p class="txt">Accuracy required for finding the light-source direction</p></div>
+  <div><div class="big">10<small>Hz</small></div><p class="txt">Control loop rate on the microcontroller</p></div>
+</div>
+<div class="abs note rule"><p class="txt">Gyroscope, magnetometer and LDR light sensors fused with a complementary filter · BLDC reaction wheel, EC-20 flat motor · validated on a one-axis rotating test platform</p></div>
+<div class="foot"></div>
+</div>
+<script>fit();</script>
+</body></html>

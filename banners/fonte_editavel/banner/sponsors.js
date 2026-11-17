@@ -1,4 +1,4 @@
-// ===== FOOTER: institutions + sponsors =====
+// ===== HEADER PATCH + FOOTER (institutions + sponsors) =====
 // Every banner ends with <div class="foot"></div>; this script fills it.
 // To add or remove a sponsor, edit SPONSORS. Files live in logos/patrocinadores/.
 // Logos are sized by area (not by height) so wide and compact marks look equally strong.
@@ -31,4 +31,9 @@ function renderFooter(){
     g.appendChild(i);
   });
 }
-document.addEventListener('DOMContentLoaded', renderFooter);
+// Every banner also gets the Hermes mission patch in the header, next to the event lines.
+function renderHeader(){
+  const t = document.querySelector('.top'); if(!t || t.querySelector('.mp')) return;
+  const i = new Image(); i.className = 'mp'; i.src = 'patch.png'; i.alt = 'Hermes mission patch'; t.appendChild(i);
+}
+document.addEventListener('DOMContentLoaded', () => { renderHeader(); renderFooter(); });

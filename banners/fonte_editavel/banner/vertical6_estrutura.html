@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Estrutura</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--green);color:var(--cream);--acc:var(--a-green)}
+.main{left:48px;right:48px;top:176px}
+.main .head{margin-top:12px;font-size:64px}
+.sat{left:20px;top:370px;width:440px;filter:drop-shadow(0 20px 24px #0008)}
+.list{left:480px;right:48px;top:350px;display:flex;flex-direction:column;gap:18px}
+.list>div{border-top:2px solid #F5EFE333;padding-top:10px}
+.list .txt{font-size:18px}
+.nums{left:48px;width:400px;top:800px;display:grid;grid-template-columns:1fr 1fr;column-gap:20px}
+.nums .big{font-size:56px}
+.nums .txt{font-size:16px}
+</style></head><body>
+<div class="banner">
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Escola Politécnica · USP</span></div>
+</div>
+<div class="abs main">
+  <div class="mono kicker">Hermes · Structure and power</div>
+  <h2 class="head">Structure, power and the space environment</h2>
+</div>
+<img class="abs sat" src="imagens/cubesat_montado.png" alt="Hermes CubeSat assembly (render)">
+<div class="abs list">
+  <div><div class="lbl">Structure</div><p class="txt">2U frame in aluminium 7075, analysed for the 14.1 g RMS random-vibration profile on all three axes.</p></div>
+  <div><div class="lbl">Power</div><p class="txt">Solar panels and two 18650 cells. Regulated 3.3, 5 and 13.8 V buses, with current and charge monitored.</p></div>
+  <div><div class="lbl">Radiation</div><p class="txt">Simulated in SPENVIS for four years at about 500 km, with shielding around the electronics.</p></div>
+  <div><div class="lbl">Thermal</div><p class="txt">Battery heaters keep the cells in range. A thermal-vacuum bake-out is planned to remove volatile materials.</p></div>
+</div>
+<div class="abs nums">
+  <div><div class="big">2.44</div><p class="txt">Lowest safety factor under vibration</p></div>
+  <div><div class="big">&lt;100<small>rad</small></div><p class="txt">Dose on the electronics, 2× margin</p></div>
+</div>
+<div class="foot"></div>
+</div>
+<script>fit();</script>
+</body></html>

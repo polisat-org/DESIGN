@@ -1,10 +1,15 @@
 /* Fonts are registered in base.js (FontFace API). */
-/* Hermes banners — 2026, light editorial style. 1 CSS px = 1 mm on the printed 90 x 120 cm banner. */
+/* Hermes banners — 2026, dark grounds with vivid accent details. 1 CSS px = 1 mm on the printed 90 x 120 cm banner. */
 
 :root{
   --paper:#F3EEE4; --cream:#FBF7EF; --ink:#13203B; --ink2:#3A4560;
   --blue:#2350C8; --sky:#CFE5F5; --sun:#F4B740; --flame:#E5482A; --line:#13203B22;
   --peach:#FBE3D3; --mint:#DCEFE3; --mist:#E3EBF7; --butter:#FCEFC7;
+  /* dark, serious grounds (one per banner) ... */
+  --royal:#121C4A; --fire:#18191E; --teal:#0A2E33; --violet:#1C1240; --magenta:#2A0E22; --green:#0D2719;
+  /* ... each with one vivid accent for details */
+  --a-royal:#FFC23D; --a-fire:#FF5B36; --a-teal:#3FE0C5; --a-violet:#FFC23D; --a-magenta:#FF4FA3; --a-green:#B6F23D;
+  --sunb:#FFC23D; --flameb:#FF5B36; --skyb:#7CC4FF; --mintb:#5FE0AE; --lilac:#C3A8FF; --earth:#1F5596;
 }
 *{box-sizing:border-box}
 html,body{margin:0;width:900px;height:1200px;overflow:hidden;background:var(--paper);color:var(--ink)}
@@ -14,20 +19,21 @@ html,body{margin:0;width:900px;height:1200px;overflow:hidden;background:var(--pa
 /* type */
 .nd{font-family:NDLogos;font-weight:400;line-height:.82;white-space:nowrap;letter-spacing:.01em}
 .mono{font-family:Plex;font-weight:500;font-size:16px;letter-spacing:.08em;text-transform:uppercase}
-.head{font-family:Archivo;font-weight:650;font-stretch:92%;font-size:58px;line-height:1.06;letter-spacing:-.015em;margin:0;text-wrap:balance}
-.body{font-family:Archivo;font-weight:420;font-stretch:98%;font-size:23px;line-height:1.36;margin:0;color:var(--ink2)}
+.head{font-family:Archivo;font-weight:750;font-stretch:86%;font-size:66px;line-height:1.02;letter-spacing:-.015em;margin:0;text-wrap:balance}
+.body{font-family:Archivo;font-weight:420;font-stretch:98%;font-size:23px;line-height:1.36;margin:0;color:inherit;opacity:.84}
 .body b{font-weight:700}
 .hl{color:var(--flame)}
 
 /* header: PoliSat left, event right */
 .top{left:48px;right:48px;top:44px;display:flex;align-items:center;justify-content:space-between}
 .top .ps{height:86px}
-.top .ev{text-align:right;line-height:1.35}
+.top .ev{text-align:right;line-height:1.35;margin-left:auto}
+.top .mp{height:116px;margin-left:24px;filter:drop-shadow(0 4px 10px #0004)}
 .top .ev .mono{display:block}
 .top .ev .mono+.mono{opacity:.7}
 
 /* stats */
-.stat .n{font-family:Archivo;font-weight:650;font-stretch:88%;font-size:56px;line-height:.95;letter-spacing:-.01em}
+.stat .n{font-family:Archivo;font-weight:750;font-stretch:84%;font-size:56px;line-height:.95;letter-spacing:-.01em}
 .stat .n small{font-size:.46em;font-weight:600;margin-left:4px;letter-spacing:0}
 .stat .k{font-family:Archivo;font-weight:450;font-stretch:98%;font-size:19px;line-height:1.2;margin-top:8px}
 
@@ -42,3 +48,17 @@ html,body{margin:0;width:900px;height:1200px;overflow:hidden;background:var(--pa
 .foot .sp{display:flex;flex-direction:column}
 .foot .grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);align-items:center;justify-items:center;column-gap:16px}
 .foot .grid img{display:block;object-fit:contain}
+
+/* ---- shared pieces for the mission set ---- */
+.kicker{color:var(--acc)}
+.photo{display:block;object-fit:cover}
+.card{border-radius:18px;overflow:hidden}
+.lbl{font-family:Plex;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.txt{font-family:Archivo;font-weight:420;font-size:19px;line-height:1.32;opacity:.88;margin:5px 0 0}
+.big{font-family:Archivo;font-weight:750;font-stretch:84%;line-height:.95;letter-spacing:-.01em;color:var(--acc)}
+.big small{font-size:.42em;margin-left:5px;color:var(--cream)}
+.rule{border-top:2px solid #F5EFE333}
+.chip{display:inline-block;font-family:Plex;font-weight:600;font-size:14px;letter-spacing:.06em;padding:7px 12px;border-radius:999px;border:2px solid var(--acc);color:var(--cream)}
+
+/* vivid accent band between the artwork and the footer */
+.foot::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px;background:var(--acc)}

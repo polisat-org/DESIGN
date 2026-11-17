@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Plataforma</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--teal);color:var(--cream);--acc:var(--a-teal)}
+.main{left:48px;right:48px;top:176px}
+.main .head{margin-top:12px;font-size:72px}
+.main .body{margin-top:10px;font-size:21px}
+.pic{left:48px;top:350px;width:380px;height:560px;background:#B2B2B2}
+.pic img{width:100%;height:100%;object-position:50% 50%;transform:scale(1.55)}
+.list{left:462px;right:48px;top:350px;display:flex;flex-direction:column;gap:17px}
+.list>div{border-top:2px solid #F5EFE333;padding-top:10px}
+.list .txt{font-size:18px}
+</style></head><body>
+<div class="banner">
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Escola Politécnica · USP</span></div>
+</div>
+<div class="abs main">
+  <div class="mono kicker">Mission Hermes</div>
+  <h2 class="head">The platform</h2>
+  <p class="body">A 2U CubeSat, 10 × 10 × 22.7 cm, built around six subsystems.</p>
+</div>
+<div class="abs card pic"><img class="photo" src="imagens/cubesat_interno.jpg" alt="Hermes CubeSat, internal render"></div>
+<div class="abs list">
+  <div><div class="lbl">Payload</div><p class="txt">ADS-B receiver: patch antenna, RTL-SDR V3, Raspberry Pi Zero W</p></div>
+  <div><div class="lbl">On-board computer</div><p class="txt">STM32L476RG running a five-state mission state machine</p></div>
+  <div><div class="lbl">Communication</div><p class="txt">LoRa 433 MHz, half-duplex, with a deployable antenna</p></div>
+  <div><div class="lbl">Attitude control</div><p class="txt">Reaction wheel, gyroscope, magnetometer and light sensors</p></div>
+  <div><div class="lbl">Power</div><p class="txt">Solar panels, two 18650 cells, 3.3, 5 and 13.8 V buses</p></div>
+  <div><div class="lbl">Structure</div><p class="txt">Aluminium 7075 frame with radiation shielding</p></div>
+</div>
+<div class="foot"></div>
+</div>
+<script>fit();</script>
+</body></html>

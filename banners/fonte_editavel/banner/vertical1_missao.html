@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Missão</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--royal);color:var(--cream);--acc:var(--a-royal)}
+.hero{left:0;top:0;width:900px;height:420px;object-position:50% 45%}
+.main{left:48px;right:48px;top:452px}
+.main h1{color:var(--cream);margin-top:12px}
+.main .head{margin-top:26px;font-size:50px}
+.main .body{margin-top:12px;font-size:21px;width:790px}
+.stats{left:48px;right:48px;top:806px;display:grid;grid-template-columns:repeat(4,1fr);column-gap:24px;padding-top:16px}
+.stats .big{font-size:52px}
+.stats .txt{font-size:17px}
+</style></head><body>
+<div class="banner">
+<img class="abs photo hero" src="imagens/orbita_perto.jpg" alt="Hermes in orbit (render)">
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Escola Politécnica · USP</span></div>
+</div>
+<div class="abs main">
+  <div class="mono kicker">Mission</div>
+  <h1 class="nd" data-fit="540">HERMES</h1>
+  <h2 class="head">An ADS-B receiver on a 2U CubeSat</h2>
+  <p class="body">Aircraft broadcast their identity, position, altitude and speed on 1090 MHz. Over open sea and mountains, few ground receivers can hear them. Hermes listens from about 500 km up, decodes the messages on board and sends the flight data down over LoRa.</p>
+</div>
+<div class="abs stats rule">
+  <div><div class="big">1090<small>MHz</small></div><p class="txt">ADS-B signals received</p></div>
+  <div><div class="big">433<small>MHz</small></div><p class="txt">LoRa downlink</p></div>
+  <div><div class="big">500<small>km</small></div><p class="txt">Design orbit altitude</p></div>
+  <div><div class="big">2U</div><p class="txt">10 × 10 × 22.7 cm</p></div>
+</div>
+<div class="foot"></div>
+</div>
+<script>fit();</script>
+</body></html>

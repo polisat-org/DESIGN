@@ -7,7 +7,7 @@ const ROOT=__dirname,OUT=path.resolve(ROOT,'..','vertical_90x120cm'),SCALE=8;
 const MIME={'.html':'text/html','.css':'text/css','.js':'application/javascript','.svg':'image/svg+xml','.png':'image/png','.ttf':'font/ttf'};
 (async()=>{
   fs.mkdirSync(path.join(OUT,'previews'),{recursive:true});
-  const files=fs.readdirSync(path.join(ROOT,'banner')).filter(f=>/^vertical\d.*\.html$/.test(f)).sort();
+  const files=fs.readdirSync(path.join(ROOT,'banner')).filter(f=>/^(vertical\d.*|modelo.*)\.html$/.test(f)).sort();
   const b=await chromium.launch();
   for(const f of files){
     const p=await b.newPage({viewport:{width:900,height:1200},deviceScaleFactor:SCALE});

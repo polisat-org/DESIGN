@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Payload</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<style>
+.banner{background:var(--fire);color:var(--cream);--acc:var(--a-fire)}
+.main{left:48px;right:48px;top:176px}
+.main .head{margin-top:12px;font-size:72px}
+.main .body{margin-top:12px;font-size:21px;width:790px}
+.pic{left:48px;right:48px;top:366px;height:346px}
+.pic img{width:100%;height:100%;object-position:50% 70%;transform:scale(1.3);transform-origin:52% 30%}
+.chain{left:48px;right:48px;top:740px;display:grid;grid-template-columns:repeat(4,1fr);column-gap:26px}
+.chain>div{position:relative;border-top:3px solid var(--acc);padding-top:12px}
+.chain>div:not(:last-child)::after{content:"";position:absolute;right:-20px;top:-9px;border:7px solid transparent;border-left:12px solid var(--acc)}
+.chain .n{font-family:Archivo;font-weight:750;font-stretch:86%;font-size:26px;line-height:1.05}
+.chain .txt{font-size:17px}
+</style></head><body>
+<div class="banner">
+<div class="abs top">
+  <img class="ps" src="logos/polisat_fundo_escuro.svg" alt="PoliSat">
+  <div class="ev"><span class="mono">CubeDesign 2026</span><span class="mono">Escola Politécnica · USP</span></div>
+</div>
+<div class="abs main">
+  <div class="mono kicker">Hermes · Payload</div>
+  <h2 class="head">ADS-B receiver</h2>
+  <p class="body">The primary payload listens to aircraft transponders at 1090 MHz and turns the raw radio signal into flight data, entirely on board.</p>
+</div>
+<div class="abs card pic"><img class="photo" src="imagens/orbita_voando.jpg" alt="Hermes in orbit (render)"></div>
+<div class="abs chain">
+  <div><div class="lbl">01 · Antenna</div><div class="n">Patch antenna</div><p class="txt">Corner-truncated, 1090 MHz, designed in Ansys HFSS, facing Earth</p></div>
+  <div><div class="lbl">02 · Radio</div><div class="n">RTL-SDR V3</div><p class="txt">Samples the band at 2.0 MS/s</p></div>
+  <div><div class="lbl">03 · Processing</div><div class="n">Raspberry Pi Zero W</div><p class="txt">C software demodulates, checks CRC and decodes each frame</p></div>
+  <div><div class="lbl">04 · Output</div><div class="n">To the OBC</div><p class="txt">Identity, position, altitude and speed queued for downlink</p></div>
+</div>
+<div class="foot"></div>
+</div>
+<script>fit();</script>
+</body></html>
