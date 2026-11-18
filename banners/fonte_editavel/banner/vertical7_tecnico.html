@@ -1,0 +1,299 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Hermes — Técnico</title>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<!--
+  Banner técnico: resumo do Design Package (todos os números e figuras vêm dele; "Fig. N" / "Table N" = numeração do DP).
+  Fundo branco, tinta navy e amarelo do vertical 1. As faixas amarelas "OPEN" são as pendências da revisão da banca
+  (CD26-CUB-POL On-site Feedback, 16 Oct 2026, v3). Tags: ANALYSIS = cálculo/simulação, PROTOTYPE = hardware construído.
+-->
+<style>
+:root{--bg:#D9E2F2;--nv:#121C4A;--nv2:#3A4560;--y:#FFC23D;--yb:#FFF4D6;--bl:#2350C8;--am:#E8A21A;--ln:#121C4A1f;--mut:#5A6380}
+.banner{background:var(--bg);color:var(--nv);--acc:var(--y)}
+/* header */
+.hd{left:36px;right:36px;top:18px;height:96px;display:flex;align-items:center;gap:18px}
+.hd .ps{height:60px}
+.hd .tt{border-left:2px solid #121C4A30;padding-left:22px}
+.hd .tt .nd{font-size:50px;color:var(--nv)}
+.hd .tt .sub{font-family:Archivo;font-weight:650;font-stretch:88%;font-size:16px;margin-top:5px;white-space:nowrap}
+.hd .ev{margin-left:auto;text-align:right;line-height:1.45;white-space:nowrap}
+.hd .ev .mono{display:block;font-size:11px;color:var(--nv)}
+.hd .ev .mono+.mono{color:var(--mut)}
+.hd .mp{height:92px;margin-left:4px}
+/* grid */
+.grid12{left:36px;right:36px;top:122px;height:858px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  grid-template-rows:256px 270px 254px 48px;gap:10px}
+.p{background:#fff;border:1.6px solid #121C4A14;box-shadow:0 1px 0 #121C4A10;border-radius:10px;padding:8px 10px 8px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.p>*{flex-shrink:0}
+.p h3{margin:0 0 6px;display:flex;align-items:center;gap:7px;font-family:Archivo;font-weight:760;font-stretch:88%;font-size:17px;letter-spacing:-.005em;line-height:1;white-space:nowrap}
+.p h3 .no{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:5px;background:var(--nv);color:var(--y);font-family:Plex;font-weight:600;font-size:12px;letter-spacing:0}
+.p h3 .k{margin-left:auto;font-family:Plex;font-weight:500;font-size:8.4px;letter-spacing:.06em;color:var(--mut);text-transform:uppercase}
+.t{font-family:Archivo;font-weight:430;font-size:10px;line-height:1.28;margin:0;color:var(--nv)}
+.t b{font-weight:700}
+ul.t{padding:0;list-style:none}
+ul.t li{padding-left:8px;position:relative;margin-bottom:1.5px}
+ul.t li::before{content:"";position:absolute;left:0;top:4.6px;width:3.6px;height:3.6px;border-radius:1px;background:var(--y)}
+.fig{display:flex;flex-direction:column;min-width:0;flex-shrink:0}
+.fig img,.fig svg{display:block;width:100%;object-fit:contain;background:#fff;border-radius:3px}
+.cap{font-family:Plex;font-weight:500;font-size:7.4px;letter-spacing:.01em;color:var(--mut);margin-top:2px;line-height:1.2}
+.row{display:flex;gap:8px;min-height:0;flex-shrink:0}
+.col{display:flex;flex-direction:column;gap:4px;min-width:0}
+.open{margin-top:auto;background:var(--yb);border-left:4px solid var(--y);border-radius:3px;padding:3.5px 6px;font-family:Archivo;font-size:9.6px;line-height:1.24;color:var(--nv)}
+.open b{font-family:Plex;font-weight:600;font-size:8px;letter-spacing:.1em;margin-right:4px}
+.tag{display:inline-block;font-family:Plex;font-weight:600;font-size:7px;letter-spacing:.05em;padding:0 3px;border-radius:2.5px;vertical-align:1px;margin-left:3px;line-height:1.45}
+.tag.a{border:1px solid var(--bl);color:var(--bl)}
+.tag.p{background:var(--nv);color:var(--y)}
+/* number tiles */
+.nums{display:grid;gap:5px 8px;align-content:start}
+.nums .n{font-family:Archivo;font-weight:760;font-stretch:84%;font-size:22px;line-height:.95;color:var(--nv)}
+.nums .n small{font-size:.5em;font-weight:620;margin-left:2px;color:var(--nv2)}
+.nums .l{font-family:Archivo;font-size:8.8px;line-height:1.15;color:var(--mut);margin-top:1px}
+/* tables */
+table.lb{border-collapse:collapse;width:100%;font-family:Archivo;font-size:9px;line-height:1.15}
+table.lb td,table.lb th{padding:1.5px 3px;border-bottom:1px solid var(--ln);text-align:right;white-space:nowrap}
+table.lb th{font-family:Plex;font-weight:600;font-size:7.6px;letter-spacing:.05em;color:var(--mut);text-transform:uppercase}
+table.lb td:first-child,table.lb th:first-child{text-align:left}
+table.lb tr.tot td{font-weight:760;border-bottom:none;font-size:10.6px}
+table.lb tr.tot td.m{color:var(--nv);background:var(--y);border-radius:3px}
+/* on-site demonstrations strip: every cell = name / metric / description, on the same baselines */
+.strip{grid-column:1/-1;border-radius:8px;background:linear-gradient(90deg,#121C4A 0,#121C4A 55%,#1B2A66 100%);color:#fff;
+  display:grid;grid-template-columns:minmax(0,1.2fr) repeat(8,minmax(0,1fr));align-items:start;padding:7px 4px}
+.strip .c{padding:0 8px;display:grid;grid-template-rows:12px 13px 10px;row-gap:1px;border-left:1px solid #ffffff26}
+.strip .c:first-child{border-left:none}
+.strip .nm{font-family:Archivo;font-weight:720;font-size:10.4px;line-height:12px;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.strip .mt{font-family:Archivo;font-weight:760;font-stretch:90%;font-size:12px;line-height:13px;color:var(--y);white-space:nowrap}
+.strip .ds{font-family:Archivo;font-weight:430;font-size:8.6px;line-height:10px;color:#ffffffc4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip .hh .nm{font-family:Plex;font-weight:600;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--y)}
+.strip .hh .mt{color:#fff}
+.strip .ok{width:10px;height:10px;flex:none;display:block}
+/* slightly shorter footer on this banner (210 mm instead of 250 mm), same logos scaled together */
+.foot{height:210px;padding:22px 44px 20px;border-top:1.6px solid var(--ln)}
+.foot .mono{margin-bottom:8px}
+.foot .grid{zoom:.84}
+.foot .inst .logos{zoom:.9}
+svg text{font-family:Archivo}
+</style></head><body>
+<div class="banner">
+
+<!-- ===================== HEADER ===================== -->
+<div class="abs hd top">
+  <img class="ps" src="logos/polisat_fundo_claro.svg" alt="PoliSat">
+  <div class="tt"><div class="nd">HERMES</div><div class="sub">Technical overview · ADS-B receiver on a 2U CubeSat</div></div>
+  <div class="ev"><span class="mono">CubeDesign 2026 · UNSAM</span><span class="mono">Team CD26-CUB-POL</span><span class="mono">Escola Politécnica · USP</span></div>
+</div>
+
+<div class="abs grid12">
+
+<!-- ===================== 1 MISSION ===================== -->
+<div class="p" style="grid-column:1/5">
+  <h3><span class="no">1</span>Mission &amp; data chain</h3>
+  <div class="row">
+    <div class="fig" style="width:96px"><img src="imagens/dp_render.png" style="height:84px;object-fit:cover;object-position:56% 46%;background:#dcdcdc"><div class="cap">Fig. 1 · CAD assembly</div></div>
+    <div class="nums" style="grid-template-columns:1fr 1fr;flex:1">
+      <div><div class="n">2U</div><div class="l">10 × 10 × 22.7 cm</div></div>
+      <div><div class="n">500<small>km</small></div><div class="l">design LEO altitude</div></div>
+      <div><div class="n">1090<small>MHz</small></div><div class="l">ADS-B from aircraft</div></div>
+      <div><div class="n">433<small>MHz</small></div><div class="l">LoRa TT&amp;C, half-duplex</div></div>
+    </div>
+  </div>
+  <svg id="chain" width="246" height="78" viewBox="0 0 246 78" style="margin-top:6px;display:block"></svg>
+  <div class="open"><b>OPEN</b>Consolidated mass budget + final measured mass · total and per-subsystem cost (COTS vs custom).</div>
+</div>
+
+<!-- ===================== 2 PAYLOAD ===================== -->
+<div class="p" style="grid-column:5/13">
+  <h3><span class="no">2</span>Payload · ADS-B receiver<span class="k">patch → RTL-SDR V3 → RPi Zero W → USART3 → OBC</span></h3>
+  <div class="row">
+    <div class="col" style="width:118px;flex:none">
+      <div class="fig"><img src="imagens/dp_patch_ganho3d.png" style="height:72px"><div class="cap">Fig. 27 · HFSS realized gain, peak 1.27 dBi</div></div>
+      <div class="fig"><img src="imagens/dp_pld_pcb3d.png" style="height:70px"><div class="cap">Fig. 23 · PLD interface PCB</div></div>
+    </div>
+    <div class="col" style="width:134px;flex:none">
+      <div class="fig"><img src="imagens/dp_patch_s11.png" style="height:60px"><div class="cap">Fig. 25 · S11 −14.03 dB @ 1.09 GHz</div></div>
+      <div class="fig"><img src="imagens/dp_patch_axial.png" style="height:60px"><div class="cap">Fig. 26 · axial ratio &lt; 5.07 dB within ±30°</div></div>
+    </div>
+    <div class="col" style="flex:1">
+      <ul class="t">
+        <li><b>Corner-truncated patch</b> on the nadir face, near-circular polarization: directivity 6.27 dBi, efficiency 32.9 %<span class="tag a">ANALYSIS</span></li>
+        <li><b>dump1090-based C</b> on RPi Zero W: 2.0 MS/s I/Q, 8 µs preamble match, CRC-24 with 1-bit correction, DF17/18</li>
+        <li>Frames timestamped (1 ms) and sent raw; ground pairs CPR odd/even frames</li>
+      </ul>
+      <table class="lb" style="margin-top:2px">
+        <tr><th>Aircraft → sat, worst case 30°</th><th>dB</th></tr>
+        <tr><td>Pt (≈125 W) · G<sub>tx</sub> · G<sub>rx</sub></td><td>51 · 2 · 1.27</td></tr>
+        <tr><td>FSPL · pol. · other</td><td>−148.75 · −6.25 · −8.14</td></tr>
+        <tr><td>Received / sensitivity</td><td>−105.5 / −133 dBm</td></tr>
+        <tr class="tot"><td>Margin, Table 14<span class="tag a">ANALYSIS</span></td><td class="m">27.5 dB</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="open"><b>OPEN</b>Verify sensitivity and trajectory / origin–destination processing with known data · logs from the physical reception + downlink chain and the 20-aircraft / 600 s test. The secondary payload (anomaly detection) is a concept only.</div>
+</div>
+
+<!-- ===================== 3 TT&C ===================== -->
+<div class="p" style="grid-column:1/8">
+  <h3><span class="no">3</span>TT&amp;C · LoRa link<span class="k">ESP32 + E32-433T20D · 20 dBm · RDT 3.0</span></h3>
+  <div class="row">
+    <div class="fig" style="width:86px"><svg id="dipole" width="86" height="90" viewBox="-50 -52 100 104"></svg><div class="cap">On-board dipole, 2 × λ/4 at 180°: ideal E-plane (toroidal, linear pol.)</div></div>
+    <div class="fig" style="width:84px"><img src="imagens/dp_qfh_padrao.png" style="height:84px"><div class="cap">Fig. 18 · ground QFH 435 MHz, circular pol., ~5 dB<span class="tag p">PROTOTYPE</span></div></div>
+    <div class="col" style="width:114px;flex:none">
+      <div class="fig"><img src="imagens/dp_ttc_defasador.png" style="height:72px"><div class="cap">Fig. 14 · phase shifter: ADT2-1T+ balun + 2 × QCN-3+</div></div>
+      <div class="row" style="gap:5px">
+        <div class="fig" style="width:32px"><img src="imagens/dp_ttc_linha.png" style="height:38px"></div>
+        <div class="fig" style="flex:1"><img src="imagens/dp_ttc_s11.png" style="height:38px"></div>
+      </div>
+      <div class="cap" style="margin-top:0">Fig. 16–17 · RF board, 50 Ω line S11 −26.6 dB @ 433 MHz</div>
+    </div>
+    <div class="col" style="flex:1">
+      <table class="lb">
+        <tr><th>Link budget</th><th>down = up</th></tr>
+        <tr><td>Pt</td><td>20 dBm</td></tr>
+        <tr><td>Antenna gains</td><td>5.27 + 2.15 dBi</td></tr>
+        <tr><td>FSPL</td><td>−140.74 dB</td></tr>
+        <tr><td>Polarization · other</td><td>−3 · −4.78 dB</td></tr>
+        <tr><td>Received</td><td>−121.1 dBm</td></tr>
+        <tr><td>E32 sensitivity</td><td>−146 dBm</td></tr>
+        <tr class="tot"><td>Margin <span class="tag a">ANALYSIS</span></td><td class="m">24.9 dB</td></tr>
+      </table>
+      <div class="cap">Table 3</div>
+    </div>
+  </div>
+  <p class="t" style="margin-top:5px">Packets: 32-bit words with a 7-bit prefix (4-bit subsystem + 3-bit type) and metadata-scaled integers; 112-bit ADS-B frames are chunked. ESP32: one core for the bus, one for the radio.</p>
+  <div class="open"><b>OPEN</b>Executed TC and decoded TM with the real ground station · consolidated mission data volume, storage and useful downlink capacity.</div>
+</div>
+
+<!-- ===================== 4 EPS ===================== -->
+<div class="p" style="grid-column:8/13">
+  <h3><span class="no">4</span>EPS · power budget</h3>
+  <div class="row">
+    <div class="fig" style="flex:1"><img src="imagens/dp_eps_blocos.png" style="height:44px"><div class="cap">Fig. 21 · 3 panels → 2 × MP2733 MPPT → LTC4358 ideal diode → LM2735X boost 5 / 13.8 V → LD1117 3.3 V</div></div>
+    <div class="fig" style="width:62px"><img src="imagens/dp_eps_pcb3d.png" style="height:54px"><div class="cap">Fig. 22 · EPS PCB</div></div>
+  </div>
+  <svg id="pwr" width="317" height="88" viewBox="0 0 317 90" style="margin-top:4px;display:block"></svg>
+  <p class="t" style="margin-top:2px">2 × 18650-Q30 (3000 mAh, 3.6 V) · MAX17048 SoC · INA3221 sensing · daily mean <b>3.68 W</b> (Table 12)<span class="tag a">ANALYSIS</span></p>
+  <div class="open"><b>OPEN</b>Peak ADCS demand (ESCON 24/2, 22.99 W on 13.8 V) vs real bus capability · measured charging current under light.</div>
+</div>
+
+<!-- ===================== 5 ADCS ===================== -->
+<div class="p" style="grid-column:1/5">
+  <h3><span class="no">5</span>ADCS · 1-axis prototype</h3>
+  <div class="row">
+    <div class="fig" style="width:68px"><img src="imagens/dp_adcs_pcb.png" style="height:68px"><div class="cap">Fig. 9 · ADCS PCB</div></div>
+    <div class="fig" style="flex:1"><img src="imagens/dp_adcs_damping.png" style="height:68px"><div class="cap">Fig. 4 · rate damping from 60 RPM<span class="tag a">ANALYSIS</span></div></div>
+  </div>
+  <ul class="t" style="margin-top:5px">
+    <li><b>Wheel</b>: Maxon EC 20 flat + ESCON 24/2, 3.2 mN·m (≈1.2× margin)</li>
+    <li>MPU-9250 + 4 LDRs → complementary filter, 10 Hz, Arduino Nano</li>
+    <li>Req.: 60 → 5 RPM in 10 s · azimuth &lt; 5° · GM 6 dB · PM 45°</li>
+  </ul>
+  <div class="open"><b>OPEN</b>Quantify prototype damping + final assembly configuration · LDR angular error vs light source.</div>
+</div>
+
+<!-- ===================== 6 OBC ===================== -->
+<div class="p" style="grid-column:5/9">
+  <h3><span class="no">6</span>OBC · flight software</h3>
+  <svg id="obc" width="247" height="96" viewBox="0 0 248 110" style="display:block"></svg>
+  <ul class="t" style="margin-top:5px">
+    <li><b>FreeRTOS</b>: 8 prioritized tasks driven by events, one per state + Manager, Housekeeping, Receive, Error</li>
+    <li>ConOps (Fig. 31): detumble, deploy, azimuth by TC</li>
+    <li>BIT_MECHANICS lock: no Deploy + Detumbling at once</li>
+  </ul>
+  <div class="open"><b>OPEN</b>Consolidated implementation / integration status of flight and ground software.</div>
+</div>
+
+<!-- ===================== 7 STRUCTURE / RAD / THERMAL ===================== -->
+<div class="p" style="grid-column:9/13">
+  <h3><span class="no">7</span>Structure · radiation · thermal</h3>
+  <div class="row" style="gap:5px">
+    <div class="fig" style="flex:1"><img src="imagens/dp_vib_z.png" style="height:46px;object-fit:cover"><div class="cap">Fig. 42 · vib. Z</div></div>
+    <div class="fig" style="flex:1"><img src="imagens/dp_mecanismo.png" style="height:46px;object-fit:cover"><div class="cap">Fig. 60 · deployer</div></div>
+    <div class="fig" style="flex:1"><img src="imagens/dp_tcs_ansys.png" style="height:46px;object-fit:cover;object-position:70% 50%"><div class="cap">Fig. 70 · thermal</div></div>
+  </div>
+  <ul class="t" style="margin-top:5px">
+    <li><b>Al 7075</b>, 14.1 gRMS: 3σ 206.8 MPa (Z) → FS 2.44 · Y 4.01 · X 2.74<span class="tag a">ANALYSIS</span></li>
+    <li><b>Deployer</b>: steel tape-spring, Dyneema burn-wire</li>
+    <li><b>Shield</b> 3 mm HDPE + 2 mm Ti: TID &lt; 100 rad / 4 yr</li>
+    <li><b>Heater</b> (LQI): Al ≥ 10 °C, 0.145 Wh/cycle, 0.48 W peak</li>
+  </ul>
+  <div class="open"><b>OPEN</b>Fit-check + retention (FEM alone is not readiness) · thermal monitoring vs model · release ≥ 10 cm.</div>
+</div>
+
+<!-- ===================== ON-SITE DEMONSTRATIONS ===================== -->
+<div class="strip">
+  <div class="c hh"><div class="nm">At UNSAM</div><div class="mt">8 tests</div><div class="ds"><svg class="ok" style="display:inline-block;vertical-align:-1.5px;margin-right:3px" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#FFC23D"/><path d="M3.2 6.3l1.9 1.9 3.8-4" stroke="#121C4A" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>ready per review</div></div>
+  <div class="c"><div class="nm">Detumbling<svg class="ok" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#FFC23D"/><path d="M3.2 6.3l1.9 1.9 3.8-4" stroke="#121C4A" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">60 → 5 RPM</div><div class="ds">in 10 s</div></div>
+  <div class="c"><div class="nm">Light azimuth<svg class="ok" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#FFC23D"/><path d="M3.2 6.3l1.9 1.9 3.8-4" stroke="#121C4A" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">&lt; 5° error</div><div class="ds">LDR pointing</div></div>
+  <div class="c"><div class="nm">TC / TM</div><div class="mt">24.9 dB</div><div class="ds">link margin</div></div>
+  <div class="c"><div class="nm">ADS-B mission</div><div class="mt">20 aircraft</div><div class="ds">within 600 s</div></div>
+  <div class="c"><div class="nm">Deployment</div><div class="mt">≥ 10 cm</div><div class="ds">remote release</div></div>
+  <div class="c"><div class="nm">Charging</div><div class="mt">MPPT</div><div class="ds">under light</div></div>
+  <div class="c"><div class="nm">Thermal</div><div class="mt">Al ≥ 10 °C</div><div class="ds">LQI heater</div></div>
+  <div class="c"><div class="nm">Vibration</div><div class="mt">14.1 gRMS</div><div class="ds">min. FS 2.44</div></div>
+</div>
+
+</div>
+<div class="foot"></div>
+</div>
+<script>
+const NV='#121C4A',MUT='#5A6380',Y='#FFC23D',BL='#2350C8',AM='#E8A21A',LN='#121C4A33';
+function tx(g,x,y,s,a){const t=el('text',Object.assign({x,y,fill:NV,'font-size':9,'font-weight':600},a||{}),g);t.textContent=s;return t}
+function box(g,x,y,w,h,label,sub,fill){el('rect',{x,y,width:w,height:h,rx:3.5,fill:fill||'#fff',stroke:NV,'stroke-width':1.1},g);
+  tx(g,x+w/2,y+(sub?h/2-1.2:h/2+3.2),label,{'text-anchor':'middle','font-size':7.8,'font-weight':720,fill:fill===NV?'#fff':NV});
+  if(sub)tx(g,x+w/2,y+h/2+7.6,sub,{'text-anchor':'middle','font-size':6.4,'font-weight':450,fill:fill===NV?'#ffffffcc':MUT})}
+function arr(g,x1,y1,x2,y2,c){el('path',{d:`M${x1} ${y1}L${x2} ${y2}`,stroke:c||NV,'stroke-width':1.2,fill:'none'},g);
+  const a=Math.atan2(y2-y1,x2-x1),s=3.6;el('path',{d:`M${x2} ${y2}L${x2-s*Math.cos(a-.5)} ${y2-s*Math.sin(a-.5)}L${x2-s*Math.cos(a+.5)} ${y2-s*Math.sin(a+.5)}Z`,fill:c||NV},g)}
+const small={'font-size':6.4,'font-family':'Plex','letter-spacing':'.08em',fill:MUT,'font-weight':500};
+
+/* 1 · data chain: on board (top row) and ground (bottom row) */
+(function(){const g=document.getElementById('chain');
+  tx(g,0,7,'ON BOARD',small);
+  [['Patch','1090 MHz'],['RTL-SDR','V3'],['RPi Zero W','decode'],['OBC','STM32'],['ESP32','encode']]
+    .forEach((b,i)=>{box(g,i*50.5,11,45,25,b[0],b[1],i==3?NV:null);if(i)arr(g,i*50.5-5.5,23.5,i*50.5-0.5,23.5)});
+  tx(g,0,50,'GROUND',small);
+  [['Laptop','CPR, tracks'],['UART-USB','bridge'],['LoRa RX','435 MHz'],['QFH','circular pol.']]
+    .forEach((b,i)=>{const x=i*50.5+50.5;box(g,x,53,45,25,b[0],b[1]);if(i)arr(g,x-0.5,65.5,x-5.5,65.5)});
+  el('path',{d:'M224.5 36 L224.5 46',stroke:BL,'stroke-width':1.3,'stroke-dasharray':'2.5 2'},g);arr(g,224.5,46,224.5,52.5,BL);
+  tx(g,220,48,'LoRa 433 MHz',{'text-anchor':'end','font-size':6.6,fill:BL,'font-weight':700});
+})();
+
+/* 3 · ideal half-wave dipole, E-plane (reference shape; antenna axis horizontal) */
+(function(){const g=document.getElementById('dipole'),R=40;
+  [1,.707,.5].forEach((k,i)=>el('circle',{cx:0,cy:0,r:R*k,fill:'none',stroke:LN,'stroke-width':.8,'stroke-dasharray':i?'2 2':''},g));
+  line(g,[-R-4,0],[R+4,0],{stroke:LN,'stroke-width':.8});line(g,[0,-R-4],[0,R+4],{stroke:LN,'stroke-width':.8});
+  let d='';for(let i=0;i<=360;i+=2){const th=i*Math.PI/180,s=Math.sin(th);let f=Math.abs(s)<1e-6?0:Math.cos(Math.PI/2*Math.cos(th))/s;f=Math.abs(f);
+    d+=(i?'L':'M')+(R*f*Math.cos(th)).toFixed(2)+' '+(R*f*Math.sin(th)).toFixed(2)}
+  el('path',{d:d+'Z',fill:BL,'fill-opacity':.16,stroke:BL,'stroke-width':1.6},g);
+  line(g,[-19,0],[-2,0],{stroke:NV,'stroke-width':2.4});line(g,[2,0],[19,0],{stroke:NV,'stroke-width':2.4});
+  tx(g,R*.707+1,-R*.707+1,'−3 dB',{'font-size':6.2,fill:MUT,'font-weight':500});
+  tx(g,0,-R-5,'2.15 dBi max',{'text-anchor':'middle','font-size':6.8,fill:NV,'font-weight':700});
+  tx(g,0,R+10,'HPBW ≈ 78°',{'text-anchor':'middle','font-size':6.6,fill:MUT,'font-weight':500});
+})();
+
+/* 4 · power per operational mode (Table 13): average and peak, W — values labeled directly */
+(function(){const g=document.getElementById('pwr');
+  const M=[['Idle',1.066,1.066],['Detumbling',7.5,25.055],['Mission',3.665,3.665],['Deploy',5.065,5.065],['Transmit',1.265,1.265]];
+  const x0=52,W=200,max=26,h=7,step=14.6,y0=14,X=v=>x0+W*v/max;
+  tx(g,0,7,'POWER PER MODE, W · TABLE 13',small);
+  el('rect',{x:216,y:1,width:7,height:6,rx:1.5,fill:BL},g);tx(g,225,7,'average',{'font-size':7,fill:NV,'font-weight':500});
+  el('rect',{x:260,y:1,width:7,height:6,rx:1.5,fill:AM},g);tx(g,269,7,'peak',{'font-size':7,fill:NV,'font-weight':500});
+  [0,5,10,15,20,25].forEach(v=>{line(g,[X(v),y0-3],[X(v),y0+5*step-3],{stroke:'#121C4A14','stroke-width':.8});
+    tx(g,X(v),y0+5*step+3,String(v),{'text-anchor':'middle','font-size':6.4,fill:MUT,'font-weight':500})});
+  M.forEach(([n,a,p],i)=>{const y=y0+i*step;tx(g,x0-5,y+h+.5,n,{'text-anchor':'end','font-size':8,'font-weight':600});
+    el('rect',{x:x0,y,width:X(a)-x0,height:h,rx:2,fill:BL},g);
+    el('rect',{x:x0,y:y+h+1.2,width:X(p)-x0,height:3.6,rx:1.4,fill:AM},g);
+    const lab=p>a+.01?`${a.toFixed(2)} avg · ${p.toFixed(2)} peak (ESCON)`:a.toFixed(2);
+    tx(g,(p>a+.01?X(a):X(p))+4,y+h-.5,lab,{'font-size':7.6,'font-weight':700,fill:NV});});
+})();
+
+/* 6 · OBC interfaces (Table 1 + GPIO deploy) and state machine */
+(function(){const g=document.getElementById('obc'),o=9;
+  tx(g,36,6,'UART',{'text-anchor':'middle','font-size':6.8,fill:BL,'font-weight':700,'font-family':'Plex'});
+  tx(g,213,6,'I²C · GPIO',{'text-anchor':'middle','font-size':6.8,fill:BL,'font-weight':700,'font-family':'Plex'});
+  box(g,92,30+o,64,34,'OBC','STM32 · FreeRTOS',NV);
+  [['TT&C','ESP32',4,4],['ADCS','Arduino Nano',4,38],['Payload','RPi · USART3',4,72]].forEach(([a,b,x,y])=>{box(g,x,y+o,64,26,a,b);arr(g,x+64,y+o+13,91.5,47+o)});
+  [['EPS','INA3221 · MAX17048',4],['Sensors','DS3231 · 2 × BME280',38],['Deploy','GPIO → MOSFET',72]].forEach(([a,b,y])=>{box(g,178,y+o,70,26,a,b);arr(g,156,47+o,177.5,y+o+13)});
+  tx(g,124,84+o,'IDLE ↔ TRANSMIT',{'text-anchor':'middle','font-size':6.8,fill:NV,'font-weight':700});
+  tx(g,124,93+o,'DEPLOY · DETUMB. · MISSION',{'text-anchor':'middle','font-size':6.2,fill:NV,'font-weight':600});
+  tx(g,124,24,'states return to IDLE',{'text-anchor':'middle','font-size':6,fill:MUT,'font-weight':500});
+})();
+fit();
+</script>
+</body></html>

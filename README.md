@@ -28,7 +28,10 @@ descriptive, and every number comes from the design package.
 4. **ADCS** — indigo / yellow and orange: reaction wheel, detumbling and pointing
 5. **Comunicação** — dark plum / pink: LoRa link, antenna deployment mechanism and OBC states
 6. **Estrutura** — forest green / lime: structure, power, radiation and thermal
-7. **Modelo geral** (`modelo_geral.html`) — template for any occasion. Edit only the `CONTEUDO` block at the
+7. **Técnico** (`vertical7_tecnico.html`) — white / navy / yellow, to pair with Missão: one-page summary of the
+   design package (figures `imagens/dp_*.png` taken from it, numbered as in the DP), link and power budgets, PCBs,
+   and the committee's open items (yellow "OPEN" bars) plus the on-site test matrix. Footer is 210 mm tall here.
+8. **Modelo geral** (`modelo_geral.html`) — template for any occasion. Edit only the `CONTEUDO` block at the
    top: theme (`royal`, `fire`, `teal`, `violet`, `magenta`, `green`), whether to show the Hermes patch, the two header lines, image, label, title,
    text and up to four numbers. Then export.
 
