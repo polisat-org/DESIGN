@@ -67,3 +67,17 @@ if the print shop asks for bleed, the background has to be extended in the HTML.
 
 Archivo and IBM Plex Mono (SIL Open Font License). The word HERMES uses **ND Logos** (dafont), a demo font
 licensed for personal use only — contact the authors for other uses.
+
+## Stickers
+
+Hermes mission patch for stickers, in `adesivos/`, all with a transparent background (no white box), trimmed to the
+patch, 100 × 87.5 mm at 1560 ppi (the 2048 px original from `logo_para_colocar_nas_imagens_geradas/logo_hermes/`
+enlarged 3× with Lanczos), so it stays ≥ 300 dpi up to ~50 cm wide:
+
+| File | Use |
+|---|---|
+| `patch_hermes_adesivo_CMYK.pdf` | Print file: CMYK image with a soft mask (alpha). PDF viewers draw the page white; the background is still transparent in Illustrator, CorelDRAW and RIPs. |
+| `patch_hermes_adesivo_CMYK.tif` | Same artwork as a CMYK TIFF with an alpha channel, for shops that ask for an image file. |
+| `patch_hermes_adesivo_transparente.png` | RGB PNG with transparency, for online sticker services and previews. |
+
+No cut line is included; the print shop can trace it from the patch outline or ask for a CutContour version.
