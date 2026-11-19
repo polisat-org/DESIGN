@@ -273,9 +273,9 @@ Received / sensitivity & −121.1 / −146 dBm\\\hline
 \end{scope}
 \T{326.3}{722}{247.3}{\begin{ul}
 \li{\textbf{Storage}: 2 × 18650-Q30, 3.0 Ah, 3.6 V = 21.6 Wh. A 600 s mission run at 3.67 W uses 0.61 Wh, 2.8\,\% \der.}
-\li{\textbf{Charging}: 3 panels (KXOB121K04TF) → 2 × MP2733 with MPPT; panel V and I on INA3221.}
-\li{\textbf{Bus}: LTC4358 ideal diode → LM2735X boost to 5 V and 13.8 V (ESCON, heater) → LD1117 3.3 V.}
-\li{\textbf{Monitoring}: MAX17048 SoC, INA3221 rails, BME280 battery. External input via MP2733, no battery (TVAC).}
+\li{\textbf{Charging and bus}: 3 KXOB121K04TF panels → 2 × MP2733 (MPPT) → LTC4358 → LM2735X 5 V / 13.8 V → LD1117 3.3 V.}
+\li{\textbf{Monitoring}: MAX17048 SoC, INA3221 rails and panels, BME280 battery. TVAC input via MP2733.}
+\li{\textbf{ESCON 24/2}: 22.99 W instantaneous, 5.43 W average from simulation; the datasheet gives no continuous consumption.}
 \end{ul}}
 
 % =====================================================================

@@ -7,6 +7,7 @@ from the Design Package; values marked `[derived]` are arithmetic on DP values, 
 | File | Contents |
 |---|---|
 | `hermes_banca_90x120cm.pdf` | Compiled banner (RGB), to review or share |
+| `hermes_banca_90x120cm_CMYK_print.pdf` | **Print file**: CMYK (Ghostscript default_cmyk.icc), vector text and graphics, fonts embedded, images not downsampled or recompressed (lossless Flate, 203–520 ppi at final size) |
 | `hermes_banca_preview.png` | Small preview |
 | `main.tex` | Source: panels marked `% N · ...`, all coordinates in mm from the top left corner |
 | `hermes_banca_overleaf.zip` | Ready to upload to Overleaf |
