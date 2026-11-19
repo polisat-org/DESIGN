@@ -1,0 +1,403 @@
+% =====================================================================
+%  HERMES · jury banner, 90 × 120 cm
+%  Design decisions, their justification and traceability to the CubeDesign 2026 HLRs.
+%  Compile with XeLaTeX (Overleaf: Menu → Compiler → XeLaTeX; latexmkrc already asks for it).
+%  Coordinates are millimetres from the top left corner of the page, y grows downwards.
+%  Sources: Design Package (DP), "Rules 2026 - CubeSat" with its High Level Requirements (HLR).
+%  "derived" = arithmetic on DP values, shown so the jury can check it.
+% =====================================================================
+\documentclass{article}
+\usepackage[paperwidth=900mm,paperheight=1200mm,margin=0mm]{geometry}
+\usepackage{fontspec}
+\usepackage[table]{xcolor}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\frenchspacing
+
+% ---------- fonts (folder fonts/) ----------
+\defaultfontfeatures{Path=fonts/,Extension=.ttf,Ligatures=TeX}
+\setmainfont{Archivo-Regular}[BoldFont=Archivo-Bold]
+\newfontfamily\semib{Archivo-SemiBold}
+\newfontfamily\scond{Archivo-SemiCond}
+\newfontfamily\hcond{Archivo-HeavyCond}
+\newfontfamily\plex{IBMPlexMono-Medium}[BoldFont=IBMPlexMono-SemiBold]
+\newfontfamily\plexsb{IBMPlexMono-SemiBold}
+\newfontfamily\plexL{IBMPlexMono-Medium}[LetterSpace=8]
+\newfontfamily\plexK{IBMPlexMono-Medium}[LetterSpace=4]
+\newfontfamily\plexSB{IBMPlexMono-SemiBold}[LetterSpace=8]
+\newfontfamily\nd{NDLogos-Regular}[LetterSpace=1]
+
+% ---------- colours ----------
+\definecolor{bg}{HTML}{D9E2F2}
+\definecolor{nv}{HTML}{121C4A}
+\definecolor{nvb}{HTML}{1B2A66}
+\definecolor{nv2}{HTML}{3A4560}
+\definecolor{ylw}{HTML}{FFC23D}
+\definecolor{yb}{HTML}{FFF4D6}
+\definecolor{bl}{HTML}{2350C8}
+\definecolor{am}{HTML}{E8A21A}
+\definecolor{mut}{HTML}{5A6380}
+\colorlet{ln}{nv!14!white}
+\colorlet{pb}{nv!8!white}
+\colorlet{gl}{nv!10!white}
+\colorlet{hdln}{nv!19!bg}
+
+% ---------- type in millimetres ----------
+\newcommand\F[2]{\fontsize{#1mm}{#2mm}\selectfont\lineskiplimit=-\maxdimen\rightskip=0pt plus 60mm\parfillskip=0pt plus 1fil\relax\spaceskip=\fontdimen2\font\relax\xspaceskip=\fontdimen2\font\relax}
+\hyphenpenalty=10000 \exhyphenpenalty=10000
+\newcommand\SA[2]{\pgfmathsetmacro\sth{#2/2+0.30*#1}\rule{0pt}{\sth mm}}
+% body text, table text, small labels
+\newcommand\bodyf{\F{8.6}{11}\color{nv}}
+\newcommand\tabf{\F{8}{9.9}\color{nv}}
+\newcommand\lab[1]{{\plexK\F{6.6}{8}\color{mut}#1}}
+\newcommand\sh[1]{{\plexSB\F{7}{9}\color{bl}#1}\par\vspace{1.2mm}}
+\newcommand\der{{\plex\F{6.4}{6.4}\color{bl}\,[derived]}}
+\newcommand\m[1]{\ensuremath{#1}}
+
+% \T[opt]{x}{y}{width}{content}: text block from its top left corner
+\newcommand\T[5][]{\node[anchor=north west,inner sep=0,outer sep=0,text width=#4mm,align=left,#1] at (#2,#3) {#5};}
+% \B[opt]{x}{y}{content}: one line on a baseline
+\newcommand\B[4][]{\node[anchor=base west,inner sep=0,outer sep=0,#1] at (#2,#3) {#4};}
+\newcommand\BR[4][]{\node[anchor=base east,inner sep=0,outer sep=0,#1] at (#2,#3) {#4};}
+\newcommand\BC[4][]{\node[anchor=base,inner sep=0,outer sep=0,#1] at (#2,#3) {#4};}
+
+% ---------- panels ----------
+\newcommand\panel[4]{\filldraw[fill=white,draw=pb,line width=1.6mm,rounded corners=10mm] (#1+.8,#2+.8) rectangle ++(#3-1.6,#4-1.6);}
+% \pnl{x}{y}{w}{h}{number}{title}{HLR key}
+\newcommand\pnl[7]{\panel{#1}{#2}{#3}{#4}%
+  \fill[nv,rounded corners=5mm] (#1+11,#2+9) rectangle ++(21,21);
+  \BC{#1+21.5}{#2+23.7}{\plexsb\F{12}{12}\color{ylw}#5}
+  \B{#1+39}{#2+24.6}{\hcond\F{16}{16}\color{nv}#6}
+  \BR{#1+#3-11}{#2+22.4}{\plexK\F{6.8}{6.8}\color{bl}#7}}
+\newcommand\img[5]{\node[inner sep=0] at (#1+#3/2,#2+#4/2) {\includegraphics[width=#3mm,height=#4mm,keepaspectratio]{#5}};}
+\newcommand\capt[4]{\T{#1}{#2}{#3}{\plex\F{6.6}{8}\color{mut}#4}}
+
+% lists with a yellow square
+\newcommand\bul{\rule{0pt}{8.1mm}\makebox[0pt][r]{\raisebox{.95mm}{\tikz\fill[ylw,rounded corners=.4mm](0,0) rectangle (3mm,3mm);}\hspace{3.4mm}}}
+\newenvironment{ul}{\bodyf\leftskip=6.4mm\parskip=1.3mm}{\par}
+\newcommand\li[1]{\par\bul#1\par}
+
+% tables
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1mm}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1mm}}
+\newcommand\hd[1]{\lab{#1}}
+\newenvironment{tb}[1]{\tabf\setlength\tabcolsep{1.6mm}\arrayrulecolor{ln}\setlength\arrayrulewidth{.7mm}\renewcommand\arraystretch{1.22}\begin{tabular}[b]{@{}#1@{}}}{\end{tabular}}
+\newcommand\ylrow{\rowcolor{ylw}}
+
+% diagram boxes: \bx{x}{y}{w}{h}{title}{sub}{0 white / 1 navy}
+\newcommand\bx[7]{%
+  \ifx&#6&\filldraw[fill=white,draw=nv,line width=.9mm,rounded corners=3mm] (#1,#2) rectangle ++(#3,#4);
+    \BC{#1+#3/2}{#2+#4/2+2.7}{\bfseries\F{7.4}{7.4}\color{nv}#5}
+  \else\ifnum#7=1 \filldraw[fill=nv,draw=nv,line width=.9mm,rounded corners=3mm] (#1,#2) rectangle ++(#3,#4);
+    \BC{#1+#3/2}{#2+#4/2-.6}{\bfseries\F{7.8}{7.8}\color{white}#5}
+    \BC{#1+#3/2}{#2+#4/2+7.2}{\F{6.6}{6.6}\color{white!78!nv}#6}
+  \else \filldraw[fill=white,draw=nv,line width=.9mm,rounded corners=3mm] (#1,#2) rectangle ++(#3,#4);
+    \BC{#1+#3/2}{#2+#4/2-.6}{\bfseries\F{7.8}{7.8}\color{nv}#5}
+    \BC{#1+#3/2}{#2+#4/2+7.2}{\F{6.6}{6.6}\color{mut}#6}\fi\fi}
+\tikzset{ar/.style={draw=nv,line width=.9mm,-{Stealth[length=3.4mm,width=3mm]}}}
+
+% traceability row: \tr{HLR}{implementation}{panel}{method}
+\newcommand\tr[4]{{\plexsb\F{6.6}{8.6}#1} & #2 & {\plexsb\F{6.6}{8.6}\color{bl}#3} & {\plex\F{6.4}{8.6}\color{mut}#4}\\\hline}
+
+\begin{document}
+\noindent\raisebox{\topskip}[0pt][0pt]{%
+\begin{tikzpicture}[x=1mm,y=-1mm,baseline=0pt]
+\useasboundingbox (0,0) rectangle (900,1200);
+
+% ===================== BACKGROUND =====================
+\fill[bg] (0,0) rectangle (900,1200);
+
+% ===================== HEADER =====================
+\node[anchor=north west,inner sep=0] at (36,34) {\includegraphics[height=58mm]{logos/polisat.pdf}};
+\draw[hdln,line width=2mm] (166,30) -- (166,104);
+\B{186}{72}{\nd\F{48}{40}\color{nv}HERMES}
+\B{186}{92}{\scond\F{14.5}{14.5}\color{nv}ADS-B reception on a 2U CubeSat: design decisions, justification and HLR traceability}
+\B{186}{106}{\plex\F{7.2}{7.2}\color{mut}Values from the Design Package (DP). \textcolor{bl}{[derived]} = arithmetic on DP values. Panels \textcolor{nv}{1–10} are cited in the traceability matrix.}
+\BR{774}{50}{\plexL\F{10}{10}\color{nv}CUBEDESIGN 2026 · UNSAM}
+\BR{774}{65}{\plexL\F{10}{10}\color{mut}TEAM CD26-CUB-POL}
+\img{786}{20}{100}{88}{imagens/patch.png}
+
+% =====================================================================
+% 1 · PROCESSING ARCHITECTURE
+% =====================================================================
+\pnl{36}{118}{414}{278}{1}{Processing architecture: hybrid}{HLR-ADS-03 · ADS-04}
+\B{47}{160}{\lab{ON BOARD}}
+\bx{47}{164}{70}{26}{Patch antenna}{1090 MHz, nadir face}{0}
+\bx{127.5}{164}{70}{26}{RTL-SDR V3}{2.0 MS/s, 8-bit I/Q}{0}
+\bx{208}{164}{70}{26}{RPi Zero W}{detect · CRC · timestamp}{0}
+\bx{288.5}{164}{70}{26}{OBC STM32}{USART3 in, FreeRTOS}{1}
+\bx{369}{164}{70}{26}{ESP32 + E32}{32-bit words, RDT 3.0}{0}
+\draw[ar] (117,177) -- (127.5,177); \draw[ar] (197.5,177) -- (208,177);
+\draw[ar] (278,177) -- (288.5,177); \draw[ar] (358.5,177) -- (369,177);
+\BC{162.5}{197.5}{\plex\F{6.4}{6.4}\color{bl}32 Mbit/s raw I/Q \der}
+\BC{290}{197.5}{\plex\F{6.4}{6.4}\color{bl}112-bit frame + 32-bit time}
+\draw[bl,line width=1.1mm,dash pattern=on 2.5mm off 2mm] (404,190) -- (404,208);
+\draw[draw=bl,line width=1.1mm,-{Stealth[length=3.4mm,width=3mm]}] (404,206) -- (404,213);
+\BR{400}{205}{\plex\F{6.4}{6.4}\color{bl}LoRa 433 MHz}
+\B{47}{209}{\lab{GROUND}}
+\bx{47}{213}{151}{26}{Ground computer}{sort by ICAO · global CPR · tracks · result tables}{1}
+\bx{208}{213}{70}{26}{UART–USB}{bridge}{0}
+\bx{288.5}{213}{70}{26}{LoRa receiver}{435 MHz}{0}
+\bx{369}{213}{70}{26}{QFH antenna}{circular pol., ~5 dB}{0}
+\draw[ar] (208,226) -- (198,226); \draw[ar] (288.5,226) -- (278,226); \draw[ar] (369,226) -- (358.5,226);
+\T{47}{246}{392}{\begin{tb}{L{92}L{26}L{266}}
+\hd{FUNCTION} & \hd{WHERE} & \hd{REASON}\\\hline
+I/Q acquisition, preamble detection & board & 2.0 MS/s × 2 × 8 bit = 32 Mbit/s \der{} cannot pass UART/LoRa; only detected frames leave the RPi.\\\hline
+CRC-24 check, 1-bit correction & board & Corrupted frames are dropped before they take downlink capacity.\\\hline
+Timestamp, 1 ms, 32 bit & board & Reception time exists only on board (HLR-ADS-07). \m{2^{32}} ms ≈ 49.7 days \der: no rollover in a 600 s run.\\\hline
+Global CPR decoding & ground & Needs an even and an odd frame of the same ICAO; one frame gives only a position inside a zone.\\\hline
+Tracks, trajectories, unit conversion & ground & Needs the position history per ICAO; off the OBC, no buffer growth on the OBC/UART link.\\\hline
+\end{tb}\par\vspace{2.5mm}
+\tabf Each record keeps the 24-bit PI field (DP Table 7): every decoded value can be recomputed on the ground.}
+
+% =====================================================================
+% 2 · PAYLOAD FRONT END
+% =====================================================================
+\pnl{460}{118}{404}{278}{2}{Payload front end}{HLR-ADS-01}
+\img{471}{156}{122}{64}{imagens/dp_patch_ganho3d.png}
+\img{601}{156}{122}{64}{imagens/dp_patch_s11.png}
+\img{731}{156}{122}{64}{imagens/dp_patch_axial.png}
+\capt{471}{222}{122}{Fig. 27 · HFSS realized gain, peak 1.27 dBi}
+\capt{601}{222}{122}{Fig. 25 · S11 −14.03 dB at 1.09 GHz}
+\capt{731}{222}{122}{Fig. 26 · axial ratio < 5.07 dB (1.79) within ±30°}
+\T{471}{246}{176}{\sh{AIRCRAFT → SATELLITE, WORST CASE 30° (DP TABLE 14)}
+\begin{tb}{L{120}R{56}}
+Transmit power (≈125 W, estimated) & 51 dBm\\\hline
+Aircraft antenna gain & ≈2 dBi\\\hline
+Patch realized gain & 1.27 dBi\\\hline
+Free-space loss (≈600 km \der) & −148.75 dB\\\hline
+Polarization, 30° off boresight & −6.25 dB\\\hline
+Other losses & −8.14 dB\\\hline
+Received power & −105.51 dBm\\\hline
+RTL-SDR V3 sensitivity (typ.) & −133 dBm\\\hline
+\ylrow\bfseries Margin & \bfseries 27.49 dB\\
+\end{tb}}
+\T{657}{246}{196}{\sh{WHY EACH PART}\begin{ul}
+\li{\textbf{Corner-truncated patch}: non-linear polarization lowers mismatch loss to aircraft antennas; planar, on the nadir face, no deployment. Directivity 6.27 dBi, efficiency 32.9\,\%.}
+\li{\textbf{Pointing}: the ADCS holds the patch face to nadir; the budget uses 30° off boresight and the worse axis of the polarization ellipse.}
+\li{\textbf{RTL-SDR V3}: DVB-T based SDR, USB to the RPi, large user base.}
+\li{\textbf{RPi Zero W}: lowest consumption of the RPi family, 66 × 30.5 × 5 mm, 1 GHz ARM11, 512 MB; 0.5 W idle, 1.15 W peak (DP Table 12).}
+\end{ul}}
+
+% =====================================================================
+% 3 · DECODER AND DATA PRODUCTS
+% =====================================================================
+\pnl{36}{406}{560}{196}{3}{On-board decoder and data products}{HLR-ADS-02 · ADS-07 · ADS-08 · SW-02}
+% preamble (7 mm per µs)
+\B{47}{448}{\lab{PREAMBLE, 8 µs}}
+\begin{scope}[shift={(47,470)}]
+  \draw[gl,line width=.6mm] (0,0) -- (88,0);
+  \foreach \t in {0,1,3.5,4.5}{\fill[nv] (11*\t,0) rectangle ++(5.5,-12);
+     \BC{11*\t+2.75}{6.5}{\plex\F{4.8}{4.8}\color{mut}\t}}
+  \B{90}{6.5}{\plex\F{5.8}{5.8}\color{mut}µs}
+\end{scope}
+\T{150}{450}{147}{\plex\F{6.6}{8.2}\color{mut}Data block: 112 bits, 1 µs per bit (PPM). At 2.0 MS/s: 2 samples per bit \der.}
+% 112-bit frame (2.232 mm per bit)
+\B{47}{487}{\lab{EXTENDED SQUITTER, DF17/18, 112 BITS}}
+\begin{scope}[shift={(47,491)}]
+  \foreach \a/\b/\n/\k in {0/5/DF/5,5/8/CA/3,8/32/ICAO (AA)/24,32/88/ME: type code + payload/56,88/112/PI (CRC-24)/24}{
+    \filldraw[fill=yb,draw=nv,line width=.6mm] ({2.232*\a},0) rectangle ({2.232*\b},12);
+    \BC{{2.232*(\a+\b)/2}}{8.2}{\bfseries\ifnum\k<5\F{4.8}{4.8}\else\F{6.2}{6.2}\fi\color{nv}\n}
+    \BC{{2.232*(\a+\b)/2}}{18}{\plex\F{5.8}{5.8}\color{mut}\k}}
+\end{scope}
+\T{47}{516}{250}{\begin{ul}
+\li{dump1090-based C decoder. Preamble accepted only if the 4 pulses exceed an adaptive threshold (noise floor, local peak) and the gaps stay quiet.}
+\li{CRC-24 (ICAO Annex 10) over 88 bits: zero syndrome passes, 1-bit errors corrected. DF17/18 kept; type code selects ID, position, velocity.}
+\end{ul}}
+\T{307}{444}{278}{\begin{tb}{L{58}L{108}L{108}}
+\hd{REQUIRED} & \hd{SOURCE IN THE FRAME} & \hd{GROUND OUTPUT}\\\hline
+ICAO address & AA field, 24 bit & 6 hex characters\\\hline
+Latitude, longitude & ME position, CPR 17-bit, even/odd & Global CPR pair → decimal degrees\\\hline
+Altitude & ME position, baro / GNSS & feet\\\hline
+Velocity, heading & ME velocity, E–W and N–S & knots; track 0–360°\\\hline
+Identification & ME identification & callsign\\\hline
+Timestamp & added on board, 32 bit, 1 ms & one per record\\\hline
+\end{tb}\par\vspace{3mm}
+\sh{HLR-ADS-08 METRICS, FROM THE LOGGED RECORDS}
+\tabf Decoded messages: frames with a valid PI, counted per ICAO. Data loss: unacknowledged packets and RDT 3.0 retransmissions in the ground log. Latency: ground reception time minus on-board timestamp.}
+
+% =====================================================================
+% 4 · SECONDARY MISSION
+% =====================================================================
+\pnl{606}{406}{258}{196}{4}{Secondary mission}{HLR-ADS-06}
+\T{617}{442}{236}{\bodyf\SA{8.6}{11}ADS-B anomaly detection on the same RPi Zero W, after the decoder. Concept only; the rules do not require implementation.\par\vspace{1.6mm}
+\begin{ul}
+\li{\textbf{Features} per ICAO, sliding window: position step vs velocity × \m{\Delta t}, acceleration, turn rate; altitude rate, baro vs GNSS; message intervals, repetition rate.}
+\li{\textbf{Isolation Forest}, trained offline on valid flights, loaded into RAM at boot, plus deterministic rules. It needs no model of each anomaly and keeps CPU load low, so the SDR pipeline does not drop frames.}
+\li{\textbf{Output}: timestamp, ICAO, category, score 0–100\,\%, last lat/lon, sent instead of repeated raw frames.}
+\end{ul}}
+
+% =====================================================================
+% 5 · TT&C
+% =====================================================================
+\pnl{36}{612}{269.3}{212}{5}{TT\&C link}{HLR-COMM-01·02·03}
+\T{47}{648}{247.3}{\begin{ul}
+\li{\textbf{E32-433T20D}, 433 MHz, half-duplex: TC and TM alternate. 20 dBm, −146 dBm.}
+\li{\textbf{RDT 3.0}: ACK, timeout, retransmission (DP Figs 12–13).}
+\li{\textbf{On board}: 2 × \m{\lambda}/4 monopoles at 180° (ADT2-1T+ balun). Toroidal pattern: the link needs no pointing.}
+\li{\textbf{Ground}: QFH 435 MHz, circular, no rotator; the 3 dB polarization loss is in the budget.}
+\li{\textbf{Packets}: 32-bit words, 7-bit prefix (4 subsystem + 3 type).}
+\end{ul}\par\vspace{2mm}
+\begin{tb}{L{150}R{97}}
+\hd{LINK BUDGET, DP TABLE 3} & \hd{DOWN = UP}\\\hline
+Pt · antenna gains & 20 dBm · 5.27 + 2.15 dBi\\\hline
+Free-space loss (≈600 km \der) & −140.74 dB\\\hline
+Polarization · other & −3 · −4.78 dB\\\hline
+Received / sensitivity & −121.1 / −146 dBm\\\hline
+\ylrow\bfseries Margin & \bfseries 24.9 dB\\
+\end{tb}}
+
+% =====================================================================
+% 6 · EPS
+% =====================================================================
+\pnl{315.3}{612}{269.3}{212}{6}{EPS budget}{HLR-EPS-01…05}
+% power per mode (DP Table 13), scale .78
+\begin{scope}[shift={(326.3,646)},scale=.78]\def\svgs{.78}
+  \B{0}{7}{\plexK\F{5.3}{5.3}\color{mut}POWER PER MODE, W (DP TABLE 13)}
+  \fill[bl,rounded corners=1.2mm] (216,1) rectangle ++(7,6); \B{225}{7}{\F{5.6}{5.6}\color{nv}average}
+  \fill[am,rounded corners=1.2mm] (260,1) rectangle ++(7,6); \B{269}{7}{\F{5.6}{5.6}\color{nv}peak}
+  \foreach \v in {0,5,10,15,20,25}{
+    \draw[gl,line width=.6mm] ({62+190*\v/26},11) -- ({62+190*\v/26},84);
+    \BC{62+190*\v/26}{89}{\F{5.2}{5.2}\color{mut}\v}}
+  \foreach \n/\a/\p/\lab [count=\i from 0] in {Idle/1.066/1.066/1.07, Detumbling/7.5/25.055/{7.50 avg · 25.05 peak (ESCON)}, Mission/3.665/3.665/3.67, Deploy/5.065/5.065/5.07, Transmit/1.265/1.265/1.26}{
+    \pgfmathsetmacro\y{14+14.6*\i}
+    \BR{57}{\y+7.5}{\semib\F{6.4}{6.4}\color{nv}\n}
+    \fill[bl,rounded corners=1.5mm] (62,\y) rectangle ({62+190*\a/26},\y+7);
+    \fill[am,rounded corners=1mm] (62,\y+8.2) rectangle ({62+190*\p/26},\y+11.8);
+    \pgfmathsetmacro\lx{62+190*min(\a,\p)/26+4}
+    \B{\lx}{\y+6.5}{\bfseries\F{6}{6}\color{nv}\lab}}
+\end{scope}
+\T{326.3}{722}{247.3}{\begin{ul}
+\li{\textbf{Storage}: 2 × 18650-Q30, 3.0 Ah, 3.6 V = 21.6 Wh. A 600 s mission run at 3.67 W uses 0.61 Wh, 2.8\,\% \der.}
+\li{\textbf{Charging}: 3 panels (KXOB121K04TF) → 2 × MP2733 with MPPT; panel V and I on INA3221.}
+\li{\textbf{Bus}: LTC4358 ideal diode → LM2735X boost to 5 V and 13.8 V (ESCON, heater) → LD1117 3.3 V.}
+\li{\textbf{Monitoring}: MAX17048 SoC, INA3221 rails, BME280 battery. External input via MP2733, no battery (TVAC).}
+\end{ul}}
+
+% =====================================================================
+% 7 · ADCS
+% =====================================================================
+\pnl{594.7}{612}{269.3}{212}{7}{ADCS prototype}{HLR-ADCS-01·02·03}
+\img{605.7}{646}{110}{62}{imagens/dp_adcs_damping.png}
+\capt{605.7}{709}{110}{Fig. 4 · simulated rate damping from 60 RPM}
+\T{723}{648}{130}{\tabf\SA{8}{9.9}\textbf{Requirements}: azimuth < 5°; 60 → 5 RPM in 10 s; GM 6 dB; PM 45°.\par\vspace{1.6mm}
+\textbf{Law}: \m{\tau = -K\omega} on the gyro rate, \m{K = 1.0\times10^{-3}}. Actuator lag 0.05 s is much faster than the plant.\par\vspace{1.6mm}
+\textbf{Sampling}: 10 Hz, above 10–20 × the 0.706 rad/s bandwidth (1.12–2.25 Hz); Tustin.}
+\T{605.7}{727}{247.3}{\begin{ul}
+\li{\textbf{Torque}: \m{J\,\Delta\omega/\Delta t} = 4.47\m{\times10^{-3}} × 5.76 / 10 = 2.57 mN·m; EC 20 flat gives 3.2 mN·m, 1.24× \der.}
+\li{\textbf{Wheel}: \m{H = J\omega} = 2.81\m{\times10^{-2}} N·m·s at 60 RPM; at 12 000 RPM the wheel needs \m{I \geq} 2.24\m{\times10^{-5}} kg·m² \der.}
+\li{\textbf{Estimation}: complementary filter, 4 LDRs / magnetometer (absolute, slow) + MPU-9250 gyro (fast, drifting).}
+\end{ul}}
+
+% =====================================================================
+% 8 · OBC AND FLIGHT SOFTWARE
+% =====================================================================
+\pnl{36}{834}{269.3}{196}{8}{Flight software}{HLR-GEN-03·SW-01}
+\bx{47}{870}{62}{20}{TRANSMIT}{downlink}{0}
+\bx{124}{870}{44}{20}{IDLE}{base state}{1}
+\bx{194}{862}{100}{12}{MISSION}{}{0}
+\bx{194}{879}{100}{12}{DEPLOY}{}{0}
+\bx{194}{896}{100}{12}{DETUMBLING}{}{0}
+\draw[ar] (124,877) -- (109,877); \draw[ar] (109,884) -- (124,884);
+\draw[ar] (168,876) -- (194,868); \draw[ar] (168,880) -- (194,885); \draw[ar] (168,884) -- (194,902);
+\BC{116.5}{899}{\plex\F{5.8}{5.8}\color{mut}timer}
+\BC{176}{904}{\plex\F{5.8}{5.8}\color{mut}TC}
+\T{47}{914}{247.3}{\begin{ul}
+\li{\textbf{STM32L476RG}, FreeRTOS: 8 tasks, event-driven; every state returns to IDLE.}
+\li{\textbf{Buses}: I²C + multiplexer (same-address sensors); UART to TT\&C, ADCS, payload; GPIO MOSFET + continuity sense for the deployer.}
+\li{\textbf{BIT\_MECHANICS}: Deploy (5.07 W) and Detumbling (25.05 W peak) never run together.}
+\li{\textbf{Test ConOps}: detumble, deploy, azimuth by TC; TM at a fixed interval: each function observed alone.}
+\end{ul}}
+
+% =====================================================================
+% 9 · STRUCTURE, VIBRATION, RADIATION
+% =====================================================================
+\pnl{315.3}{834}{269.3}{196}{9}{Structure}{HLR-GEN-01·ENV-02}
+\T{326.3}{865}{247.3}{\begin{tb}{L{8}L{88}R{27}R{75}R{20}}
+\hd{AX} & \hd{LOCATION} & \hd{3\m{\sigma}} & \hd{ALLOWABLE (MPa)} & \hd{FS}\\\hline
+Z & flange–ADCS support & 206.8 & 505, Al 7075 yield & 2.44\\\hline
+Y & flange–ADCS support & 126 & 505, Al 7075 yield & 4.01\\\hline
+X & battery PCB–standoff & 115.51 & 316, FR-4 cross UTS & 2.74\\\hline
+\end{tb}\par\vspace{2.2mm}
+\begin{ul}
+\li{\textbf{Random}: 14.1 gRMS, 20–2000 Hz, 2 min/axis; modes to 2000 Hz, 3 in the 50–800 Hz plateau (2 XY translation, 1 torsion).}
+\li{\textbf{Envelope}: 2U, Al 7075; rails ≥ 8.5 mm, ≥ 75\,\% rail contact, protrusion ≤ 6.5 mm.}
+\li{\textbf{Deployer}: steel tape-spring, Dyneema cut by a resistive wire; 100 × 100 × 16 mm.}
+\li{\textbf{Radiation}: SPENVIS 500 km, 4 yr; 3 mm HDPE + 2 mm Ti: TID < 100 rad, RDM 2×.}
+\end{ul}}
+
+% =====================================================================
+% 10 · THERMAL CONTROL
+% =====================================================================
+\pnl{594.7}{834}{269.3}{196}{10}{Thermal control}{HLR-EPS-04·ENV-02}
+% test profile (DP Appendix C): 0..310 min, −10..+50 °C
+\begin{scope}[shift={(622,916)},x={(0.7mm,0)},y={(0,0.62mm)}]
+  \foreach \tv in {-10,10,30,50}{\draw[gl,line width=.5mm] (0,\tv+10) -- (310,\tv+10);
+     \node[anchor=east,inner sep=0] at (-2,\tv+10) {\plex\F{5.6}{5.6}\color{mut}\tv};}
+  \foreach \t in {0,70,140,210,280}{\node[anchor=north,inner sep=0] at (\t,-2) {\plex\F{5.6}{5.6}\color{mut}\t};}
+  \node[anchor=north east,inner sep=0] at (310,-2) {\plex\F{5.6}{5.6}\color{mut}min};
+  \draw[nv,line width=1mm,line join=round] (0,0) -- (30,0) -- (70,60) -- (100,60) -- (140,0) -- (170,0) -- (210,60) -- (240,60) -- (280,0) -- (310,0);
+  \draw[bl,line width=.8mm,dash pattern=on 2mm off 1.5mm] (0,22) -- (310,22);
+  \draw[am,line width=.8mm] (0,20) -- (310,20);
+  \draw[mut,line width=.6mm,dash pattern=on 1mm off 1mm] (0,10) -- (310,10);
+  
+\end{scope}
+\T{605.7}{868}{247.3}{\plex\F{6}{7.4}\color{mut}\tikz\fill[nv](0,0)rectangle(3mm,3mm); profile \quad\tikz\fill[bl](0,0)rectangle(3mm,3mm); setpoint 12 °C \quad\tikz\fill[am](0,0)rectangle(3mm,3mm); Al ≥ 10 °C \quad dashed: battery 0 °C \quad (°C vs min)}
+\T{605.7}{928}{247.3}{\begin{ul}
+\li{\textbf{Test}: −10 to +50 °C, 1.5 °C/min (40 min ramps), 30 min plateaus; battery > 0 °C. Al ≥ 10 °C keeps a margin over that limit; heater ≤ 3 W.}
+\li{\textbf{Lumped Al node}: Bi = 1.24–3.12\m{\times10^{-4}} \m{\ll} 0.1 (cold case 25 / −10 °C); battery radial field by Bessel modes.}
+\li{\textbf{LQI} + observer on one thermistor (\m{\tau} = 15 s), anti-windup: 0.145 Wh per test, 0.48 W peak. ANSYS replay: 10.329 °C for a 12 °C reference.}
+\end{ul}}
+
+% =====================================================================
+% TRACEABILITY MATRIX
+% =====================================================================
+\panel{36}{1040}{828}{112}
+\B{47}{1054}{\plexSB\F{7.6}{7.6}\color{bl}TRACEABILITY · HLR → IMPLEMENTATION → PANEL → METHOD (RULES): T TEST · I INSPECTION · A ANALYSIS · D DOC. REVIEW · DI DATA INSP. · DV DATA VALID.}
+\newcommand\trtab[2]{\T{#1}{1060}{264}{\F{7}{8.6}\color{nv}\setlength\tabcolsep{1.1mm}\arrayrulecolor{ln}\setlength\arrayrulewidth{.6mm}\renewcommand\arraystretch{1.05}\begin{tabular}{@{}L{34}L{182}ll@{}}#2\end{tabular}}}
+\trtab{47}{%
+\tr{GEN-01}{2U, Al 7075, CDS rail and protrusion rules}{9}{I}
+\tr{GEN-02}{STR, EPS, OBC, TT\&C, ADCS, PLD, flight SW}{1}{I+D}
+\tr{GEN-03}{FreeRTOS state machine, TM at fixed interval}{8}{D}
+\tr{COMM-01}{TC: LoRa → ESP32 → UART → Receive task}{5·8}{T}
+\tr{COMM-02}{TM: state, V/I/SoC, attitude, ADS-B fields}{5}{T+DI}
+\tr{COMM-03}{433 MHz LoRa, RDT 3.0, 24.9 dB margin}{5}{D+T}
+\tr{EPS-01}{21.6 Wh stored vs 0.61 Wh per 600 s run}{6}{T}
+\tr{EPS-02}{3 panels + MP2733 MPPT charging}{6}{T}
+\tr{EPS-03}{Average and peak power per mode}{6}{D}}
+\trtab{318}{%
+\tr{EPS-04}{MAX17048, INA3221, BME280, heater}{6·10}{T+A}
+\tr{EPS-05}{MP2733 external input, no battery}{6}{T+I}
+\tr{ADCS-01}{Azimuth: 4 LDRs + gyro, complementary filter}{7}{T}
+\tr{ADCS-02}{Rate damping, 3.2 mN·m wheel}{7}{T}
+\tr{ADCS-03}{Azimuth < 5°, GM 6 dB, PM 45°}{7}{A+D}
+\tr{ADS-01}{Patch + RTL-SDR V3, 1090 MHz, 2.0 MS/s}{2}{T}
+\tr{ADS-02}{ICAO, CPR lat/lon, altitude, velocity}{3}{T+DV}
+\tr{ADS-03}{Ground buffers keyed by 24-bit ICAO}{1·3}{T}
+\tr{ADS-04}{Frames on board, CPR and tracks on ground}{1}{D}}
+\trtab{589}{%
+\tr{ADS-05}{600 s run in MISSION mode, 3.67 W}{1·6}{T+DV}
+\tr{ADS-06}{Anomaly-detection concept}{4}{D}
+\tr{ADS-07}{32-bit, 1 ms timestamp per frame}{3}{T+DI}
+\tr{ADS-08}{Decoded, loss, latency from logs}{3}{T+DI}
+\tr{SW-01}{IDLE, TRANSMIT, DEPLOY, DETUMBLING, MISSION}{8}{T+D}
+\tr{SW-02}{Fixed field encoding (DP Tables 5–11)}{3·5}{DI}
+\tr{VV-01/02}{This matrix: method per HLR from the rules}{–}{D}
+\tr{ENV-01}{Mission run before thermal and vibration}{–}{T}
+\tr{ENV-02}{FEM FS ≥ 2.44; Al ≥ 10 °C (simulated)}{9·10}{T+A}}
+
+% ===================== FOOTER =====================
+\fill[white] (0,1160) rectangle (900,1200);
+\fill[ylw] (0,1160) rectangle (900,1163.5);
+\B{44}{1185}{\plexK\F{8.5}{8.5}\color{mut}A STUDENT TEAM OF}
+\node[anchor=north west,inner sep=0] at (170,1165) {\includegraphics[height=32mm]{logos/poli_selo.pdf}};
+\node[anchor=north west,inner sep=0] at (220,1174) {\includegraphics[height=14mm]{logos/usp.pdf}};
+\BR{856}{1178}{\bfseries\F{9}{9}\color{nv}PoliSat · Hermes mission}
+\BR{856}{1191}{\F{9}{9}\color{nv}CubeDesign 2026 CubeSat Challenge · UNSAM, Argentina · 24–27 Nov 2026}
+
+\end{tikzpicture}}
+\end{document}

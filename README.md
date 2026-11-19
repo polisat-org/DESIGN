@@ -7,12 +7,14 @@ Design files for Team PoliSat's **Hermes Mission** at CubeDesign 2026.
 | Path | Contents |
 |---|---|
 | `Design Package - Cube Design 2026.pdf` / `.docx` | Hermes mission design package (technical source for the banner content) |
+| `Rules 2026 - CubeSat (4).pdf` | Competition rules and High Level Requirements (HLR) |
 | `CD26-CUB-POL-Onsite-Feedback.pdf` | Committee's design package review and on-site test matrix (16 Oct 2026) |
 | `logo_para_colocar_nas_imagens_geradas/` | Hermes mission patch and PoliSat logos |
 | `banners/vertical_90x120cm/` | Print-ready banners, 90 × 120 cm (PDF + JPG, ~200 dpi) — 6 models |
 | `banners/vertical_90x120cm/impressao_CMYK/` | **Files for the print shop:** vector PDF, 90 × 120 cm, CMYK — 7 models |
 | `banners/vertical_90x120cm/previews/` | Small previews and a side-by-side comparison sheet |
 | `banners/fonte_editavel/` | Editable HTML sources, fonts and assets for the banners |
+| `banners/latex_banca/` | Jury banner in LaTeX (English): design justification and HLR traceability matrix; PDF and Overleaf zip included |
 | `banners/latex_tecnico/` | Technical banner (model 7) in LaTeX/TikZ for Overleaf (XeLaTeX), with a ready-to-upload zip |
 | `camisetas/` | Team shirts: 3 polo, 3 cotton, 3 dry-fit — print files, tech sheets, 3D viewer (see `camisetas/README.md`) |
 
