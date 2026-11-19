@@ -1,8 +1,8 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Hermes — Técnico</title>
-<link rel="stylesheet" href="base.css"><script src="base.js"></script><script src="sponsors.js"></script>
+<link rel="stylesheet" href="base.css"><script src="base.js"></script>
 <!--
   Banner técnico: resumo do Design Package (todos os números e figuras vêm dele; "Fig. N" / "Table N" = numeração do DP).
-  Fundo branco, tinta navy e amarelo do vertical 1. As faixas amarelas "OPEN" são as pendências da revisão da banca
+  Sem patrocinadores (só Poli + USP no rodapé). Fundo azul-claro, tinta navy e amarelo do vertical 1. As faixas amarelas "ON SITE" são os pontos da revisão da banca
   (CD26-CUB-POL On-site Feedback, 16 Oct 2026, v3). Tags: ANALYSIS = cálculo/simulação, PROTOTYPE = hardware construído.
 -->
 <style>
@@ -19,8 +19,8 @@
 .hd .ev .mono+.mono{color:var(--mut)}
 .hd .mp{height:92px;margin-left:4px}
 /* grid */
-.grid12{left:36px;right:36px;top:122px;height:858px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
-  grid-template-rows:256px 270px 254px 48px;gap:10px}
+.grid12{left:36px;right:36px;top:122px;height:1021px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  grid-template-rows:256px 270px 254px 153px 48px;gap:10px}
 .p{background:#fff;border:1.6px solid #121C4A14;box-shadow:0 1px 0 #121C4A10;border-radius:10px;padding:8px 10px 8px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .p>*{flex-shrink:0}
 .p h3{margin:0 0 6px;display:flex;align-items:center;gap:7px;font-family:Archivo;font-weight:760;font-stretch:88%;font-size:17px;letter-spacing:-.005em;line-height:1;white-space:nowrap}
@@ -64,11 +64,21 @@ table.lb tr.tot td.m{color:var(--nv);background:var(--y);border-radius:3px}
 .strip .hh .nm{font-family:Plex;font-weight:600;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--y)}
 .strip .hh .mt{color:#fff}
 .strip .ok{width:10px;height:10px;flex:none;display:block}
-/* slightly shorter footer on this banner (210 mm instead of 250 mm), same logos scaled together */
-.foot{height:210px;padding:22px 44px 20px;border-top:1.6px solid var(--ln)}
-.foot .mono{margin-bottom:8px}
-.foot .grid{zoom:.84}
-.foot .inst .logos{zoom:.9}
+/* 8 · committee review (CD26-CUB-POL On-site Feedback): one card per Design Package area */
+.rv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.rv .i{border:1px solid var(--ln);border-radius:5px;padding:4px 7px 4px;display:grid;grid-template-rows:auto 1fr;row-gap:2px;min-width:0}
+.rv .hd2{display:flex;align-items:center;gap:5px;font-family:Archivo;font-weight:720;font-size:10.4px;line-height:12px;white-space:nowrap}
+.rv .st{margin-left:auto;font-family:Plex;font-weight:600;font-size:6.8px;letter-spacing:.06em;text-transform:uppercase;padding:0 4px;border-radius:2.5px;line-height:11px}
+.rv .st.d{background:var(--nv);color:var(--y)}
+.rv .st.o{background:var(--yb);color:var(--nv);border:1px solid var(--y)}
+.rv .ds{font-family:Archivo;font-size:8.8px;line-height:1.22;color:var(--nv2)}
+.rv .ds b{color:var(--nv);font-weight:700}
+.rv .pn{display:inline-grid;place-items:center;width:13px;height:13px;border-radius:3px;background:var(--nv);color:var(--y);font-family:Plex;font-weight:600;font-size:8px;vertical-align:0;margin-right:1px}
+/* institutional footer: no sponsors on the technical banner */
+.ft{left:0;right:0;bottom:0;height:50px;background:#fff;border-top:4px solid var(--y);display:flex;align-items:center;gap:22px;padding:0 44px}
+.ft .poli{height:40px}.ft .usp{height:17px}
+.ft .mono{font-size:9.5px;letter-spacing:.12em;color:var(--mut)}
+.ft .r{margin-left:auto;text-align:right;font-family:Archivo;font-size:10px;line-height:1.35;color:var(--nv)}
 svg text{font-family:Archivo}
 </style></head><body>
 <div class="banner">
@@ -78,6 +88,7 @@ svg text{font-family:Archivo}
   <img class="ps" src="logos/polisat_fundo_claro.svg" alt="PoliSat">
   <div class="tt"><div class="nd">HERMES</div><div class="sub">Technical overview · ADS-B receiver on a 2U CubeSat</div></div>
   <div class="ev"><span class="mono">CubeDesign 2026 · UNSAM</span><span class="mono">Team CD26-CUB-POL</span><span class="mono">Escola Politécnica · USP</span></div>
+  <img class="mp" src="patch.png" alt="Hermes mission patch">
 </div>
 
 <div class="abs grid12">
@@ -95,7 +106,7 @@ svg text{font-family:Archivo}
     </div>
   </div>
   <svg id="chain" width="246" height="78" viewBox="0 0 246 78" style="margin-top:6px;display:block"></svg>
-  <div class="open"><b>OPEN</b>Consolidated mass budget + final measured mass · total and per-subsystem cost (COTS vs custom).</div>
+  <div class="open"><b>ON SITE</b>Mass budget + final measured mass · total and per-subsystem cost (COTS vs custom).</div>
 </div>
 
 <!-- ===================== 2 PAYLOAD ===================== -->
@@ -125,7 +136,7 @@ svg text{font-family:Archivo}
       </table>
     </div>
   </div>
-  <div class="open"><b>OPEN</b>Verify sensitivity and trajectory / origin–destination processing with known data · logs from the physical reception + downlink chain and the 20-aircraft / 600 s test. The secondary payload (anomaly detection) is a concept only.</div>
+  <div class="open"><b>ON SITE</b>Sensitivity and trajectory / origin–destination processing with known data · logs from the physical reception + downlink chain and the 20-aircraft / 600 s test. Secondary payload: anomaly-detection concept.</div>
 </div>
 
 <!-- ===================== 3 TT&C ===================== -->
@@ -157,7 +168,7 @@ svg text{font-family:Archivo}
     </div>
   </div>
   <p class="t" style="margin-top:5px">Packets: 32-bit words with a 7-bit prefix (4-bit subsystem + 3-bit type) and metadata-scaled integers; 112-bit ADS-B frames are chunked. ESP32: one core for the bus, one for the radio.</p>
-  <div class="open"><b>OPEN</b>Executed TC and decoded TM with the real ground station · consolidated mission data volume, storage and useful downlink capacity.</div>
+  <div class="open"><b>ON SITE</b>Executed TC and decoded TM with the real ground station · consolidated mission data volume, storage and useful downlink capacity.</div>
 </div>
 
 <!-- ===================== 4 EPS ===================== -->
@@ -169,7 +180,7 @@ svg text{font-family:Archivo}
   </div>
   <svg id="pwr" width="317" height="88" viewBox="0 0 317 90" style="margin-top:4px;display:block"></svg>
   <p class="t" style="margin-top:2px">2 × 18650-Q30 (3000 mAh, 3.6 V) · MAX17048 SoC · INA3221 sensing · daily mean <b>3.68 W</b> (Table 12)<span class="tag a">ANALYSIS</span></p>
-  <div class="open"><b>OPEN</b>Peak ADCS demand (ESCON 24/2, 22.99 W on 13.8 V) vs real bus capability · measured charging current under light.</div>
+  <div class="open"><b>ON SITE</b>Peak ADCS demand (ESCON 24/2, 22.99 W on 13.8 V) vs real bus capability · measured charging current under light.</div>
 </div>
 
 <!-- ===================== 5 ADCS ===================== -->
@@ -184,7 +195,7 @@ svg text{font-family:Archivo}
     <li>MPU-9250 + 4 LDRs → complementary filter, 10 Hz, Arduino Nano</li>
     <li>Req.: 60 → 5 RPM in 10 s · azimuth &lt; 5° · GM 6 dB · PM 45°</li>
   </ul>
-  <div class="open"><b>OPEN</b>Quantify prototype damping + final assembly configuration · LDR angular error vs light source.</div>
+  <div class="open"><b>ON SITE</b>Measured damping + final assembly · LDR angular error vs light source.</div>
 </div>
 
 <!-- ===================== 6 OBC ===================== -->
@@ -196,7 +207,7 @@ svg text{font-family:Archivo}
     <li>ConOps (Fig. 31): detumble, deploy, azimuth by TC</li>
     <li>BIT_MECHANICS lock: no Deploy + Detumbling at once</li>
   </ul>
-  <div class="open"><b>OPEN</b>Consolidated implementation / integration status of flight and ground software.</div>
+  <div class="open"><b>ON SITE</b>Consolidated implementation / integration status of flight and ground software.</div>
 </div>
 
 <!-- ===================== 7 STRUCTURE / RAD / THERMAL ===================== -->
@@ -213,14 +224,29 @@ svg text{font-family:Archivo}
     <li><b>Shield</b> 3 mm HDPE + 2 mm Ti: TID &lt; 100 rad / 4 yr</li>
     <li><b>Heater</b> (LQI): Al ≥ 10 °C, 0.145 Wh/cycle, 0.48 W peak</li>
   </ul>
-  <div class="open"><b>OPEN</b>Fit-check + retention (FEM alone is not readiness) · thermal monitoring vs model · release ≥ 10 cm.</div>
+  <div class="open"><b>ON SITE</b>Fit-check + retention on the assembled hardware · thermal monitoring vs model · release ≥ 10 cm.</div>
+</div>
+
+<!-- ===================== 8 COMMITTEE REVIEW ===================== -->
+<div class="p" style="grid-column:1/-1">
+  <h3><span class="no">8</span>Design Package, area by area<span class="k">CD26-CUB-POL review v3 · 16 Oct 2026 · numbers = panels on this banner</span></h3>
+  <div class="rv">
+    <div class="i"><div class="hd2">Mission / architecture</div><div class="ds">ADS-B mission, subsystem architecture, anomaly-detection concept · <span class="pn">1</span><span class="pn">2</span></div></div>
+    <div class="i"><div class="hd2">Mass budget</div><div class="ds">Per-subsystem budget and <b>final measured mass</b> of the assembly · <span class="pn">1</span></div></div>
+    <div class="i"><div class="hd2">Power / energy budget</div><div class="ds">Per-mode budget · <b>peak ADCS demand vs bus capability</b> · <span class="pn">4</span></div></div>
+    <div class="i"><div class="hd2">Data / link budget</div><div class="ds">Link margins 27.5 / 24.9 dB · <b>data volume, storage, useful downlink</b> · <span class="pn">2</span><span class="pn">3</span></div></div>
+    <div class="i"><div class="hd2">Costs / COTS vs custom</div><div class="ds"><b>Total and per-subsystem cost</b>, COTS vs custom parts · <span class="pn">1</span></div></div>
+    <div class="i"><div class="hd2">ADS-B payload</div><div class="ds">Chain and decoder · <b>sensitivity and trajectory processing with known data</b> · <span class="pn">2</span></div></div>
+    <div class="i"><div class="hd2">Software / interfaces</div><div class="ds">FreeRTOS tasks and bus map · <b>flight + ground integration status</b> · <span class="pn">6</span></div></div>
+    <div class="i"><div class="hd2">Verification / validation</div><div class="ds">Every result tagged <span class="tag a" style="margin:0">ANALYSIS</span> or <span class="tag p" style="margin:0">PROTOTYPE</span> · <b>requirements linked to measurements</b></div></div>
+  </div>
 </div>
 
 <!-- ===================== ON-SITE DEMONSTRATIONS ===================== -->
 <div class="strip">
-  <div class="c hh"><div class="nm">At UNSAM</div><div class="mt">8 tests</div><div class="ds"><svg class="ok" style="display:inline-block;vertical-align:-1.5px;margin-right:3px" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#FFC23D"/><path d="M3.2 6.3l1.9 1.9 3.8-4" stroke="#121C4A" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>ready per review</div></div>
-  <div class="c"><div class="nm">Detumbling<svg class="ok" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#FFC23D"/><path d="M3.2 6.3l1.9 1.9 3.8-4" stroke="#121C4A" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">60 → 5 RPM</div><div class="ds">in 10 s</div></div>
-  <div class="c"><div class="nm">Light azimuth<svg class="ok" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#FFC23D"/><path d="M3.2 6.3l1.9 1.9 3.8-4" stroke="#121C4A" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">&lt; 5° error</div><div class="ds">LDR pointing</div></div>
+  <div class="c hh"><div class="nm">At UNSAM</div><div class="mt">8 tests</div><div class="ds">demonstration matrix</div></div>
+  <div class="c"><div class="nm">Detumbling</div><div class="mt">60 → 5 RPM</div><div class="ds">in 10 s</div></div>
+  <div class="c"><div class="nm">Light azimuth</div><div class="mt">&lt; 5° error</div><div class="ds">LDR pointing</div></div>
   <div class="c"><div class="nm">TC / TM</div><div class="mt">24.9 dB</div><div class="ds">link margin</div></div>
   <div class="c"><div class="nm">ADS-B mission</div><div class="mt">20 aircraft</div><div class="ds">within 600 s</div></div>
   <div class="c"><div class="nm">Deployment</div><div class="mt">≥ 10 cm</div><div class="ds">remote release</div></div>
@@ -230,7 +256,11 @@ svg text{font-family:Archivo}
 </div>
 
 </div>
-<div class="foot"></div>
+<div class="abs ft">
+  <span class="mono">A STUDENT TEAM OF</span>
+  <img class="poli" src="logos/poli_selo_preto.svg" alt="Escola Politécnica"><img class="usp" src="logos/usp_preto.svg" alt="USP">
+  <div class="r"><b>PoliSat · Hermes mission</b><br>CubeDesign 2026 CubeSat Challenge · UNSAM, Argentina · 24–27 Nov 2026</div>
+</div>
 </div>
 <script>
 const NV='#121C4A',MUT='#5A6380',Y='#FFC23D',BL='#2350C8',AM='#E8A21A',LN='#121C4A33';

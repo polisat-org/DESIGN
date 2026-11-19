@@ -6,12 +6,14 @@ Design files for Team PoliSat's **Hermes Mission** at CubeDesign 2026.
 
 | Path | Contents |
 |---|---|
-| `Design Package - Cube Design 2026.pdf` | Hermes mission design package (technical source for the banner content) |
+| `Design Package - Cube Design 2026.pdf` / `.docx` | Hermes mission design package (technical source for the banner content) |
+| `CD26-CUB-POL-Onsite-Feedback.pdf` | Committee's design package review and on-site test matrix (16 Oct 2026) |
 | `logo_para_colocar_nas_imagens_geradas/` | Hermes mission patch and PoliSat logos |
 | `banners/vertical_90x120cm/` | Print-ready banners, 90 × 120 cm (PDF + JPG, ~200 dpi) — 6 models |
 | `banners/vertical_90x120cm/impressao_CMYK/` | **Files for the print shop:** vector PDF, 90 × 120 cm, CMYK — 7 models |
 | `banners/vertical_90x120cm/previews/` | Small previews and a side-by-side comparison sheet |
 | `banners/fonte_editavel/` | Editable HTML sources, fonts and assets for the banners |
+| `banners/latex_tecnico/` | Technical banner (model 7) in LaTeX/TikZ for Overleaf (XeLaTeX), with a ready-to-upload zip |
 | `camisetas/` | Team shirts: 3 polo, 3 cotton, 3 dry-fit — print files, tech sheets, 3D viewer (see `camisetas/README.md`) |
 
 ## Banner models
@@ -19,7 +21,7 @@ Design files for Team PoliSat's **Hermes Mission** at CubeDesign 2026.
 Six banners about mission Hermes and its subsystems, plus one general template. They use dark, serious grounds with
 one vivid accent each (labels, numbers and a band above the footer), PoliSat renders from `banners/0 IMAGENS POLISAT/` (prepared copies in
 `banner/imagens/`), the Hermes patch next to the PoliSat logo in the header, and the same footer with
-**Escola Politécnica + USP** and all **9 sponsors**. The copy is
+**Escola Politécnica + USP** and all **9 sponsors** (except the technical banner, model 7). The copy is
 descriptive, and every number comes from the design package.
 
 1. **Missão** — navy / yellow: what Hermes does and why from orbit, with the orbit render
@@ -30,7 +32,9 @@ descriptive, and every number comes from the design package.
 6. **Estrutura** — forest green / lime: structure, power, radiation and thermal
 7. **Técnico** (`vertical7_tecnico.html`) — white / navy / yellow, to pair with Missão: one-page summary of the
    design package (figures `imagens/dp_*.png` taken from it, numbered as in the DP), link and power budgets, PCBs,
-   and the committee's open items (yellow "OPEN" bars) plus the on-site test matrix. Footer is 210 mm tall here.
+   the points to show at UNSAM (yellow "ON SITE" bars), a panel with the Design Package areas from the committee's
+   review (CD26-CUB-POL On-site Feedback v3, neutral wording, each pointing to its panel) and the on-site test matrix. No sponsors here: the footer is a 50 mm band with
+   Escola Politécnica + USP only (`sponsors.js` is not loaded; the patch is placed directly in the header).
 8. **Modelo geral** (`modelo_geral.html`) — template for any occasion. Edit only the `CONTEUDO` block at the
    top: theme (`royal`, `fire`, `teal`, `violet`, `magenta`, `green`), whether to show the Hermes patch, the two header lines, image, label, title,
    text and up to four numbers. Then export.

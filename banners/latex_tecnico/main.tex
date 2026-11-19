@@ -1,0 +1,372 @@
+% =====================================================================
+%  HERMES · banner técnico 90 × 120 cm  (versão LaTeX do vertical7_tecnico.html)
+%  Compilar com XeLaTeX (Overleaf: Menu → Compiler → XeLaTeX; o latexmkrc já pede isso).
+%  Tudo é posicionado em milímetros a partir do canto superior esquerdo (y cresce para baixo),
+%  com as mesmas coordenadas do HTML (1 px = 1 mm). Números e figuras: Design Package (DP).
+% =====================================================================
+\documentclass{article}
+\usepackage[paperwidth=900mm,paperheight=1200mm,margin=0mm]{geometry}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\pgfdeclarelayer{mid}\pgfdeclarelayer{top}\pgfsetlayers{main,mid,top}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\frenchspacing   % sem espaço extra depois de ponto
+
+% ---------- fontes (pasta fonts/) ----------
+\defaultfontfeatures{Path=fonts/,Extension=.ttf,Ligatures=TeX}
+\setmainfont{Archivo-Regular}[BoldFont=Archivo-Bold]
+\newfontfamily\semib{Archivo-SemiBold}
+\newfontfamily\scond{Archivo-SemiCond}
+\newfontfamily\hcond{Archivo-HeavyCond}
+\newfontfamily\plex{IBMPlexMono-Medium}[BoldFont=IBMPlexMono-SemiBold]
+\newfontfamily\plexsb{IBMPlexMono-SemiBold}
+\newfontfamily\plexL{IBMPlexMono-Medium}[LetterSpace=8]      % rótulos mono, espaçados
+\newfontfamily\plexC{IBMPlexMono-Medium}[LetterSpace=-4]  % legendas (Chrome as desenha um pouco mais estreitas)
+\newfontfamily\plexK{IBMPlexMono-Medium}[LetterSpace=6]
+\newfontfamily\plexSB{IBMPlexMono-SemiBold}[LetterSpace=10]
+\newfontfamily\plexT{IBMPlexMono-SemiBold}[LetterSpace=5]    % tags ANALYSIS / PROTOTYPE
+\newfontfamily\nd{NDLogos-Regular}[LetterSpace=1]
+
+% ---------- cores (mesmas do HTML) ----------
+\definecolor{bg}{HTML}{D9E2F2}   % fundo
+\definecolor{nv}{HTML}{121C4A}   % navy
+\definecolor{nvb}{HTML}{1B2A66}
+\definecolor{nv2}{HTML}{3A4560}
+\definecolor{ylw}{HTML}{FFC23D}  % amarelo
+\definecolor{yb}{HTML}{FFF4D6}
+\definecolor{bl}{HTML}{2350C8}   % média
+\definecolor{am}{HTML}{E8A21A}   % pico
+\definecolor{mut}{HTML}{5A6380}
+\definecolor{grey}{HTML}{DCDCDC}
+\colorlet{ln}{nv!12!white}       % linhas de tabela
+\colorlet{pb}{nv!8!white}        % borda dos painéis
+\colorlet{gl}{nv!8!white}        % grade do gráfico
+\colorlet{svgln}{nv!20!white}
+\colorlet{hdln}{nv!19!bg}
+\colorlet{wsep}{white!15!nv}     % divisórias da faixa
+\colorlet{wds}{white!77!nv}
+
+% ---------- tipografia em mm ----------
+% \F{tam}{entrelinha}: tamanho em mm (1 px do HTML = 1 mm) + entrelinha exata
+% folga finita à direita: o TeX enche as linhas como o navegador (com 1fil ele pode quebrar cedo)
+\newcommand\F[2]{\fontsize{#1mm}{#2mm}\selectfont\lineskiplimit=-\maxdimen\rightskip=0pt plus 60mm\parfillskip=0pt plus 1fil\relax\spaceskip=\fontdimen2\font\relax\xspaceskip=\fontdimen2\font\relax}
+\hyphenpenalty=10000 \exhyphenpenalty=10000 % sem hifenização, como no HTML
+% strut que põe a 1ª linha base onde o CSS a põe: entrelinha/2 + k·tamanho
+\newcommand\SA[2]{\pgfmathsetmacro\sth{#2/2+0.30*#1}\rule{0pt}{\sth mm}}   % Archivo
+\newcommand\SP[2]{\pgfmathsetmacro\sth{#2/2+0.35*#1}\rule{0pt}{\sth mm}}   % Plex
+\newcommand\EA[2]{\pgfmathsetmacro\std{#2/2-0.30*#1}\rule[-\std mm]{0pt}{\std mm}} % profundidade da última linha
+
+% texto em bloco: \T[opções]{x}{y}{largura}{conteúdo}  (canto superior esquerdo)
+\newcommand\T[5][]{\node[anchor=north west,inner sep=0,outer sep=0,text width=#4mm,align=left,#1] at (#2,#3) {#5};}
+% texto numa linha base: \B[opções]{x}{y}{conteúdo}
+\newcommand\B[4][]{\node[anchor=base west,inner sep=0,outer sep=0,#1] at (#2,#3) {#4};}
+
+% ---------- elementos ----------
+\newcommand\panel[4]{\filldraw[fill=white,draw=pb,line width=1.6mm,rounded corners=10mm] (#1+.8,#2+.8) rectangle ++(#3-1.6,#4-1.6);}
+% título do painel: \htitle{x}{y}{nº}{título}{chave à direita}{x direito}
+\newcommand\htitle[6]{%
+  \fill[nv,rounded corners=5mm] (#1,#2) rectangle ++(21,21);
+  \node[anchor=base,inner sep=0,text=ylw] at (#1+10.5,#2+14.7) {\plexsb\F{12}{12}#3};
+  \B{#1+28}{#2+15.6}{\hcond\F{17}{17}\color{nv}#4}
+  \node[anchor=base east,inner sep=0,text=mut] at (#6,#2+13.4) {\plexK\F{8.4}{8.4}#5};}
+% imagem "contain" (cabe inteira, centrada)
+\newcommand\img[5]{\node[inner sep=0] at (#1+#3/2,#2+#4/2) {\includegraphics[width=#3mm,height=#4mm,keepaspectratio]{#5}};}
+% imagem "cover" (preenche e corta), com posição do recorte px/py em 0–1
+\newsavebox\imgbox
+\newcommand\cover[8][3]{%
+  \sbox\imgbox{\includegraphics{#8}}%
+  \pgfmathsetmacro\iw{\wd\imgbox/2.845274}\pgfmathsetmacro\ih{\ht\imgbox/2.845274}%
+  \pgfmathsetmacro\sc{max(#4/\iw,#5/\ih)}\pgfmathsetmacro\dw{\iw*\sc}\pgfmathsetmacro\dh{\ih*\sc}%
+  \begin{scope}\clip[rounded corners=#1mm] (#2,#3) rectangle ++(#4,#5);
+    \node[anchor=north west,inner sep=0] at ({#2+(#4-\dw)*#6},{#3+(#5-\dh)*#7}) {\includegraphics[width=\dw mm]{#8}};
+  \end{scope}}
+% legenda de figura (Plex 7.4)
+\newcommand\capt[4]{\T[font=\F{7.4}{8.88}]{#1}{#2}{#3}{\plexC\F{7.4}{8.88}\color{mut}\SP{7.4}{8.88}#4}}
+% tags de evidência
+\newcommand\tagA{\hspace{3mm}\tikz[baseline={([yshift=-1mm]t.base)}]\node(t)[draw=bl,line width=1mm,rounded corners=2.5mm,inner xsep=3mm,inner ysep=.6mm,text=bl]{\plexT\F{7}{7}ANALYSIS};}
+\newcommand\tagP{\hspace{3mm}\tikz[baseline={([yshift=-1mm]t.base)}]\node(t)[fill=nv,rounded corners=2.5mm,inner xsep=3mm,inner ysep=1.1mm,text=ylw]{\plexT\F{7}{7}PROTOTYPE};}
+% faixa "ON SITE": \onsite{x}{y de baixo}{largura}{texto}
+\newcommand\onsite[4]{%
+  \begin{pgfonlayer}{top}
+  \node[anchor=south west,inner sep=0,text width=#3mm-16mm,align=left,font=\F{9.6}{11.9}] (os) at (#1+10,#2-3.5)
+    {\color{nv}\SA{9.6}{11.9}{\plexSB\F{8}{11.9}ON\ SITE}\hspace{4mm}#4\EA{9.6}{11.9}};
+  \end{pgfonlayer}
+  \begin{pgfonlayer}{mid}
+  \begin{scope}
+    \clip[rounded corners=3mm] ([xshift=-10mm,yshift=3.5mm]os.north west) rectangle ([xshift=6mm,yshift=-3.5mm]os.south east);
+    \fill[yb] ([xshift=-10mm,yshift=3.5mm]os.north west) rectangle ([xshift=6mm,yshift=-3.5mm]os.south east);
+    \fill[ylw] ([xshift=-10mm,yshift=3.5mm]os.north west) rectangle ([xshift=-6mm,yshift=-3.5mm]os.south west);
+  \end{scope}
+  \end{pgfonlayer}}
+% lista com marcador amarelo (Archivo 10/12.8)
+\newcommand\bul{\rule{0pt}{9.24mm}\makebox[0pt][r]{\raisebox{1.04mm}{\tikz\fill[ylw,rounded corners=.5mm](0,0) rectangle (3.6mm,3.6mm);}\hspace{4.4mm}}}
+\newenvironment{ul}{\F{10}{12.8}\color{nv}\leftskip=8mm\parskip=1.5mm}{\par}
+\newcommand\li[1]{\par\bul#1\par}
+% linha de tabela
+\newcommand\lbhead[5]{\B{#1+3}{#3}{\plexK\F{7.6}{7.6}\color{mut}#4}\node[anchor=base east,inner sep=0] at (#1+#2-3,#3) {\plexK\F{7.6}{7.6}\color{mut}#5};}
+\newcommand\lbrow[5]{\B{#1+3}{#3}{\F{9}{9}\color{nv}#4}\node[anchor=base east,inner sep=0] at (#1+#2-3,#3) {\F{9}{9}\color{nv}#5};}
+\newcommand\lbline[3]{\draw[ln,line width=1mm] (#1,#3-.5) -- ++(#2,0);}
+% caixas e setas dos diagramas (unidades do viewBox do SVG; \svgs = escala)
+\def\svgs{1}
+\newcommand\sfs[1]{\pgfmathsetmacro\sfsz{#1*\svgs}\F{\sfsz}{\sfsz}}
+\newcommand\dbox[8]{% x y w h rótulo sub preenchimento(1=navy) -- cor do texto
+  \ifnum#7=1 \filldraw[fill=nv,draw=nv,line width=\svgs*1.1mm,rounded corners=\svgs*3.5mm] (#1,#2) rectangle ++(#3,#4);
+  \else \filldraw[fill=white,draw=nv,line width=\svgs*1.1mm,rounded corners=\svgs*3.5mm] (#1,#2) rectangle ++(#3,#4);\fi
+  \ifx&#6&\node[anchor=base,inner sep=0] at (#1+#3/2,#2+#4/2+3.2) {\bfseries\sfs{7.8}\color{#8}#5};
+  \else\node[anchor=base,inner sep=0] at (#1+#3/2,#2+#4/2-1.2) {\bfseries\sfs{7.8}\ifnum#7=1\color{white}\else\color{nv}\fi#5};
+  \node[anchor=base,inner sep=0] at (#1+#3/2,#2+#4/2+7.6) {\sfs{6.4}\ifnum#7=1\color{white!80!nv}\else\color{mut}\fi#6};\fi}
+\newcommand\arr[5][nv]{%
+  \draw[#1,line width=\svgs*1.2mm] (#2,#3) -- (#4,#5);
+  \pgfmathsetmacro\aa{atan2(#5-#3,#4-#2)}%
+  \fill[#1] (#4,#5) -- ++(\aa+180-28.648:3.6) -- ($(#4,#5)+(\aa+180+28.648:3.6)$) -- cycle;}
+\newcommand\slabel[3]{\B{#1}{#2}{\plexL\sfs{6.4}\color{mut}#3}}
+\newcommand\ok{}% (sem marcas de "pronto/não pronto" neste banner)
+\newcommand\pn[1]{\tikz[baseline={([yshift=-.4mm]p.base)}]\node(p)[fill=nv,rounded corners=1mm,minimum size=13mm,inner sep=0,text=ylw]{\plexsb\F{8}{8}#1};\hspace{1mm}}
+
+\begin{document}
+\noindent\raisebox{\topskip}[0pt][0pt]{%   página inteira numa caixa de altura zero, a partir do canto superior esquerdo
+\begin{tikzpicture}[x=1mm,y=-1mm,baseline=0pt]
+\useasboundingbox (0,0) rectangle (900,1200);
+\begin{scope}
+
+% ===================== FUNDO =====================
+\fill[bg] (0,0) rectangle (900,1200);
+
+% ===================== CABEÇALHO =====================
+\node[anchor=north west,inner sep=0] at (36,36) {\includegraphics[height=60mm]{logos/polisat.pdf}};
+\draw[hdln,line width=2mm] (168.9,32) -- (168.9,100);
+\B{191.9}{75}{\nd\F{50}{41}\color{nv}HERMES}
+\B{191.9}{97}{\scond\F{16}{16}\color{nv}Technical overview · ADS-B receiver on a 2U CubeSat}
+\node[anchor=base east,inner sep=0] at (759,53.1) {\plexL\F{11}{11}\color{nv}CUBEDESIGN 2026 · UNSAM};
+\node[anchor=base east,inner sep=0] at (759,69.0) {\plexL\F{11}{11}\color{mut}TEAM CD26-CUB-POL};
+\node[anchor=base east,inner sep=0] at (759,85.0) {\plexL\F{11}{11}\color{mut}ESCOLA POLITÉCNICA · USP};
+\img{781}{20}{105.1}{92}{imagens/patch.png}
+
+% ===================== 1 · MISSION =====================
+\panel{36}{122}{269.3}{256}
+\htitle{47}{131}{1}{Mission \& data chain}{}{294.3}
+\cover{47}{158}{96}{84}{0.56}{0.46}{imagens/dp_render.png}
+\capt{47}{244}{96}{Fig. 1 · CAD assembly}
+% números
+\newcommand\num[5]{\B{#1}{#2+17}{\hcond\F{22}{22}\color{nv}#3{\semib\F{11}{11}\color{nv2}\hspace{2mm}#4}}
+  \T[font=\F{8.8}{10.1}]{#1}{#2+21.9}{67.6}{\F{8.8}{10.1}\color{mut}\SA{8.8}{10.1}#5}}
+\num{151}{158}{2U}{}{10 × 10 × 22.7 cm}
+\num{226.6}{158}{500}{km}{design LEO altitude}
+\num{151}{205.1}{1090}{MHz}{ADS-B from aircraft}
+\num{226.6}{205.1}{433}{MHz}{LoRa TT\&C, half-duplex}
+% cadeia de dados (SVG #chain, escala 1)
+\begin{scope}[shift={(47,258.9)}]\def\svgs{1}
+  \slabel{0}{7}{ON BOARD}
+  \dbox{0}{11}{45}{25}{Patch}{1090 MHz}{0}{nv}
+  \dbox{50.5}{11}{45}{25}{RTL-SDR}{V3}{0}{nv}  \arr{45}{23.5}{50}{23.5}
+  \dbox{101}{11}{45}{25}{RPi Zero W}{decode}{0}{nv} \arr{95.5}{23.5}{100.5}{23.5}
+  \dbox{151.5}{11}{45}{25}{OBC}{STM32}{1}{white} \arr{146}{23.5}{151}{23.5}
+  \dbox{202}{11}{45}{25}{ESP32}{encode}{0}{nv} \arr{196.5}{23.5}{201.5}{23.5}
+  \slabel{0}{50}{GROUND}
+  \dbox{50.5}{53}{45}{25}{Laptop}{CPR, tracks}{0}{nv}
+  \dbox{101}{53}{45}{25}{UART-USB}{bridge}{0}{nv} \arr{100.5}{65.5}{95.5}{65.5}
+  \dbox{151.5}{53}{45}{25}{LoRa RX}{435 MHz}{0}{nv} \arr{151}{65.5}{146}{65.5}
+  \dbox{202}{53}{45}{25}{QFH}{circular pol.}{0}{nv} \arr{201.5}{65.5}{196.5}{65.5}
+  \draw[bl,line width=1.3mm,dash pattern=on 2.5mm off 2mm] (224.5,36) -- (224.5,46);
+  \arr[bl]{224.5}{46}{224.5}{52.5}
+  \node[anchor=base east,inner sep=0] at (220,48) {\bfseries\F{6.6}{6.6}\color{bl}LoRa 433 MHz};
+\end{scope}
+\onsite{47}{369}{247.3}{Mass budget + final measured mass · total and per-subsystem cost (COTS vs custom).}
+
+% ===================== 2 · PAYLOAD =====================
+\panel{315.3}{122}{548.7}{256}
+\htitle{326.3}{131}{2}{Payload · ADS-B receiver}{PATCH → RTL-SDR V3 → RPI ZERO W → USART3 → OBC}{853}
+\img{326.3}{158}{118}{72}{imagens/dp_patch_ganho3d.png}
+\capt{326.3}{232}{118}{Fig. 27 · HFSS realized gain, peak 1.27 dBi}
+\img{326.3}{253.8}{118}{70}{imagens/dp_pld_pcb3d.png}
+\capt{326.3}{325.8}{118}{Fig. 23 · PLD interface PCB}
+\img{452.3}{158}{134}{60}{imagens/dp_patch_s11.png}
+\capt{452.3}{220}{134}{Fig. 25 · S11 −14.03 dB @ 1.09 GHz}
+\img{452.3}{241.8}{134}{60}{imagens/dp_patch_axial.png}
+\capt{452.3}{303.8}{134}{Fig. 26 · axial ratio < 5.07 dB within ±30°}
+\T[font=\F{10}{12.8}]{594.3}{158}{258.7}{\begin{ul}%
+  \li{\textbf{Corner-truncated patch} on the nadir face, near-circular polarization: directivity 6.27 dBi, efficiency 32.9\,\%\tagA}
+  \li{\textbf{dump1090-based C} on RPi Zero W: 2.0 MS/s I/Q, 8 µs preamble match, CRC-24 with 1-bit correction, DF17/18}
+  \li{Frames timestamped (1 ms) and sent raw; ground pairs CPR odd/even frames}
+\end{ul}}
+% tabela do link ADS-B (Table 14)
+\lbhead{594.3}{258.7}{266.1}{AIRCRAFT → SAT, WORST CASE 30°}{DB}\lbline{594.3}{258.7}{270.3}
+\lbrow{594.3}{258.7}{278.8}{Pt (≈125 W) · G\textsubscript{tx} · G\textsubscript{rx}}{51 · 2 · 1.27}\lbline{594.3}{258.7}{287.7}
+\lbrow{594.3}{258.7}{296.2}{FSPL · pol. · other}{−148.75 · −6.25 · −8.14}\lbline{594.3}{258.7}{302.1}
+\lbrow{594.3}{258.7}{310.6}{Received / sensitivity}{−105.5 / −133 dBm}\lbline{594.3}{258.7}{316.4}
+\fill[ylw,rounded corners=3mm] (753,316.4) rectangle (853,332.1);
+\B{597.3}{324.9}{\bfseries\F{10.6}{10.6}\color{nv}Margin, Table 14\tagA}
+\node[anchor=base east,inner sep=0] at (850,324.9) {\bfseries\F{10.6}{10.6}\color{nv}27.5 dB};
+\onsite{326.3}{369}{526.7}{Sensitivity and trajectory / origin–destination processing with known data · logs from the physical reception + downlink chain and the 20-aircraft / 600 s test. Secondary payload: anomaly-detection concept.}
+
+% ===================== 3 · TT&C =====================
+\panel{36}{388}{478.8}{270}
+\htitle{47}{397}{3}{TT\&C · LoRa link}{ESP32 + E32-433T20D · 20 DBM · RDT 3.0}{503.8}
+% dipolo ideal (SVG #dipole: viewBox −50 −52 100 104, escala 0.86)
+\begin{scope}[shift={(90,469.0)},scale=.86]\def\svgs{.86}
+  \draw[svgln,line width=.69mm] (0,0) circle (40);
+  \draw[svgln,line width=.69mm,dash pattern=on 1.72mm off 1.72mm] (0,0) circle (28.28) (0,0) circle (20);
+  \draw[svgln,line width=.69mm] (-44,0) -- (44,0) (0,-44) -- (0,44);
+  \filldraw[fill=bl,fill opacity=.16,draw=bl,line width=1.38mm,line join=round]
+    plot[domain=0.5:359.5,samples=240,variable=\t,smooth] ({40*abs(cos(90*cos(\t))/sin(\t))*cos(\t)},{40*abs(cos(90*cos(\t))/sin(\t))*sin(\t)}) -- cycle;
+  \draw[nv,line width=2.06mm] (-19,0) -- (-2,0) (2,0) -- (19,0);
+  \B{29.3}{-27.3}{\semib\sfs{6.2}\color{mut}−3 dB}
+  \node[anchor=base,inner sep=0] at (0,-45) {\bfseries\sfs{6.8}\color{nv}2.15 dBi max};
+  \node[anchor=base,inner sep=0] at (0,50) {\sfs{6.6}\color{mut}HPBW ≈ 78°};
+\end{scope}
+\capt{47}{516}{86}{On-board dipole, 2 × \ensuremath{\lambda}/4 at 180°: ideal E-plane (toroidal, linear pol.)}
+\img{141}{424}{84}{84}{imagens/dp_qfh_padrao.png}
+\capt{141}{510}{84}{Fig. 18 · ground QFH 435 MHz, circular pol., \textasciitilde5 dB\tagP}
+\img{233}{424}{114}{72}{imagens/dp_ttc_defasador.png}
+\capt{233}{498}{114}{Fig. 14 · phase shifter: ADT2-1T+ balun + 2 × QCN-3+}
+\img{233}{519.8}{32}{38}{imagens/dp_ttc_linha.png}
+\img{270}{519.8}{77}{38}{imagens/dp_ttc_s11.png}
+\capt{233}{561.8}{114}{Fig. 16–17 · RF board, 50 \ensuremath{\Omega} line S11 −26.6 dB @ 433 MHz}
+% link budget (Table 3)
+\lbhead{355}{157.8}{432}{LINK BUDGET}{DOWN = UP}\lbline{355}{157.8}{436.2}
+\lbrow{355}{157.8}{444.7}{Pt}{20 dBm}\lbline{355}{157.8}{450.6}
+\lbrow{355}{157.8}{459.1}{Antenna gains}{5.27 + 2.15 dBi}\lbline{355}{157.8}{464.9}
+\lbrow{355}{157.8}{473.4}{FSPL}{−140.74 dB}\lbline{355}{157.8}{479.3}
+\lbrow{355}{157.8}{487.8}{Polarization · other}{−3 · −4.78 dB}\lbline{355}{157.8}{493.6}
+\lbrow{355}{157.8}{502.1}{Received}{−121.1 dBm}\lbline{355}{157.8}{507.9}
+\lbrow{355}{157.8}{516.4}{E32 sensitivity}{−146 dBm}\lbline{355}{157.8}{522.3}
+\fill[ylw,rounded corners=3mm] (446.8,522.3) rectangle (512.8,538);
+\B{358}{530.8}{\bfseries\F{10.6}{10.6}\color{nv}Margin\tagA}
+\node[anchor=base east,inner sep=0] at (509.8,530.8) {\bfseries\F{10.6}{10.6}\color{nv}24.9 dB};
+\capt{355}{544}{148.8}{Table 3}
+\T[font=\F{10}{12.8}]{47}{584.5}{456.8}{\F{10}{12.8}\color{nv}\SA{10}{12.8}Packets: 32-bit words with a 7-bit prefix (4-bit subsystem + 3-bit type) and metadata-scaled integers; 112-bit ADS-B frames are chunked. ESP32: one core for the bus, one for the radio.}
+\onsite{47}{649}{456.8}{Executed TC and decoded TM with the real ground station · consolidated mission data volume, storage and useful downlink capacity.}
+
+% ===================== 4 · EPS =====================
+\panel{524.8}{388}{339.2}{270}
+\htitle{535.8}{397}{4}{EPS · power budget}{}{853}
+\img{535.8}{424}{247.2}{44}{imagens/dp_eps_blocos.png}
+\capt{535.8}{470}{247.2}{Fig. 21 · 3 panels → 2 × MP2733 MPPT → LTC4358 ideal diode → LM2735X boost 5 / 13.8 V → LD1117 3.3 V}
+\img{791}{424}{62}{54}{imagens/dp_eps_pcb3d.png}
+\capt{791}{480}{62}{Fig. 22 · EPS PCB}
+% potência por modo (Table 13) — SVG #pwr: viewBox 0 0 317 90, escala 0.9778
+\begin{scope}[shift={(539.32,501.8)},scale=.97778]\def\svgs{.97778}
+  \slabel{0}{7}{POWER PER MODE, W · TABLE 13}
+  \fill[bl,rounded corners=1.4mm] (216,1) rectangle ++(7,6); \B{225}{7}{\sfs{7}\color{nv}average}
+  \fill[am,rounded corners=1.4mm] (260,1) rectangle ++(7,6); \B{269}{7}{\sfs{7}\color{nv}peak}
+  \foreach \v in {0,5,10,15,20,25}{
+    \draw[gl,line width=.78mm] ({52+200*\v/26},11) -- ({52+200*\v/26},84);
+    \node[anchor=base,inner sep=0] at ({52+200*\v/26},87) {\sfs{6.4}\color{mut}\v};}
+  \foreach \n/\a/\p/\lab [count=\i from 0] in {Idle/1.066/1.066/1.07, Detumbling/7.5/25.055/{7.50 avg · 25.05 peak (ESCON)}, Mission/3.665/3.665/3.67, Deploy/5.065/5.065/5.07, Transmit/1.265/1.265/1.26}{
+    \pgfmathsetmacro\y{14+14.6*\i}
+    \node[anchor=base east,inner sep=0] at (47,\y+7.5) {\semib\sfs{8}\color{nv}\n};
+    \fill[bl,rounded corners=1.9mm] (52,\y) rectangle ({52+200*\a/26},\y+7);
+    \fill[am,rounded corners=1.3mm] (52,\y+8.2) rectangle ({52+200*\p/26},\y+11.8);
+    \pgfmathsetmacro\lx{52+200*min(\a,\p)/26+4}
+    \B{\lx}{\y+6.5}{\bfseries\sfs{7.6}\color{nv}\lab}}
+\end{scope}
+\T[font=\F{10}{12.8}]{535.8}{591.8}{317.2}{\F{10}{12.8}\color{nv}\SA{10}{12.8}2 × 18650-Q30 (3000 mAh, 3.6 V) · MAX17048 SoC · INA3221 sensing · daily mean \textbf{3.68 W} (Table 12)\tagA}
+\onsite{535.8}{649}{317.2}{Peak ADCS demand (ESCON 24/2, 22.99 W on 13.8 V) vs real bus capability · measured charging current under light.}
+
+% ===================== 5 · ADCS =====================
+\panel{36}{668}{269.3}{254}
+\htitle{47}{677}{5}{ADCS · 1-axis prototype}{}{294.3}
+\img{47}{704}{68}{68}{imagens/dp_adcs_pcb.png}
+\capt{47}{774}{68}{Fig. 9 · ADCS PCB}
+\img{123}{704}{171.3}{68}{imagens/dp_adcs_damping.png}
+\capt{123}{774}{171.3}{Fig. 4 · rate damping from 60 RPM\tagA}
+\T[font=\F{10}{12.8}]{47}{800}{247.3}{\begin{ul}%
+  \li{\textbf{Wheel}: Maxon EC 20 flat + ESCON 24/2, 3.2 mN·m (≈1.2× margin)}
+  \li{MPU-9250 + 4 LDRs → complementary filter, 10 Hz, Arduino Nano}
+  \li{Req.: 60 → 5 RPM in 10 s · azimuth < 5° · GM 6 dB · PM 45°}
+\end{ul}}
+\onsite{47}{913}{247.3}{Measured damping + final assembly · LDR angular error vs light source.}
+
+% ===================== 6 · OBC =====================
+\panel{315.3}{668}{269.3}{254}
+\htitle{326.3}{677}{6}{OBC · flight software}{}{573.6}
+% interfaces (SVG #obc: viewBox 0 0 248 110, escala 0.8727)
+\begin{scope}[shift={(341.58,704)},scale=.87273]\def\svgs{.87273}
+  \node[anchor=base,inner sep=0] at (36,6) {\plexsb\sfs{6.8}\color{bl}UART};
+  \node[anchor=base,inner sep=0] at (213,6) {\plexsb\sfs{6.8}\color{bl}I²C · GPIO};
+  \dbox{92}{39}{64}{34}{OBC}{STM32 · FreeRTOS}{1}{white}
+  \dbox{4}{13}{64}{26}{TT\&C}{ESP32}{0}{nv}            \arr{68}{26}{91.5}{56}
+  \dbox{4}{47}{64}{26}{ADCS}{Arduino Nano}{0}{nv}      \arr{68}{60}{91.5}{56}
+  \dbox{4}{81}{64}{26}{Payload}{RPi · USART3}{0}{nv}   \arr{68}{94}{91.5}{56}
+  \dbox{178}{13}{70}{26}{EPS}{INA3221 · MAX17048}{0}{nv}     \arr{156}{56}{177.5}{26}
+  \dbox{178}{47}{70}{26}{Sensors}{DS3231 · 2 × BME280}{0}{nv} \arr{156}{56}{177.5}{60}
+  \dbox{178}{81}{70}{26}{Deploy}{GPIO → MOSFET}{0}{nv}       \arr{156}{56}{177.5}{94}
+  \node[anchor=base,inner sep=0] at (124,93) {\bfseries\sfs{6.8}\color{nv}IDLE ↔ TRANSMIT};
+  \node[anchor=base,inner sep=0] at (124,102) {\semib\sfs{6.2}\color{nv}DEPLOY · DETUMB. · MISSION};
+  \node[anchor=base,inner sep=0] at (124,24) {\sfs{6}\color{mut}states return to IDLE};
+\end{scope}
+\T[font=\F{10}{12.8}]{326.3}{805}{247.3}{\begin{ul}%
+  \li{\textbf{FreeRTOS}: 8 prioritized tasks driven by events, one per state + Manager, Housekeeping, Receive, Error}
+  \li{ConOps (Fig. 31): detumble, deploy, azimuth by TC}
+  \li{BIT\_MECHANICS lock: no Deploy + Detumbling at once}
+\end{ul}}
+\onsite{326.3}{913}{247.3}{Consolidated implementation / integration status of flight and ground software.}
+
+% ===================== 7 · STRUCTURE / RADIATION / THERMAL =====================
+\panel{594.7}{668}{269.3}{254}
+\htitle{605.7}{677}{7}{Structure · radiation · thermal}{}{853}
+\cover{605.7}{704}{79.1}{46}{0.5}{0.5}{imagens/dp_vib_z.png}
+\cover{689.8}{704}{79.1}{46}{0.5}{0.5}{imagens/dp_mecanismo.png}
+\cover{773.9}{704}{79.1}{46}{0.7}{0.5}{imagens/dp_tcs_ansys.png}
+\capt{605.7}{752}{79.1}{Fig. 42 · vib. Z}
+\capt{689.8}{752}{79.1}{Fig. 60 · deployer}
+\capt{773.9}{752}{79.1}{Fig. 70 · thermal}
+\T[font=\F{10}{12.8}]{605.7}{765.9}{247.3}{\begin{ul}%
+  \li{\textbf{Al 7075}, 14.1 gRMS: 3\ensuremath{\sigma} 206.8 MPa (Z) → FS 2.44 · Y 4.01 · X 2.74\tagA}
+  \li{\textbf{Deployer}: steel tape-spring, Dyneema burn-wire}
+  \li{\textbf{Shield} 3 mm HDPE + 2 mm Ti: TID < 100 rad / 4 yr}
+  \li{\textbf{Heater} (LQI): Al ≥ 10 °C, 0.145 Wh/cycle, 0.48 W peak}
+\end{ul}}
+\onsite{605.7}{913}{247.3}{Fit-check + retention on the assembled hardware · thermal monitoring vs model · release ≥ 10 cm.}
+
+% ===================== 8 · DESIGN PACKAGE, AREA BY AREA =====================
+\panel{36}{932}{828}{153}
+\htitle{47}{941}{8}{Design Package, area by area}{CD26-CUB-POL REVIEW V3 · 16 OCT 2026 · NUMBERS = PANELS ON THIS BANNER}{853}
+% \card{x}{y}{altura}{título}{texto}
+\newcommand\card[5]{\draw[ln,line width=1mm,rounded corners=5mm] (#1+.5,#2+.5) rectangle ++(196,#3-1);
+  \B{#1+8}{#2+11}{\bfseries\F{10.4}{10.4}\color{nv}#4}
+  \T[font=\F{8.8}{10.74}]{#1+8}{#2+19}{181}{\F{8.8}{10.74}\color{nv2}\SA{8.8}{10.74}#5}}
+\card{47}{968}{47.7}{Mission / architecture}{ADS-B mission, subsystem architecture, anomaly-detection concept · \pn1\pn2}
+\card{250}{968}{47.7}{Mass budget}{Per-subsystem budget and \textbf{\color{nv}final measured mass} of the assembly · \pn1}
+\card{453}{968}{47.7}{Power / energy budget}{Per-mode budget · \textbf{\color{nv}peak ADCS demand vs bus capability} · \pn4}
+\card{656}{968}{47.7}{Data / link budget}{Link margins 27.5 / 24.9 dB · \textbf{\color{nv}data volume, storage, useful downlink} · \pn2\pn3}
+\card{47}{1021.7}{51}{Costs / COTS vs custom}{\textbf{\color{nv}Total and per-subsystem cost}, COTS vs custom parts · \pn1}
+\card{250}{1021.7}{51}{ADS-B payload}{Chain and decoder · \textbf{\color{nv}sensitivity and trajectory processing with known data} · \pn2}
+\card{453}{1021.7}{51}{Software / interfaces}{FreeRTOS tasks and bus map · \textbf{\color{nv}flight + ground integration status} · \pn6}
+\card{656}{1021.7}{51}{Verification / validation}{Every result tagged\tagA{} or\tagP{} · \textbf{\color{nv}requirements linked to measurements}}
+
+% ===================== ON-SITE DEMONSTRATIONS =====================
+\shade[left color=nv,right color=nvb,middle color=nv,rounded corners=8mm] (36,1095) rectangle ++(828,48);
+% \cell{x}{nome}{métrica}{descrição}
+\newcommand\cell[4]{\draw[wsep,line width=1mm] (#1,1102) -- (#1,1139);
+  \B{#1+8}{1111}{\bfseries\F{10.4}{10.4}\color{white}#2}
+  \B{#1+8}{1125}{\hcond\F{12}{12}\color{ylw}#3}
+  \B{#1+8}{1137}{\F{8.6}{8.6}\color{wds}#4}}
+\B{48}{1111}{\plexSB\F{9}{9}\color{ylw}AT UNSAM}
+\B{48}{1125}{\hcond\F{12}{12}\color{white}8 tests}
+\B{48}{1137}{\F{8.6}{8.6}\color{wds}demonstration matrix}
+\cell{147}{Detumbling}{60 → 5 RPM}{in 10 s}
+\cell{236.1}{Light azimuth}{< 5° error}{LDR pointing}
+\cell{325.2}{TC / TM}{24.9 dB}{link margin}
+\cell{414.3}{ADS-B mission}{20 aircraft}{within 600 s}
+\cell{503.5}{Deployment}{≥ 10 cm}{remote release}
+\cell{592.6}{Charging}{MPPT}{under light}
+\cell{681.7}{Thermal}{Al ≥ 10 °C}{LQI heater}
+\cell{770.8}{Vibration}{14.1 gRMS}{min. FS 2.44}
+
+% ===================== RODAPÉ (sem patrocinadores) =====================
+\fill[white] (0,1150) rectangle (900,1200);
+\fill[ylw] (0,1150) rectangle (900,1154);
+\B{44}{1180.5}{\plexK\F{9.5}{9.5}\color{mut}A STUDENT TEAM OF}
+\node[anchor=north west,inner sep=0] at (187.4,1157) {\includegraphics[height=40mm]{logos/poli_selo.pdf}};
+\node[anchor=north west,inner sep=0] at (249.5,1168.5) {\includegraphics[height=17mm]{logos/usp.pdf}};
+\node[anchor=base east,inner sep=0] at (856,1173.5) {\bfseries\F{10}{10}\color{nv}PoliSat · Hermes mission};
+\node[anchor=base east,inner sep=0] at (856,1187) {\F{10}{10}\color{nv}CubeDesign 2026 CubeSat Challenge · UNSAM, Argentina · 24–27 Nov 2026};
+
+\end{scope}
+\end{tikzpicture}}
+\end{document}
